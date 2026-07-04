@@ -3,18 +3,24 @@
 
 {% block content %}
 <div class="max-w-3xl mx-auto">
-    <div class="text-center mb-10">
-        <h1 class="text-3xl md:text-4xl font-bold text-[#b85c3e]">Updates</h1>
-        <p class="text-stone-500 mt-2">Life updates, news, and stories from the group.</p>
+    <div class="text-center mb-14 reveal">
+        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-warm-400 font-medium">News</span>
+        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-warm-900 mt-2">Updates</h1>
+        <p class="text-neutral-warm-400 text-sm mt-2">Life updates, news, and stories from the group.</p>
     </div>
 
-    <div class="space-y-8">
+    <div class="space-y-6">
         {% for post in updates %}
-        <article class="bg-white rounded-xl shadow-md p-6">
-            <p class="text-stone-400 text-xs mb-1">{{ post.posted_at }}</p>
-            <h2 class="text-xl font-bold text-stone-800 mb-2">{{ post.title }}</h2>
-            <p class="text-stone-600 leading-relaxed">{{ post.content }}</p>
-            <p class="text-stone-400 text-xs mt-3">— {{ post.author }}</p>
+        <article class="group bg-white rounded-2xl border border-neutral-warm-200/80 hover:border-brand/20 transition-all duration-300 overflow-hidden reveal-scale">
+            <div class="px-6 py-6">
+                <div class="flex items-center gap-3 text-xs text-neutral-warm-400 mb-3">
+                    <span>{{ post.posted_at }}</span>
+                    <span class="text-neutral-warm-200">&sdot;</span>
+                    <span class="text-neutral-warm-500">{{ post.author }}</span>
+                </div>
+                <h2 class="text-lg font-heading font-semibold text-neutral-warm-800 mb-2 group-hover:text-brand transition-colors">{{ post.title }}</h2>
+                <p class="text-neutral-warm-600 text-sm leading-relaxed">{{ post.content }}</p>
+            </div>
         </article>
         {% endfor %}
     </div>

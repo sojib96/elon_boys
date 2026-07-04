@@ -1,18 +1,42 @@
 {% extends "base.html" %}
 {% block title %}Our Story — Friends Group{% endblock %}
 
+{% block hero %}
+<section class="relative h-[42vh] min-h-[320px] flex items-center justify-center overflow-hidden bg-neutral-warm-900">
+    <div class="absolute inset-0 animate-gradient" style="background:linear-gradient(135deg,#0a0a0a,#1a1412,#241712,#0a0a0a)"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,#b85c3e28,transparent_55%)]"></div>
+    <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface to-transparent"></div>
+    <div class="relative z-10 text-center px-4 max-w-3xl mx-auto">
+        <div class="animate-fade-in">
+            <div class="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-5">
+                <span class="text-white/50 text-[11px] uppercase tracking-[.25em] font-medium">Our Story</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-heading font-bold text-white leading-tight">How ten strangers<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-200">became a family.</span></h1>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
 {% block content %}
 <div class="max-w-3xl mx-auto">
-    <div class="text-center mb-10">
-        <h1 class="text-3xl md:text-4xl font-bold text-[#b85c3e]">Our Story</h1>
-        <p class="text-stone-500 mt-2">How ten strangers became a family.</p>
-    </div>
+    <div class="space-y-6 reveal">
+        <div class="bg-white rounded-2xl border border-neutral-warm-200/80 p-7 hover:border-brand/20 transition-colors">
+            <p class="text-neutral-warm-600 leading-relaxed text-[15px]">It all began in the autumn of 2019, when ten freshmen walked into the same lecture hall &mdash; Introduction to Something None of Us Remember. We bonded over bad cafeteria food, shared notes, and the universal fear of not making friends.</p>
+        </div>
 
-    <div class="prose prose-stone mx-auto">
-        <p class="text-stone-600 leading-relaxed">It all began in the autumn of 2019, when ten freshmen walked into the same lecture hall — Introduction to Something None of Us Remember. We bonded over bad cafeteria food, shared notes, and the universal fear of not making friends.</p>
-        <p class="text-stone-600 leading-relaxed mt-4">What started as a study group became a dinner group. The dinner group became a road trip group. And somewhere between all-nighters, inside jokes, and accidental matching pyjamas, we became a family.</p>
-        <p class="text-stone-600 leading-relaxed mt-4">Four years, countless memories, and one global pandemic later, we graduated. But unlike most university groups that drift apart, we stayed close. This website is our way of keeping the story going.</p>
-        <p class="text-stone-600 leading-relaxed mt-4 italic">This is only the beginning.</p>
+        <div class="bg-white rounded-2xl border border-neutral-warm-200/80 p-7 hover:border-brand/20 transition-colors reveal-left">
+            <div class="w-8 h-0.5 bg-brand rounded-full mb-4"></div>
+            <p class="text-neutral-warm-600 leading-relaxed text-[15px]">What started as a study group became a dinner group. The dinner group became a road trip group. And somewhere between all-nighters, inside jokes, and accidental matching pyjamas, we became a family.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-neutral-warm-200/80 p-7 hover:border-brand/20 transition-colors reveal-right">
+            <div class="w-8 h-0.5 bg-amber-400 rounded-full mb-4"></div>
+            <p class="text-neutral-warm-600 leading-relaxed text-[15px]">Four years, countless memories, and one global pandemic later, we graduated. But unlike most university groups that drift apart, we stayed close. This website is our way of keeping the story going.</p>
+        </div>
+
+        <div class="text-center py-10 reveal-scale">
+            <p class="text-xl text-neutral-warm-500 italic font-light font-heading">This is only the beginning.</p>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -7,3 +7,5 @@ venv/
 *.db
 static/uploads/*
 !static/uploads/.gitkeep
+*.log
+data/

@@ -74,7 +74,7 @@ class TestTimelinePageE2E:
 
     def test_navbar_timeline_link(self, page):
         page.goto(f"{BASE_URL}/timeline")
-        nav_link = page.locator('nav a:has-text("Timeline")')
+        nav_link = page.locator('#desktop-nav a:has-text("Timeline")')
         assert nav_link.is_visible()
 
     def test_no_console_errors(self, page):

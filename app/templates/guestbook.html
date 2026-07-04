@@ -3,25 +3,34 @@
 
 {% block content %}
 <div class="max-w-3xl mx-auto">
-    <div class="text-center mb-10">
-        <h1 class="text-3xl md:text-4xl font-bold text-[#b85c3e]">Guestbook</h1>
-        <p class="text-stone-500 mt-2">Leave a message for the group.</p>
+    <div class="text-center mb-14 reveal">
+        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-warm-400 font-medium">Messages</span>
+        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-warm-900 mt-2">Guestbook</h1>
+        <p class="text-neutral-warm-400 text-sm mt-2">Leave a message for the group.</p>
     </div>
 
-    <div class="bg-white rounded-xl shadow-md p-6 mb-10 border-2 border-dashed border-stone-300">
-        <h3 class="text-stone-700 font-medium mb-2">Sign the Guestbook</h3>
-        <p class="text-stone-400 text-sm mb-4">Form coming soon — for now, enjoy the messages below.</p>
-        <div class="bg-stone-50 rounded-lg p-4 text-center text-stone-400 text-sm italic">Guestbook form will be added in a future sprint.</div>
-    </div>
-
-    <div class="space-y-4">
-        {% for entry in entries %}
-        <div class="bg-white rounded-xl shadow-sm p-5 border border-stone-100">
-            <div class="flex items-start justify-between mb-2">
-                <span class="font-medium text-stone-800">{{ entry.name }}</span>
-                <span class="text-stone-400 text-xs">{{ entry.posted_at }}</span>
+    <div class="reveal mb-12">
+        <div class="bg-white rounded-2xl border-2 border-dashed border-neutral-warm-200/80 p-8 text-center">
+            <div class="w-12 h-12 rounded-xl bg-neutral-warm-100 flex items-center justify-center mx-auto mb-3">
+                <span class="text-xl">&#128221;</span>
             </div>
-            <p class="text-stone-600 text-sm leading-relaxed">{{ entry.message }}</p>
+            <h3 class="font-heading font-semibold text-neutral-warm-700 text-[15px] mb-1">Sign the Guestbook</h3>
+            <p class="text-neutral-warm-400 text-sm mb-4">Form coming soon.</p>
+            <span class="text-xs text-neutral-warm-400 italic bg-neutral-warm-50 px-4 py-2 rounded-lg border border-neutral-warm-200/60">Guestbook form will be added in a future sprint.</span>
+        </div>
+    </div>
+
+    <div class="space-y-4 stagger">
+        {% for entry in entries %}
+        <div class="group bg-white rounded-2xl border border-neutral-warm-200/80 hover:border-brand/20 hover:-translate-y-0.5 transition-all duration-300 p-5 reveal-scale">
+            <div class="flex items-start justify-between mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center text-sm font-bold text-neutral-warm-600">{{ entry.name[:1] }}</div>
+                    <span class="font-heading font-semibold text-neutral-warm-800 text-sm">{{ entry.name }}</span>
+                </div>
+                <span class="text-neutral-warm-400 text-[11px] bg-neutral-warm-50 px-2 py-0.5 rounded-full border border-neutral-warm-200/60">{{ entry.posted_at }}</span>
+            </div>
+            <p class="text-neutral-warm-600 text-sm leading-relaxed pl-12">{{ entry.message }}</p>
         </div>
         {% endfor %}
     </div>

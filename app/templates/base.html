@@ -1,37 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1c1917">
+    <meta name="description" content="A memory-preservation website for a 10-member university friends group. Four years of memories, captured forever.">
     <title>{% block title %}Friends Group{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23b85c3e'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='16' font-weight='800' font-family='system-ui'>EG</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: {
+                    sans: ['Inter', 'system-ui', 'sans-serif'],
+                    heading: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+                },
+                colors: {
+                    brand: { DEFAULT:'#b85c3e', dark:'#9e4d33', light:'#d4774a', faint:'#fdf4f0' },
+                    surface: '#f8f6f4',
+                    'neutral-warm': { 50:'#faf8f6', 100:'#f5f2ef', 200:'#e7e4e0', 300:'#d6d2cd', 400:'#a8a29e', 500:'#78716c', 600:'#57534e', 700:'#44403c', 800:'#292524', 900:'#1c1917' },
+                }
+            }
+        }
+    }
+    </script>
+    <style>
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+        @keyframes gradient-shift { 0%{background-position:0 50%} 50%{background-position:100% 50%} 100%{background-position:0 50%} }
+        @keyframes fade-in { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes slide-down { from{opacity:0;transform:translateY(-6px) scaleY(.97)} to{opacity:1;transform:translateY(0) scaleY(1)} }
+        @keyframes fade-in-page { from{opacity:0} to{opacity:1} }
+        @keyframes scroll-top-in { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes scroll-top-out { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(12px)} }
+        .animate-float { animation:float 3s ease-in-out infinite }
+        .animate-gradient { background-size:200% 200%; animation:gradient-shift 7s ease infinite }
+        .animate-fade-in { animation:fade-in .7s cubic-bezier(.22,1,.36,1) forwards }
+        .animate-slide-down { animation:slide-down .25s cubic-bezier(.22,1,.36,1) forwards }
+        .animate-fade-page { animation:fade-in-page .35s ease-out }
+        .reveal,.reveal-left,.reveal-right,.reveal-scale { opacity:0; transition:all .8s cubic-bezier(.22,1,.36,1) }
+        .reveal { transform:translateY(24px) }
+        .reveal-left { transform:translateX(-30px) }
+        .reveal-right { transform:translateX(30px) }
+        .reveal-scale { transform:scale(.95) }
+        .reveal.visible,.reveal-left.visible,.reveal-right.visible,.reveal-scale.visible { opacity:1; transform:translate(0) scale(1) }
+        .stagger > *:nth-child(1) { transition-delay:.04s }
+        .stagger > *:nth-child(2) { transition-delay:.08s }
+        .stagger > *:nth-child(3) { transition-delay:.12s }
+        .stagger > *:nth-child(4) { transition-delay:.16s }
+        .stagger > *:nth-child(5) { transition-delay:.2s }
+        .stagger > *:nth-child(6) { transition-delay:.24s }
+        .stagger > *:nth-child(7) { transition-delay:.28s }
+        .stagger > *:nth-child(8) { transition-delay:.32s }
+        .stagger > *:nth-child(9) { transition-delay:.36s }
+        .stagger > *:nth-child(10) { transition-delay:.4s }
+        .stagger > *:nth-child(11) { transition-delay:.44s }
+        .stagger > *:nth-child(12) { transition-delay:.48s }
+
+        body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+        ::selection { background:#b85c3e22; color:#b85c3e }
+
+        :focus-visible { outline:2px solid #b85c3e; outline-offset:2px; border-radius:4px; }
+
+        .nav-link { position:relative; padding:6px 14px; border-radius:8px; font-size:14px; font-weight:500; color:#78716c; transition:all .2s; font-family:'Plus Jakarta Sans',Inter,system-ui,sans-serif }
+        .nav-link::after { content:''; position:absolute; bottom:0; left:50%; width:0; height:3px; background:#b85c3e; border-radius:2px; transition:all .25s cubic-bezier(.22,1,.36,1); transform:translateX(-50%) }
+        .nav-link:hover { color:#b85c3e; background:rgba(184,92,62,.06) }
+        .nav-link.active { color:#b85c3e; font-weight:600 }
+        .nav-link.active::after { width:20px }
+
+        .hamburger { width:20px; height:14px; position:relative; cursor:pointer }
+        .hamburger span { display:block; width:100%; height:2px; background:#57534e; border-radius:2px; position:absolute; left:0; transition:all .3s cubic-bezier(.22,1,.36,1) }
+        .hamburger span:nth-child(1) { top:0 }
+        .hamburger span:nth-child(2) { top:6px }
+        .hamburger span:nth-child(3) { top:12px }
+        .hamburger.open span:nth-child(1) { transform:rotate(45deg); top:6px }
+        .hamburger.open span:nth-child(2) { opacity:0; transform:translateX(-4px) }
+        .hamburger.open span:nth-child(3) { transform:rotate(-45deg); top:6px }
+
+        #scroll-top { opacity:0; pointer-events:none; transition:opacity .3s,transform .3s; transform:translateY(12px) }
+        #scroll-top.visible { opacity:1; pointer-events:auto; transform:translateY(0) }
+    </style>
 </head>
-<body class="bg-[#faf7f2] text-stone-800 flex flex-col min-h-screen">
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between flex-wrap gap-2">
-            <a href="/" class="text-xl font-bold text-indigo-600">The Group</a>
-            <div class="space-x-4 text-sm font-medium">
-                <a href="/our-story" class="hover:text-indigo-600">Our Story</a>
-                <a href="/squad" class="hover:text-indigo-600">The Squad</a>
-                <a href="/timeline" class="hover:text-indigo-600">Timeline</a>
-                <a href="/gallery" class="hover:text-indigo-600">Gallery</a>
-                <a href="/updates" class="hover:text-indigo-600">Updates</a>
-                <a href="/events" class="hover:text-indigo-600">Events</a>
-                <a href="/guestbook" class="hover:text-indigo-600">Guestbook</a>
-                <a href="/contact" class="hover:text-indigo-600">Contact</a>
-                <a href="/login" class="ml-4 text-indigo-600 border border-indigo-600 px-3 py-1 rounded hover:bg-indigo-600 hover:text-white">Login</a>
+<body class="bg-surface text-neutral-warm-800 flex flex-col min-h-screen overflow-x-hidden">
+    <nav class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-neutral-warm-200/70" role="navigation" aria-label="Main navigation">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="/" class="flex items-center gap-3 group flex-shrink-0" aria-label="Home">
+                    <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand to-amber-500 flex items-center justify-center text-white text-[11px] font-extrabold tracking-wider shadow-sm group-hover:shadow-md group-hover:-rotate-3 transition-all duration-300" aria-hidden="true">EG</span>
+                    <span class="font-heading font-bold text-[17px] tracking-tight text-neutral-warm-900">Elon Group</span>
+                </a>
+
+                <div id="desktop-nav" class="hidden md:flex items-center gap-0.5">
+                    {% set nav_links = [
+                        ('/our-story', 'Our Story'),
+                        ('/squad', 'Squad'),
+                        ('/timeline', 'Timeline'),
+                        ('/gallery', 'Gallery'),
+                        ('/updates', 'Updates'),
+                        ('/events', 'Events'),
+                        ('/guestbook', 'Guestbook'),
+                        ('/contact', 'Contact'),
+                    ] %}
+                    {% for href, label in nav_links %}
+                    <a href="{{ href }}" class="nav-link {% if request.url.path == href %}active{% endif %}">{{ label }}</a>
+                    {% endfor %}
+                    <a href="/login" class="ml-3 bg-brand hover:bg-brand-dark text-white text-[13px] font-semibold px-5 py-2 rounded-xl transition-all duration-300 shadow-sm hover:shadow-lg hover:shadow-brand/20 hover:-translate-y-0.5">Login</a>
+                </div>
+
+                <button id="menu-btn" class="md:hidden p-1.5 rounded-lg hover:bg-neutral-warm-100 transition-colors" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <div class="hamburger" id="hamburger-icon">
+                        <span></span><span></span><span></span>
+                    </div>
+                </button>
+            </div>
+
+            <div id="mobile-menu" class="md:hidden hidden pb-5 pt-3 border-t border-neutral-warm-200/60 animate-slide-down" role="menu">
+                {% for href, label in nav_links %}
+                <a href="{{ href }}" class="block px-3 py-2.5 rounded-lg text-sm text-neutral-warm-600 hover:text-brand hover:bg-brand-faint font-medium transition-all duration-200" role="menuitem">{{ label }}</a>
+                {% endfor %}
+                <a href="/login" class="block mt-2 mx-3 bg-brand hover:bg-brand-dark text-white text-sm font-semibold px-4 py-2.5 rounded-xl text-center transition-all duration-300" role="menuitem">Login</a>
             </div>
         </div>
     </nav>
 
     {% block hero %}{% endblock %}
 
-    <main class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
+    <main class="flex-grow w-full mx-auto px-5 sm:px-8 py-12 md:py-16 max-w-6xl animate-fade-page" role="main">
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-white border-t py-6 text-center text-sm text-stone-400">
-        &copy; 2026 Friends Group &mdash; Built with memories.
+    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-10 h-10 rounded-xl bg-white border border-neutral-warm-200/80 shadow-lg flex items-center justify-center text-neutral-warm-500 hover:text-brand hover:border-brand/30 hover:-translate-y-0.5 transition-all duration-300" aria-label="Scroll to top">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+    </button>
+
+    <footer class="bg-white border-t border-neutral-warm-200/60 py-10">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8 text-center">
+            <p class="text-sm text-neutral-warm-400">&copy; 2026 Friends Group &mdash; Built with memories.</p>
+            <p class="text-xs mt-1.5 text-neutral-warm-300">Ten friends. Four years. A lifetime of memories.</p>
+        </div>
     </footer>
+
+    <script>
+    (function(){
+        if(window.IntersectionObserver){
+            document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(function(el){
+                new IntersectionObserver(function(e){ if(e[0].isIntersecting){ e[0].target.classList.add('visible') } },{threshold:.12}).observe(el);
+            });
+        }
+        var btn=document.getElementById('menu-btn'), menu=document.getElementById('mobile-menu'), icon=document.getElementById('hamburger-icon');
+        if(btn&&menu&&icon) btn.addEventListener('click',function(){ menu.classList.toggle('hidden'); icon.classList.toggle('open'); var expanded=btn.getAttribute('aria-expanded')==='true'?'false':'true'; btn.setAttribute('aria-expanded',expanded); });
+
+        var st=document.getElementById('scroll-top');
+        if(st) window.addEventListener('scroll',function(){ st.classList.toggle('visible',window.scrollY>400); });
+    })();
+    </script>
 </body>
 </html>

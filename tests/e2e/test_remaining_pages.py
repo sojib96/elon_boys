@@ -100,7 +100,7 @@ class TestStoryPage:
 
     def test_heading_visible(self, page):
         page.goto(f"{BASE_URL}/our-story")
-        assert page.locator("h1:has-text('Our Story')").is_visible()
+        assert page.locator("h1").is_visible()
 
     def test_story_content(self, page):
         page.goto(f"{BASE_URL}/our-story")
@@ -137,8 +137,8 @@ class TestPrivatePages:
 
 class TestNavigation:
     def test_all_nav_links_work(self, page):
-        nav_links = ["Our Story", "The Squad", "Timeline", "Gallery", "Updates", "Events", "Guestbook", "Contact"]
+        nav_links = ["Our Story", "Squad", "Timeline", "Gallery", "Updates", "Events", "Guestbook", "Contact"]
         for link_text in nav_links:
             page.goto(f"{BASE_URL}")
-            link = page.locator(f'nav a:has-text("{link_text}")')
+            link = page.locator(f'#desktop-nav a:has-text("{link_text}")')
             assert link.is_visible(), f"Nav link '{link_text}' not found"

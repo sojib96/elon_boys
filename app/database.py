@@ -1,12 +1,16 @@
-from pathlib import Path
+import os
 
 from sqlmodel import SQLModel, create_engine, Session
 
-DB_PATH = Path(__file__).resolve().parent.parent / "data" / "friends.db"
-DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./data/friends.db")
 
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=False)
+# If using SQLite locally, ensure the parent directory exists
+if DATABASE_URL.startswith("sqlite"):
+    from pathlib import Path
+    db_path = DATABASE_URL.replace("sqlite:///", "")
+    Path(db_path).parent.mkdir(parents=True, exist_ok=True)
+
+engine = create_engine(DATABASE_URL, echo=False)
 
 
 def create_db_and_tables():

@@ -3,28 +3,33 @@
 
 {% block content %}
 <div class="max-w-4xl mx-auto">
-    <div class="text-center mb-8">
-        <h1 class="text-3xl md:text-4xl font-bold text-[#b85c3e]">Private Uploads</h1>
-        <p class="text-stone-500 mt-2">Raw photos, videos, and files — just for the group.</p>
+    <div class="text-center mb-12 reveal">
+        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-warm-400 font-medium">Files</span>
+        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-warm-900 mt-2">Private Uploads</h1>
+        <p class="text-neutral-warm-400 text-sm mt-2">Raw photos, videos, and files &mdash; just for the group.</p>
     </div>
 
-    <div class="bg-white rounded-xl shadow-md p-6 mb-8 border-2 border-dashed border-stone-300 text-center">
-        <div class="text-4xl mb-2 opacity-40">&#128228;</div>
-        <p class="text-stone-500 text-sm">Upload area coming in a future sprint.</p>
-        <p class="text-stone-400 text-xs mt-1">Drag & drop files here</p>
+    <div class="reveal mb-10">
+        <div class="bg-white rounded-2xl border-2 border-dashed border-neutral-warm-200/80 p-12 text-center">
+            <div class="w-14 h-14 rounded-xl bg-neutral-warm-100 flex items-center justify-center mx-auto mb-3">
+                <span class="text-2xl">&#128228;</span>
+            </div>
+            <p class="text-neutral-warm-600 text-sm font-medium">Upload area coming in a future sprint.</p>
+            <p class="text-neutral-warm-400 text-xs mt-1">Drag &amp; drop files here</p>
+        </div>
     </div>
 
-    <div class="space-y-3">
+    <div class="space-y-3 stagger">
         {% for upload in uploads %}
-        <div class="bg-white rounded-lg shadow-sm p-4 flex items-center gap-4 border border-stone-100">
-            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center flex-shrink-0">
-                <span class="text-lg">&#128196;</span>
+        <div class="group bg-white rounded-xl border border-neutral-warm-200/80 hover:border-brand/20 hover:-translate-y-0.5 transition-all duration-300 p-4 flex items-center gap-4 reveal-scale">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <span class="text-base">&#128196;</span>
             </div>
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-stone-800 truncate">{{ upload.title }}</p>
-                <p class="text-xs text-stone-400">Uploaded by {{ upload.uploaded_by }} &middot; {{ upload.uploaded_at }}</p>
+                <p class="text-sm font-medium text-neutral-warm-800 truncate group-hover:text-brand transition-colors">{{ upload.title }}</p>
+                <p class="text-xs text-neutral-warm-400 mt-0.5">Uploaded by {{ upload.uploaded_by }} &sdot; {{ upload.uploaded_at }}</p>
             </div>
-            <span class="text-stone-400 text-xs">—</span>
+            <span class="text-neutral-warm-300 group-hover:text-brand transition-colors text-sm">&rarr;</span>
         </div>
         {% endfor %}
     </div>

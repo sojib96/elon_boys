@@ -73,7 +73,7 @@ class TestSquadPageE2E:
 
     def test_navbar_has_squad_link_active(self, page):
         page.goto(f"{BASE_URL}/squad")
-        nav_squad = page.locator('nav a:has-text("The Squad")')
+        nav_squad = page.locator('#desktop-nav a:has-text("Squad")')
         assert nav_squad.is_visible()
 
     def test_mobile_viewport_cards_stack(self, page):

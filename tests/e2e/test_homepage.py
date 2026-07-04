@@ -70,7 +70,7 @@ class TestHomepageE2E:
 
     def test_navbar_has_login_link(self, page):
         page.goto(BASE_URL)
-        login = page.locator('a:has-text("Login")')
+        login = page.locator('#desktop-nav a:has-text("Login")')
         assert login.is_visible()
 
     def test_footer_visible(self, page):
