@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 {% block title %}Updates — Friends Group{% endblock %}
+
 {% block content %}
-    <h1 class="text-3xl font-bold">Updates</h1>
-    <p class="text-gray-600 mt-2">Latest news — coming soon.</p>
+<div class="max-w-3xl mx-auto">
+    <div class="text-center mb-10">
+        <h1 class="text-3xl md:text-4xl font-bold text-[#b85c3e]">Updates</h1>
+        <p class="text-stone-500 mt-2">Life updates, news, and stories from the group.</p>
+    </div>
+
+    <div class="space-y-8">
+        {% for post in updates %}
+        <article class="bg-white rounded-xl shadow-md p-6">
+            <p class="text-stone-400 text-xs mb-1">{{ post.posted_at }}</p>
+            <h2 class="text-xl font-bold text-stone-800 mb-2">{{ post.title }}</h2>
+            <p class="text-stone-600 leading-relaxed">{{ post.content }}</p>
+            <p class="text-stone-400 text-xs mt-3">— {{ post.author }}</p>
+        </article>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

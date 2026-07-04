@@ -46,7 +46,7 @@ class TestHomepageE2E:
 
     def test_card_links_navigate(self, page):
         page.goto(BASE_URL)
-        card = page.locator('a:has-text("Our Story")')
+        card = page.locator("main a.group").filter(has_text="Our Story")
         card.click()
         page.wait_for_url("**/our-story")
         assert page.url.endswith("/our-story")

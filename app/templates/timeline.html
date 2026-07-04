@@ -1,6 +1,78 @@
 {% extends "base.html" %}
-{% block title %}Timeline — Friends Group{% endblock %}
+{% block title %}Memory Timeline — Friends Group{% endblock %}
+
 {% block content %}
-    <h1 class="text-3xl font-bold">Memory Timeline</h1>
-    <p class="text-gray-600 mt-2">Year by year — coming soon.</p>
+<div class="max-w-5xl mx-auto">
+    <div class="text-center mb-12">
+        <h1 class="text-3xl md:text-4xl font-bold text-[#b85c3e]">Memory Timeline</h1>
+        <p class="text-stone-500 mt-2 max-w-lg mx-auto">Our four-year journey, captured year by year.</p>
+    </div>
+
+    {% set year_labels = {1: "Year 1 — The Beginning", 2: "Year 2 — Finding Our Rhythm", 3: "Year 3 — The Golden Days", 4: "Year 4 — The Final Chapter"} %}
+
+    {% for year_num in [1, 2, 3, 4] %}
+    {% set events = years[year_num] %}
+
+    <div class="relative mb-16 last:mb-0">
+        {% if not loop.first %}
+        <div class="hidden md:block absolute left-1/2 -translate-x-1/2 -top-8 w-0.5 bg-amber-300 h-8"></div>
+        {% endif %}
+
+        <div class="flex justify-center mb-10 relative z-10">
+            <div class="bg-[#b85c3e] text-white rounded-full w-16 h-16 flex items-center justify-center shadow-md">
+                <span class="text-xl font-bold">{{ year_num }}</span>
+            </div>
+        </div>
+
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-stone-800">{{ year_labels[year_num] }}</h2>
+        </div>
+
+        {% for event in events %}
+        {% set side = "left" if loop.index0 % 2 == 0 else "right" %}
+        <div class="md:grid md:grid-cols-[1fr_auto_1fr] md:gap-6 mb-6 items-start relative">
+            {% if side == "left" %}
+            <div class="md:pr-4 md:text-right">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <div class="h-32 bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center">
+                        <span class="text-stone-400 text-sm font-medium">Photo</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-stone-800">{{ event.title }}</h3>
+                        <p class="text-stone-600 text-sm mt-1 leading-snug">{{ event.description }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden md:flex flex-col items-center relative">
+                <div class="w-4 h-4 rounded-full bg-[#b85c3e] border-4 border-white shadow z-10 flex-shrink-0"></div>
+                {% if not loop.last %}
+                <div class="w-0.5 bg-amber-300 flex-grow"></div>
+                {% endif %}
+            </div>
+            <div class="hidden md:block"></div>
+            {% else %}
+            <div class="hidden md:block"></div>
+            <div class="hidden md:flex flex-col items-center relative">
+                <div class="w-4 h-4 rounded-full bg-[#b85c3e] border-4 border-white shadow z-10 flex-shrink-0"></div>
+                {% if not loop.last %}
+                <div class="w-0.5 bg-amber-300 flex-grow"></div>
+                {% endif %}
+            </div>
+            <div class="md:pl-4">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <div class="h-32 bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center">
+                        <span class="text-stone-400 text-sm font-medium">Photo</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-stone-800">{{ event.title }}</h3>
+                        <p class="text-stone-600 text-sm mt-1 leading-snug">{{ event.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

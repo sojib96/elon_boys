@@ -20,6 +20,8 @@ ROUTES_200 = [
     "/guestbook",
     "/contact",
     "/login",
+    "/uploads",
+    "/notes",
 ]
 
 
@@ -85,3 +87,158 @@ class TestPublicRoutes:
         resp = client.get("/squad")
         assert resp.status_code == 200
         assert "The Squad" in resp.text
+
+    def test_squad_all_members_present(self, client):
+        resp = client.get("/squad")
+        for name in ["Alex Chen", "Maya Rodriguez", "James Okafor", "Priya Sharma",
+                      "Leo Kim", "Sara Johansson", "David Park", "Aisha Mohammed",
+                      "Tomás Silva", "Yuki Tanaka"]:
+            assert name in resp.text, f"Missing member: {name}"
+
+    def test_squad_ten_initial_circles(self, client):
+        resp = client.get("/squad")
+        assert resp.text.count("rounded-full bg-gradient") == 10
+
+    def test_squad_fun_fact_badges(self, client):
+        resp = client.get("/squad")
+        assert resp.text.count("Fun fact:") == 10
+
+    def test_squad_status_lines(self, client):
+        resp = client.get("/squad")
+        for status in ["Google", "NYU", "Kola", "NASA", "Figma",
+                        "Writer", "Teacher", "Hospital", "Producer", "Tokyo"]:
+            assert status in resp.text, f"Missing status: {status}"
+
+    def test_squad_terracotta_heading(self, client):
+        resp = client.get("/squad")
+        assert '#b85c3e' in resp.text
+
+    def test_squad_responsive_grid(self, client):
+        resp = client.get("/squad")
+        assert "lg:grid-cols-3" in resp.text
+        assert "sm:grid-cols-2" in resp.text
+        assert "xl:grid-cols-4" in resp.text
+
+    def test_squad_card_hover_effect(self, client):
+        resp = client.get("/squad")
+        assert "hover:-translate-y-1" in resp.text
+
+    def test_squad_member_detail_valid(self, client):
+        resp = client.get("/squad/1")
+        assert resp.status_code == 200
+        assert "Alex Chen" in resp.text
+        assert "coming soon" in resp.text
+
+    def test_squad_member_detail_invalid(self, client):
+        resp = client.get("/squad/99")
+        assert resp.status_code == 200
+        assert "Member not found" in resp.text
+
+    def test_squad_member_detail_back_link(self, client):
+        resp = client.get("/squad/1")
+        assert "Back to The Squad" in resp.text
+        assert 'href="/squad"' in resp.text
+
+    def test_timeline_page_loads(self, client):
+        resp = client.get("/timeline")
+        assert resp.status_code == 200
+        assert "Memory Timeline" in resp.text
+
+    def test_timeline_subtitle(self, client):
+        resp = client.get("/timeline")
+        assert "four-year journey" in resp.text
+
+    def test_timeline_all_years_present(self, client):
+        resp = client.get("/timeline")
+        for year in ["Year 1", "Year 2", "Year 3", "Year 4"]:
+            assert year in resp.text, f"Missing {year}"
+
+    def test_timeline_all_events_present(self, client):
+        resp = client.get("/timeline")
+        for title in ["First Day of University", "Graduation Day", "Farewell Dinner",
+                       "Spring Break Road Trip", "House Share Begins"]:
+            assert title in resp.text, f"Missing event: {title}"
+
+    def test_timeline_twelve_events(self, client):
+        resp = client.get("/timeline")
+        assert resp.text.count("hover:shadow-lg") == 12
+
+    def test_timeline_year_badges(self, client):
+        resp = client.get("/timeline")
+        for i in range(1, 5):
+            assert f">{i}<" in resp.text, f"Missing year {i} badge"
+
+    def test_timeline_photo_placeholders(self, client):
+        resp = client.get("/timeline")
+        assert resp.text.count("Photo") >= 12
+
+    def test_timeline_terracotta(self, client):
+        resp = client.get("/timeline")
+        assert "#b85c3e" in resp.text
+
+    def test_gallery_page_loads(self, client):
+        resp = client.get("/gallery")
+        assert resp.status_code == 200
+        assert "Gallery" in resp.text
+
+    def test_gallery_twelve_items(self, client):
+        resp = client.get("/gallery")
+        assert resp.text.count("aspect-square") == 12
+
+    def test_gallery_categories(self, client):
+        resp = client.get("/gallery")
+        for cat in ["Events", "Trips", "Campus Life", "Random"]:
+            assert cat in resp.text
+
+    def test_updates_page_loads(self, client):
+        resp = client.get("/updates")
+        assert resp.status_code == 200
+        assert "Updates" in resp.text
+
+    def test_updates_three_posts(self, client):
+        resp = client.get("/updates")
+        assert resp.text.count("bg-white rounded-xl shadow-md p-6") == 3
+
+    def test_events_page_loads(self, client):
+        resp = client.get("/events")
+        assert resp.status_code == 200
+        assert "Events" in resp.text
+
+    def test_events_upcoming_and_past(self, client):
+        resp = client.get("/events")
+        assert "Upcoming" in resp.text
+        assert "Past" in resp.text
+
+    def test_guestbook_page_loads(self, client):
+        resp = client.get("/guestbook")
+        assert resp.status_code == 200
+        assert "Guestbook" in resp.text
+
+    def test_guestbook_five_entries(self, client):
+        resp = client.get("/guestbook")
+        assert resp.text.count("bg-white rounded-xl shadow-sm p-5") == 5
+
+    def test_story_page_loads(self, client):
+        resp = client.get("/our-story")
+        assert resp.status_code == 200
+        assert "Our Story" in resp.text
+
+    def test_contact_page_loads(self, client):
+        resp = client.get("/contact")
+        assert resp.status_code == 200
+        assert "Contact" in resp.text
+
+    def test_login_page_loads(self, client):
+        resp = client.get("/login")
+        assert resp.status_code == 200
+        assert "Member Login" in resp.text
+
+    def test_uploads_page_loads(self, client):
+        resp = client.get("/uploads")
+        assert resp.status_code == 200
+        assert "Private Uploads" in resp.text
+
+    def test_notes_page_loads(self, client):
+        resp = client.get("/notes")
+        assert resp.status_code == 200
+        assert "Internal Notes" in resp.text

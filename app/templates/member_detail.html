@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{% if member %}{{ member.name }} — The Squad{% else %}Member Not Found{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto text-center">
+    {% if member %}
+    <div class="w-32 h-32 rounded-full bg-gradient-to-br from-amber-200 to-orange-300 flex items-center justify-center mx-auto mb-6 shadow-md">
+        <span class="text-3xl font-bold text-stone-600">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
+    </div>
+    <h1 class="text-3xl font-bold text-stone-800">{{ member.name }}</h1>
+    <p class="text-stone-400 italic text-lg mb-4">{{ member.nickname }}</p>
+    <p class="text-stone-600 max-w-xl mx-auto mb-6">{{ member.bio }}</p>
+    <span class="inline-block bg-amber-100 text-amber-800 text-sm px-3 py-1 rounded-full mb-4">Fun fact: {{ member.fun_fact }}</span>
+    <p class="text-stone-500 text-sm mt-2">{{ member.current_status }}</p>
+    <p class="text-stone-400 text-xs mt-12 italic">Full member profile — coming soon.</p>
+    <a href="/squad" class="mt-4 inline-block text-[#b85c3e] hover:underline text-sm">&larr; Back to The Squad</a>
+    {% else %}
+    <h1 class="text-3xl font-bold text-stone-800">Member not found</h1>
+    <p class="text-stone-500 mt-4">This member doesn't exist.</p>
+    <a href="/squad" class="mt-6 inline-block text-[#b85c3e] hover:underline">&larr; Back to The Squad</a>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,6 +1,26 @@
 {% extends "base.html" %}
-{% block title %}Login — Friends Group{% endblock %}
+{% block title %}Member Login — Friends Group{% endblock %}
+
 {% block content %}
-    <h1 class="text-3xl font-bold">Member Login</h1>
-    <p class="text-gray-600 mt-2">Login form coming soon.</p>
+<div class="max-w-md mx-auto mt-12">
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-[#b85c3e]">Member Login</h1>
+        <p class="text-stone-500 mt-2">Private area for the 10 of us.</p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-8">
+        <form>
+            <div class="mb-4">
+                <label class="block text-stone-700 text-sm font-medium mb-1">Username</label>
+                <input type="text" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b85c3e] focus:border-transparent" placeholder="Enter your username">
+            </div>
+            <div class="mb-6">
+                <label class="block text-stone-700 text-sm font-medium mb-1">Password</label>
+                <input type="password" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b85c3e] focus:border-transparent" placeholder="Enter your password">
+            </div>
+            <button type="submit" class="w-full bg-[#b85c3e] hover:bg-[#9e4d33] text-white font-medium py-2.5 rounded-lg transition-colors">Sign In</button>
+        </form>
+        <p class="text-stone-400 text-xs text-center mt-4 italic">Authentication coming in a future sprint.</p>
+    </div>
+</div>
 {% endblock %}

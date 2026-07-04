@@ -1,6 +1,37 @@
 {% extends "base.html" %}
 {% block title %}Contact — Friends Group{% endblock %}
+
 {% block content %}
-    <h1 class="text-3xl font-bold">Contact</h1>
-    <p class="text-gray-600 mt-2">Get in touch — coming soon.</p>
+<div class="max-w-3xl mx-auto">
+    <div class="text-center mb-10">
+        <h1 class="text-3xl md:text-4xl font-bold text-[#b85c3e]">Contact</h1>
+        <p class="text-stone-500 mt-2">Get in touch with the group.</p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-8">
+        <div class="space-y-6">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-lg">&#9993;</div>
+                <div>
+                    <p class="font-medium text-stone-800">Email</p>
+                    <p class="text-stone-500 text-sm">hello@thegroup.com</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-lg">&#128222;</div>
+                <div>
+                    <p class="font-medium text-stone-800">Phone</p>
+                    <p class="text-stone-500 text-sm">+1 (555) 000-0000</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-lg">&#127760;</div>
+                <div>
+                    <p class="font-medium text-stone-800">Social</p>
+                    <p class="text-stone-500 text-sm">Instagram &middot; Twitter &middot; Facebook</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
