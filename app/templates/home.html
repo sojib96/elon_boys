@@ -2,29 +2,30 @@
 {% block title %}Home — Friends Group{% endblock %}
 
 {% block hero %}
-<section class="relative h-[88vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-neutral-warm-900">
-    <div class="absolute inset-0 animate-gradient" style="background:linear-gradient(135deg,#0a0a0a,#1a1412,#241712,#0a0a0a)"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_25%_45%,#b85c3e33,transparent_55%)]"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_25%,#f59e0b18,transparent_45%)]"></div>
+<section class="relative h-[88vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-neutral-900">
+    <div class="absolute inset-0 animate-gradient" style="background:linear-gradient(135deg,#0f0c29,#302b63,#24243e,#1a0a2e,#0f0c29);background-size:300% 300%"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_40%,#e85d3a25,transparent_55%)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,#fb718520,transparent_45%)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_80%,#a78bfa20,transparent_50%)]"></div>
     <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-surface to-transparent"></div>
-    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/8 to-transparent"></div>
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
     <div class="relative z-10 text-center px-4 max-w-3xl mx-auto">
         <div class="animate-fade-in">
-            <div class="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-7">
-                <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                <span class="text-white/50 text-[11px] uppercase tracking-[.25em] font-medium">University Friends Group</span>
+            <div class="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full px-5 py-2 mb-8">
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse-soft"></span>
+                <span class="text-white/40 text-[11px] uppercase tracking-[.25em] font-medium font-sans">University Friends Group</span>
             </div>
-            <h1 class="text-[clamp(2.5rem,8vw,4.5rem)] font-heading font-bold text-white leading-[1.06] tracking-tight">
+            <h1 class="text-[clamp(2.5rem,8vw,4.8rem)] font-heading font-bold text-white leading-[1.08] tracking-tight">
                 Ten friends.<br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-200">Four years.</span>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-300 via-amber-200 to-violet-300">Four years.</span>
             </h1>
-            <p class="text-xl text-white/50 font-light mt-4 max-w-lg mx-auto leading-relaxed">A lifetime of memories.</p>
+            <p class="text-xl text-white/40 font-light mt-4 max-w-lg mx-auto leading-relaxed font-fancy">A lifetime of memories.</p>
             <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="/squad" class="group bg-white text-neutral-warm-900 font-semibold px-8 py-3 rounded-xl hover:bg-neutral-warm-50 transition-all duration-300 text-[15px] inline-flex items-center gap-2 shadow-xl">
+                <a href="/squad" class="group bg-white text-neutral-800 font-semibold px-8 py-3 rounded-xl hover:bg-neutral-50 transition-all duration-300 text-[15px] inline-flex items-center gap-2 shadow-xl shadow-white/5">
                     Meet the Squad
                     <span class="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
                 </a>
-                <a href="/timeline" class="text-white/60 hover:text-white border border-white/15 hover:border-white/30 px-8 py-3 rounded-xl transition-all duration-300 text-[15px] backdrop-blur-sm">
+                <a href="/timeline" class="text-white/50 hover:text-white border border-white/15 hover:border-white/30 px-8 py-3 rounded-xl transition-all duration-300 text-[15px] backdrop-blur-sm">
                     View Timeline
                 </a>
             </div>
@@ -35,92 +36,101 @@
 
 {% block content %}
 <section class="max-w-2xl mx-auto text-center mb-20 reveal">
-    <div class="border-b border-neutral-warm-200 pb-8">
-        <p class="text-lg md:text-xl text-neutral-warm-400 italic leading-relaxed font-light">
+    <div class="border-b border-neutral-200 pb-8">
+        <p class="text-xl md:text-2xl text-neutral-400 italic leading-relaxed font-fancy">
             &ldquo;We didn&rsquo;t realise we were making memories — we were just having fun.&rdquo;
         </p>
+        <div class="flex justify-center gap-1.5 mt-4">
+            <span class="w-2 h-2 rounded-full bg-accent-coral"></span>
+            <span class="w-2 h-2 rounded-full bg-accent-amber"></span>
+            <span class="w-2 h-2 rounded-full bg-accent-sky"></span>
+        </div>
     </div>
 </section>
 
 <section class="mb-24">
     <div class="text-center mb-14 reveal">
-        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-warm-400 font-medium">Navigate</span>
-        <h2 class="text-2xl md:text-3xl font-heading font-bold text-neutral-warm-900 mt-2">Explore Our World</h2>
+        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-400 font-medium font-sans">Navigate</span>
+        <h2 class="text-2xl md:text-3xl font-heading font-bold text-neutral-900 mt-2">Explore Our World</h2>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 stagger">
-        <a href="/our-story" class="group bg-white rounded-2xl border border-neutral-warm-200/80 hover:border-brand/30 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-0.5">
-            <div class="relative h-40 flex items-center justify-center overflow-hidden bg-[#faf6f2]">
-                <div class="w-14 h-14 rounded-2xl bg-white shadow-sm border border-neutral-warm-200/60 flex items-center justify-center group-hover:scale-110 group-hover:shadow-md group-hover:border-brand/20 transition-all duration-400">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger">
+        <a href="/our-story" class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-1 card-sparkle">
+            <div class="h-1.5 bg-gradient-to-r from-rose-400 to-amber-400"></div>
+            <div class="relative h-36 flex items-center justify-center overflow-hidden bg-gradient-to-br from-rose-50 to-amber-50">
+                <div class="w-14 h-14 rounded-2xl bg-white/80 backdrop-blur shadow-sm border border-rose-200/60 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-all duration-400">
                     <span class="text-xl">&#128214;</span>
                 </div>
             </div>
             <div class="px-6 py-5 flex items-center justify-between">
                 <div>
-                    <h3 class="font-heading font-semibold text-neutral-warm-800 text-[15px] group-hover:text-brand transition-colors">Our Story</h3>
-                    <p class="text-sm text-neutral-warm-400 mt-0.5">How it all began</p>
+                    <h3 class="font-heading font-semibold text-neutral-800 text-[16px] group-hover:text-brand transition-colors">Our Story</h3>
+                    <p class="text-sm text-neutral-400 mt-0.5">How it all began</p>
                 </div>
-                <span class="text-neutral-warm-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
+                <span class="text-neutral-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
             </div>
         </a>
 
-        <a href="/squad" class="group bg-white rounded-2xl border border-neutral-warm-200/80 hover:border-brand/30 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-0.5">
-            <div class="relative h-40 flex items-center justify-center overflow-hidden bg-[#f2f5f9]">
-                <div class="w-14 h-14 rounded-2xl bg-white shadow-sm border border-neutral-warm-200/60 flex items-center justify-center group-hover:scale-110 group-hover:shadow-md group-hover:border-brand/20 transition-all duration-400">
+        <a href="/squad" class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-1 card-sparkle">
+            <div class="h-1.5 bg-gradient-to-r from-sky-400 to-violet-400"></div>
+            <div class="relative h-36 flex items-center justify-center overflow-hidden bg-gradient-to-br from-sky-50 to-violet-50">
+                <div class="w-14 h-14 rounded-2xl bg-white/80 backdrop-blur shadow-sm border border-sky-200/60 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-all duration-400">
                     <span class="text-xl">&#128101;</span>
                 </div>
             </div>
             <div class="px-6 py-5 flex items-center justify-between">
                 <div>
-                    <h3 class="font-heading font-semibold text-neutral-warm-800 text-[15px] group-hover:text-brand transition-colors">The Squad</h3>
-                    <p class="text-sm text-neutral-warm-400 mt-0.5">Meet the 10 of us</p>
+                    <h3 class="font-heading font-semibold text-neutral-800 text-[16px] group-hover:text-brand transition-colors">The Squad</h3>
+                    <p class="text-sm text-neutral-400 mt-0.5">Meet the 10 of us</p>
                 </div>
-                <span class="text-neutral-warm-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
+                <span class="text-neutral-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
             </div>
         </a>
 
-        <a href="/timeline" class="group bg-white rounded-2xl border border-neutral-warm-200/80 hover:border-brand/30 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-0.5">
-            <div class="relative h-40 flex items-center justify-center overflow-hidden bg-[#f2faf5]">
-                <div class="w-14 h-14 rounded-2xl bg-white shadow-sm border border-neutral-warm-200/60 flex items-center justify-center group-hover:scale-110 group-hover:shadow-md group-hover:border-brand/20 transition-all duration-400">
+        <a href="/timeline" class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-1 card-sparkle">
+            <div class="h-1.5 bg-gradient-to-r from-emerald-400 to-teal-400"></div>
+            <div class="relative h-36 flex items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-50 to-teal-50">
+                <div class="w-14 h-14 rounded-2xl bg-white/80 backdrop-blur shadow-sm border border-emerald-200/60 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-all duration-400">
                     <span class="text-xl">&#128197;</span>
                 </div>
             </div>
             <div class="px-6 py-5 flex items-center justify-between">
                 <div>
-                    <h3 class="font-heading font-semibold text-neutral-warm-800 text-[15px] group-hover:text-brand transition-colors">Timeline</h3>
-                    <p class="text-sm text-neutral-warm-400 mt-0.5">Year by year journey</p>
+                    <h3 class="font-heading font-semibold text-neutral-800 text-[16px] group-hover:text-brand transition-colors">Timeline</h3>
+                    <p class="text-sm text-neutral-400 mt-0.5">Year by year journey</p>
                 </div>
-                <span class="text-neutral-warm-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
+                <span class="text-neutral-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
             </div>
         </a>
 
-        <a href="/gallery" class="group bg-white rounded-2xl border border-neutral-warm-200/80 hover:border-brand/30 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-0.5">
-            <div class="relative h-40 flex items-center justify-center overflow-hidden bg-[#f6f2fa]">
-                <div class="w-14 h-14 rounded-2xl bg-white shadow-sm border border-neutral-warm-200/60 flex items-center justify-center group-hover:scale-110 group-hover:shadow-md group-hover:border-brand/20 transition-all duration-400">
+        <a href="/gallery" class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-1 card-sparkle">
+            <div class="h-1.5 bg-gradient-to-r from-amber-400 to-rose-400"></div>
+            <div class="relative h-36 flex items-center justify-center overflow-hidden bg-gradient-to-br from-amber-50 to-rose-50">
+                <div class="w-14 h-14 rounded-2xl bg-white/80 backdrop-blur shadow-sm border border-amber-200/60 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-all duration-400">
                     <span class="text-xl">&#128247;</span>
                 </div>
             </div>
             <div class="px-6 py-5 flex items-center justify-between">
                 <div>
-                    <h3 class="font-heading font-semibold text-neutral-warm-800 text-[15px] group-hover:text-brand transition-colors">Gallery</h3>
-                    <p class="text-sm text-neutral-warm-400 mt-0.5">Photos &amp; videos</p>
+                    <h3 class="font-heading font-semibold text-neutral-800 text-[16px] group-hover:text-brand transition-colors">Gallery</h3>
+                    <p class="text-sm text-neutral-400 mt-0.5">Photos &amp; videos</p>
                 </div>
-                <span class="text-neutral-warm-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
+                <span class="text-neutral-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
             </div>
         </a>
     </div>
 </section>
 
 <section class="reveal">
-    <div class="relative -mx-5 sm:-mx-8 px-5 sm:px-8 py-20 text-center bg-neutral-warm-900 overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,#b85c3e15,transparent_60%)]"></div>
+    <div class="relative -mx-5 sm:-mx-8 px-5 sm:px-8 py-20 text-center overflow-hidden" style="background:linear-gradient(135deg,#0f0c29,#302b63,#24243e)">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,#e85d3a15,transparent_60%)]"></div>
         <div class="relative z-10">
-            <p class="text-2xl md:text-3xl text-white/70 italic font-light font-heading max-w-xl mx-auto leading-relaxed">
+            <p class="text-3xl md:text-4xl text-white/80 italic font-fancy max-w-xl mx-auto leading-relaxed">
                 &ldquo;Here&rsquo;s to the nights we&rsquo;ll never forget.&rdquo;
             </p>
             <div class="mt-8 flex justify-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-white/30"></span>
-                <span class="w-2 h-2 rounded-full bg-white/40"></span>
-                <span class="w-2 h-2 rounded-full bg-white/30"></span>
+                <span class="w-2 h-2 rounded-full bg-rose-400 animate-pulse-soft" style="animation-delay:0s"></span>
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse-soft" style="animation-delay:.3s"></span>
+                <span class="w-2 h-2 rounded-full bg-violet-400 animate-pulse-soft" style="animation-delay:.6s"></span>
             </div>
         </div>
     </div>

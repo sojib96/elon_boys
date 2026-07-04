@@ -4,16 +4,16 @@
 {% block content %}
 <div class="max-w-5xl mx-auto">
     <div class="text-center mb-16 reveal">
-        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-warm-400 font-medium">Journey</span>
-        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-warm-900 mt-2">Memory Timeline</h1>
-        <p class="text-neutral-warm-400 text-sm mt-2 max-w-md mx-auto">Our four-year journey, captured year by year.</p>
+        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-400 font-medium font-sans">Journey</span>
+        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-900 mt-2">Memory Timeline</h1>
+        <p class="text-neutral-400 text-sm mt-2 max-w-md mx-auto">Our four-year journey, captured year by year.</p>
     </div>
 
     {% set year_palette = {
-        1: { 'label': 'Year 1 — The Beginning', 'bg': '#f0f7f0', 'dot': '#86c986', 'border': '#d0e8d0' },
-        2: { 'label': 'Year 2 — Finding Our Rhythm', 'bg': '#eef3f8', 'dot': '#7eb8d4', 'border': '#c8dce8' },
-        3: { 'label': 'Year 3 — The Golden Days', 'bg': '#f8f2ea', 'dot': '#d4a87e', 'border': '#e8d8c8' },
-        4: { 'label': 'Year 4 — The Final Chapter', 'bg': '#f3eaf8', 'dot': '#b88ed4', 'border': '#dcc8e8' },
+        1: { 'label': 'Year 1 — The Beginning', 'gradient': 'from-rose-400 to-amber-400', 'bg': 'from-rose-50 to-amber-50', 'dot': '#fb7185', 'border': '#fecdd3' },
+        2: { 'label': 'Year 2 — Finding Our Rhythm', 'gradient': 'from-sky-400 to-violet-400', 'bg': 'from-sky-50 to-violet-50', 'dot': '#38bdf8', 'border': '#bae6fd' },
+        3: { 'label': 'Year 3 — The Golden Days', 'gradient': 'from-amber-400 to-rose-400', 'bg': 'from-amber-50 to-rose-50', 'dot': '#fbbf24', 'border': '#fde68a' },
+        4: { 'label': 'Year 4 — The Final Chapter', 'gradient': 'from-violet-400 to-pink-400', 'bg': 'from-violet-50 to-pink-50', 'dot': '#a78bfa', 'border': '#ddd6fe' },
     } %}
 
     {% for year_num in [1, 2, 3, 4] %}
@@ -22,13 +22,13 @@
 
     <div class="relative mb-24 last:mb-0 reveal">
         <div class="flex justify-center mb-8 relative z-10">
-            <div class="w-12 h-12 rounded-full flex items-center justify-center shadow-sm text-sm font-bold" style="background:{{ yp.bg }}; color:{{ yp.dot }}">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-md text-lg font-bold font-heading text-white bg-gradient-to-br {{ yp.gradient }}">
                 {{ year_num }}
             </div>
         </div>
 
         <div class="text-center mb-8">
-            <h2 class="text-lg font-heading font-semibold text-neutral-warm-700">{{ yp.label }}</h2>
+            <h2 class="text-lg font-heading font-semibold text-neutral-700">{{ yp.label }}</h2>
         </div>
 
         {% for event in events %}
@@ -37,39 +37,41 @@
         <div class="md:grid md:grid-cols-[1fr_auto_1fr] md:gap-6 mb-5 items-start relative">
             {% if side == "left" %}
             <div class="md:pr-4 md:text-right {{ reveal_class }}">
-                <div class="group bg-white rounded-2xl border border-neutral-warm-200/80 hover:border-brand/20 transition-all duration-300 overflow-hidden">
-                    <div class="h-32 flex items-center justify-center" style="background:{{ yp.bg }}">
-                        <span class="text-xs font-medium tracking-wide opacity-50 group-hover:opacity-80 transition-opacity" style="color:{{ yp.dot }}">&#128247; Photo memory</span>
+                <div class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden card-sparkle hover:-translate-y-0.5">
+                    <div class="h-1 bg-gradient-to-r {{ yp.gradient }}"></div>
+                    <div class="h-28 flex items-center justify-center bg-gradient-to-br {{ yp.bg }}">
+                        <span class="text-xs font-medium tracking-wide opacity-40 group-hover:opacity-70 transition-opacity" style="color:{{ yp.dot }}">&#128247; Photo memory</span>
                     </div>
                     <div class="p-5">
-                        <h3 class="font-heading font-semibold text-neutral-warm-800 text-[15px] group-hover:text-brand transition-colors">{{ event.title }}</h3>
-                        <p class="text-neutral-warm-500 text-sm mt-1 leading-relaxed">{{ event.description }}</p>
+                        <h3 class="font-heading font-semibold text-neutral-800 text-[16px] group-hover:text-brand transition-colors">{{ event.title }}</h3>
+                        <p class="text-neutral-500 text-sm mt-1 leading-relaxed">{{ event.description }}</p>
                     </div>
                 </div>
             </div>
             <div class="hidden md:flex flex-col items-center relative">
-                <div class="w-3 h-3 rounded-full border-2 z-10 flex-shrink-0 transition-colors duration-300" style="background:{{ yp.bg }}; border-color:{{ yp.dot }}"></div>
+                <div class="w-4 h-4 rounded-full z-10 flex-shrink-0 border-2 border-white shadow-sm" style="background:{{ yp.dot }}"></div>
                 {% if not loop.last %}
-                <div class="w-px flex-grow" style="background:{{ yp.border }}"></div>
+                <div class="w-0.5 flex-grow" style="background:{{ yp.border }}"></div>
                 {% endif %}
             </div>
             <div class="hidden md:block"></div>
             {% else %}
             <div class="hidden md:block"></div>
             <div class="hidden md:flex flex-col items-center relative">
-                <div class="w-3 h-3 rounded-full border-2 z-10 flex-shrink-0 transition-colors duration-300" style="background:{{ yp.bg }}; border-color:{{ yp.dot }}"></div>
+                <div class="w-4 h-4 rounded-full z-10 flex-shrink-0 border-2 border-white shadow-sm" style="background:{{ yp.dot }}"></div>
                 {% if not loop.last %}
-                <div class="w-px flex-grow" style="background:{{ yp.border }}"></div>
+                <div class="w-0.5 flex-grow" style="background:{{ yp.border }}"></div>
                 {% endif %}
             </div>
             <div class="md:pl-4 {{ reveal_class }}">
-                <div class="group bg-white rounded-2xl border border-neutral-warm-200/80 hover:border-brand/20 transition-all duration-300 overflow-hidden">
-                    <div class="h-32 flex items-center justify-center" style="background:{{ yp.bg }}">
-                        <span class="text-xs font-medium tracking-wide opacity-50 group-hover:opacity-80 transition-opacity" style="color:{{ yp.dot }}">&#128247; Photo memory</span>
+                <div class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden card-sparkle hover:-translate-y-0.5">
+                    <div class="h-1 bg-gradient-to-r {{ yp.gradient }}"></div>
+                    <div class="h-28 flex items-center justify-center bg-gradient-to-br {{ yp.bg }}">
+                        <span class="text-xs font-medium tracking-wide opacity-40 group-hover:opacity-70 transition-opacity" style="color:{{ yp.dot }}">&#128247; Photo memory</span>
                     </div>
                     <div class="p-5">
-                        <h3 class="font-heading font-semibold text-neutral-warm-800 text-[15px] group-hover:text-brand transition-colors">{{ event.title }}</h3>
-                        <p class="text-neutral-warm-500 text-sm mt-1 leading-relaxed">{{ event.description }}</p>
+                        <h3 class="font-heading font-semibold text-neutral-800 text-[16px] group-hover:text-brand transition-colors">{{ event.title }}</h3>
+                        <p class="text-neutral-500 text-sm mt-1 leading-relaxed">{{ event.description }}</p>
                     </div>
                 </div>
             </div>

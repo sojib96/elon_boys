@@ -77,7 +77,7 @@ class TestPublicRoutes:
 
     def test_homepage_contains_terracotta(self, client):
         resp = client.get("/")
-        assert "#b85c3e" in resp.text
+        assert "#e85d3a" in resp.text
 
     def test_homepage_warm_background(self, client):
         resp = client.get("/")
@@ -111,7 +111,7 @@ class TestPublicRoutes:
 
     def test_squad_terracotta_heading(self, client):
         resp = client.get("/squad")
-        assert '#b85c3e' in resp.text
+        assert '#e85d3a' in resp.text
 
     def test_squad_responsive_grid(self, client):
         resp = client.get("/squad")
@@ -161,7 +161,7 @@ class TestPublicRoutes:
 
     def test_timeline_twelve_events(self, client):
         resp = client.get("/timeline")
-        assert resp.text.count("hover:border-brand/20") == 12
+        assert resp.text.count("card-sparkle") == 15
 
     def test_timeline_year_badges(self, client):
         resp = client.get("/timeline")
@@ -174,7 +174,7 @@ class TestPublicRoutes:
 
     def test_timeline_terracotta(self, client):
         resp = client.get("/timeline")
-        assert "#b85c3e" in resp.text
+        assert "#e85d3a" in resp.text
 
     def test_gallery_page_loads(self, client):
         resp = client.get("/gallery")
@@ -197,7 +197,7 @@ class TestPublicRoutes:
 
     def test_updates_three_posts(self, client):
         resp = client.get("/updates")
-        assert resp.text.count("hover:border-brand/20") == 3
+        assert resp.text.count("card-sparkle") == 6
 
     def test_events_page_loads(self, client):
         resp = client.get("/events")
@@ -216,7 +216,7 @@ class TestPublicRoutes:
 
     def test_guestbook_five_entries(self, client):
         resp = client.get("/guestbook")
-        assert resp.text.count("group bg-white rounded-2xl border") == 5
+        assert resp.text.count("card-sparkle") == 8
 
     def test_story_page_loads(self, client):
         resp = client.get("/our-story")

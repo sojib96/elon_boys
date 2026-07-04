@@ -4,33 +4,45 @@
 {% block content %}
 <div class="max-w-3xl mx-auto">
     <div class="text-center mb-14 reveal">
-        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-warm-400 font-medium">Messages</span>
-        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-warm-900 mt-2">Guestbook</h1>
-        <p class="text-neutral-warm-400 text-sm mt-2">Leave a message for the group.</p>
+        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-400 font-medium font-sans">Messages</span>
+        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-900 mt-2">Guestbook</h1>
+        <p class="text-neutral-400 text-sm mt-2">Leave a message for the group.</p>
     </div>
 
+    {% set entry_colors = [
+        { 'gradient': 'from-rose-400 to-amber-400', 'avatar': 'from-rose-100 to-amber-200' },
+        { 'gradient': 'from-sky-400 to-violet-400', 'avatar': 'from-sky-100 to-violet-200' },
+        { 'gradient': 'from-emerald-400 to-teal-400', 'avatar': 'from-emerald-100 to-teal-200' },
+        { 'gradient': 'from-amber-400 to-rose-400', 'avatar': 'from-amber-100 to-rose-200' },
+        { 'gradient': 'from-violet-400 to-pink-400', 'avatar': 'from-violet-100 to-pink-200' },
+    ] %}
+
     <div class="reveal mb-12">
-        <div class="bg-white rounded-2xl border-2 border-dashed border-neutral-warm-200/80 p-8 text-center">
-            <div class="w-12 h-12 rounded-xl bg-neutral-warm-100 flex items-center justify-center mx-auto mb-3">
-                <span class="text-xl">&#128221;</span>
+        <div class="bg-white rounded-2xl shadow-sm border-2 border-dashed border-neutral-200/80 p-8 text-center hover:border-brand/20 transition-colors">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-100 to-amber-100 flex items-center justify-center mx-auto mb-3">
+                <span class="text-2xl">&#128221;</span>
             </div>
-            <h3 class="font-heading font-semibold text-neutral-warm-700 text-[15px] mb-1">Sign the Guestbook</h3>
-            <p class="text-neutral-warm-400 text-sm mb-4">Form coming soon.</p>
-            <span class="text-xs text-neutral-warm-400 italic bg-neutral-warm-50 px-4 py-2 rounded-lg border border-neutral-warm-200/60">Guestbook form will be added in a future sprint.</span>
+            <h3 class="font-heading font-semibold text-neutral-700 text-[16px] mb-1">Sign the Guestbook</h3>
+            <p class="text-neutral-400 text-sm mb-4">Form coming soon.</p>
+            <span class="text-xs text-neutral-400 italic bg-neutral-50 px-4 py-2 rounded-lg border border-neutral-200/60">Guestbook form will be added in a future sprint.</span>
         </div>
     </div>
 
     <div class="space-y-4 stagger">
         {% for entry in entries %}
-        <div class="group bg-white rounded-2xl border border-neutral-warm-200/80 hover:border-brand/20 hover:-translate-y-0.5 transition-all duration-300 p-5 reveal-scale">
-            <div class="flex items-start justify-between mb-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center text-sm font-bold text-neutral-warm-600">{{ entry.name[:1] }}</div>
-                    <span class="font-heading font-semibold text-neutral-warm-800 text-sm">{{ entry.name }}</span>
+        {% set ec = entry_colors[loop.index0 % entry_colors|length] %}
+        <div class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden hover:-translate-y-0.5 card-sparkle">
+            <div class="h-1 bg-gradient-to-r {{ ec.gradient }}"></div>
+            <div class="p-5">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-br {{ ec.avatar }} flex items-center justify-center text-sm font-bold text-neutral-600 font-heading">{{ entry.name[:1] }}</div>
+                        <span class="font-heading font-semibold text-neutral-800 text-sm">{{ entry.name }}</span>
+                    </div>
+                    <span class="text-neutral-400 text-[11px] bg-neutral-50 px-2 py-0.5 rounded-full border border-neutral-200/60">{{ entry.posted_at }}</span>
                 </div>
-                <span class="text-neutral-warm-400 text-[11px] bg-neutral-warm-50 px-2 py-0.5 rounded-full border border-neutral-warm-200/60">{{ entry.posted_at }}</span>
+                <p class="text-neutral-600 text-sm leading-relaxed pl-12">{{ entry.message }}</p>
             </div>
-            <p class="text-neutral-warm-600 text-sm leading-relaxed pl-12">{{ entry.message }}</p>
         </div>
         {% endfor %}
     </div>

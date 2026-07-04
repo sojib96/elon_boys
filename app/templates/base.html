@@ -3,26 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1c1917">
+    <meta name="theme-color" content="#1a1a2e">
     <meta name="description" content="A memory-preservation website for a 10-member university friends group. Four years of memories, captured forever.">
     <title>{% block title %}Friends Group{% endblock %}</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23b85c3e'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='16' font-weight='800' font-family='system-ui'>EG</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23e85d3a'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='16' font-weight='800' font-family='system-ui'>EG</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Outfit:wght@300;400;500;600&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
     <script>
     tailwind.config = {
         theme: {
             extend: {
                 fontFamily: {
-                    sans: ['Inter', 'system-ui', 'sans-serif'],
-                    heading: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+                    heading: ['"Playfair Display"', 'Georgia', 'serif'],
+                    sans: ['Outfit', 'system-ui', 'sans-serif'],
+                    fancy: ['"Dancing Script"', 'cursive'],
                 },
                 colors: {
-                    brand: { DEFAULT:'#b85c3e', dark:'#9e4d33', light:'#d4774a', faint:'#fdf4f0' },
-                    surface: '#f8f6f4',
-                    'neutral-warm': { 50:'#faf8f6', 100:'#f5f2ef', 200:'#e7e4e0', 300:'#d6d2cd', 400:'#a8a29e', 500:'#78716c', 600:'#57534e', 700:'#44403c', 800:'#292524', 900:'#1c1917' },
+                    brand: { DEFAULT:'#e85d3a', dark:'#cc4a2a', light:'#ff8a65', faint:'#fef2ef' },
+                    surface: '#fdfbfa',
+                    accent: {
+                        coral: '#fb7185', amber: '#fbbf24', sky: '#38bdf8',
+                        violet: '#a78bfa', emerald: '#34d399', pink: '#f472b6',
+                        teal: '#2dd4bf', rose: '#f43f5e', peach: '#fda4af',
+                        lavender: '#c4b5fd', mint: '#86efac', lemon: '#fde68a',
+                    },
+                    neutral: { 50:'#fafaf9', 100:'#f5f5f4', 200:'#e7e5e4', 300:'#d6d3d1', 400:'#a8a29e', 500:'#78716c', 600:'#57534e', 700:'#44403c', 800:'#292524', 900:'#1c1917' },
+                },
+                animation: {
+                    'float': 'float 3s ease-in-out infinite',
+                    'gradient': 'gradient-shift 7s ease infinite',
+                    'fade-in': 'fade-in .7s cubic-bezier(.22,1,.36,1) forwards',
+                    'slide-down': 'slide-down .25s cubic-bezier(.22,1,.36,1) forwards',
+                    'pulse-soft': 'pulse-soft 2s ease-in-out infinite',
+                    'wiggle': 'wiggle .5s ease-in-out infinite',
+                    'sparkle': 'sparkle 1.5s ease-in-out infinite',
+                },
+                keyframes: {
+                    wiggle: { '0%,100%': { transform: 'rotate(0deg)' }, '25%': { transform: 'rotate(-2deg)' }, '75%': { transform: 'rotate(2deg)' } },
                 }
             }
         }
@@ -33,14 +52,10 @@
         @keyframes gradient-shift { 0%{background-position:0 50%} 50%{background-position:100% 50%} 100%{background-position:0 50%} }
         @keyframes fade-in { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
         @keyframes slide-down { from{opacity:0;transform:translateY(-6px) scaleY(.97)} to{opacity:1;transform:translateY(0) scaleY(1)} }
+        @keyframes pulse-soft { 0%,100%{opacity:1} 50%{opacity:.6} }
+        @keyframes sparkle { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.15)} }
         @keyframes fade-in-page { from{opacity:0} to{opacity:1} }
-        @keyframes scroll-top-in { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes scroll-top-out { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(12px)} }
-        .animate-float { animation:float 3s ease-in-out infinite }
-        .animate-gradient { background-size:200% 200%; animation:gradient-shift 7s ease infinite }
-        .animate-fade-in { animation:fade-in .7s cubic-bezier(.22,1,.36,1) forwards }
-        .animate-slide-down { animation:slide-down .25s cubic-bezier(.22,1,.36,1) forwards }
-        .animate-fade-page { animation:fade-in-page .35s ease-out }
+
         .reveal,.reveal-left,.reveal-right,.reveal-scale { opacity:0; transition:all .8s cubic-bezier(.22,1,.36,1) }
         .reveal { transform:translateY(24px) }
         .reveal-left { transform:translateX(-30px) }
@@ -61,36 +76,40 @@
         .stagger > *:nth-child(12) { transition-delay:.48s }
 
         body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-        ::selection { background:#b85c3e22; color:#b85c3e }
+        ::selection { background:#e85d3a33; color:#cc4a2a }
 
-        :focus-visible { outline:2px solid #b85c3e; outline-offset:2px; border-radius:4px; }
+        :focus-visible { outline:2px solid #e85d3a; outline-offset:2px; border-radius:4px; }
 
-        .nav-link { position:relative; padding:6px 14px; border-radius:8px; font-size:14px; font-weight:500; color:#78716c; transition:all .2s; font-family:'Plus Jakarta Sans',Inter,system-ui,sans-serif }
-        .nav-link::after { content:''; position:absolute; bottom:0; left:50%; width:0; height:3px; background:#b85c3e; border-radius:2px; transition:all .25s cubic-bezier(.22,1,.36,1); transform:translateX(-50%) }
-        .nav-link:hover { color:#b85c3e; background:rgba(184,92,62,.06) }
-        .nav-link.active { color:#b85c3e; font-weight:600 }
-        .nav-link.active::after { width:20px }
+        .nav-link { position:relative; padding:8px 16px; border-radius:10px; font-size:14px; font-weight:500; color:#78716c; transition:all .2s; font-family:Outfit,system-ui,sans-serif; letter-spacing:0.01em }
+        .nav-link::after { content:''; position:absolute; bottom:2px; left:50%; width:0; height:3px; background:#e85d3a; border-radius:2px; transition:all .25s cubic-bezier(.22,1,.36,1); transform:translateX(-50%) }
+        .nav-link:hover { color:#e85d3a; background:rgba(232,93,58,.07) }
+        .nav-link.active { color:#e85d3a; font-weight:600 }
+        .nav-link.active::after { width:22px }
 
         .hamburger { width:20px; height:14px; position:relative; cursor:pointer }
         .hamburger span { display:block; width:100%; height:2px; background:#57534e; border-radius:2px; position:absolute; left:0; transition:all .3s cubic-bezier(.22,1,.36,1) }
         .hamburger span:nth-child(1) { top:0 }
         .hamburger span:nth-child(2) { top:6px }
         .hamburger span:nth-child(3) { top:12px }
-        .hamburger.open span:nth-child(1) { transform:rotate(45deg); top:6px }
+        .hamburger.open span:nth-child(1) { transform:rotate(45deg); top:6px; background:#e85d3a }
         .hamburger.open span:nth-child(2) { opacity:0; transform:translateX(-4px) }
-        .hamburger.open span:nth-child(3) { transform:rotate(-45deg); top:6px }
+        .hamburger.open span:nth-child(3) { transform:rotate(-45deg); top:6px; background:#e85d3a }
 
         #scroll-top { opacity:0; pointer-events:none; transition:opacity .3s,transform .3s; transform:translateY(12px) }
         #scroll-top.visible { opacity:1; pointer-events:auto; transform:translateY(0) }
+
+        .card-sparkle { position:relative; overflow:hidden }
+        .card-sparkle::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.08), transparent 60%); opacity:0; transition:opacity .4s; pointer-events:none }
+        .card-sparkle:hover::before { opacity:1 }
     </style>
 </head>
-<body class="bg-surface text-neutral-warm-800 flex flex-col min-h-screen overflow-x-hidden">
-    <nav class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-neutral-warm-200/70" role="navigation" aria-label="Main navigation">
+<body class="bg-surface text-neutral-800 flex flex-col min-h-screen overflow-x-hidden">
+    <nav class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-neutral-200/70" role="navigation" aria-label="Main navigation">
         <div class="max-w-6xl mx-auto px-5 sm:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="/" class="flex items-center gap-3 group flex-shrink-0" aria-label="Home">
-                    <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand to-amber-500 flex items-center justify-center text-white text-[11px] font-extrabold tracking-wider shadow-sm group-hover:shadow-md group-hover:-rotate-3 transition-all duration-300" aria-hidden="true">EG</span>
-                    <span class="font-heading font-bold text-[17px] tracking-tight text-neutral-warm-900">Elon Group</span>
+                    <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-400 via-brand to-amber-400 flex items-center justify-center text-white text-[11px] font-extrabold tracking-wider shadow-sm group-hover:shadow-md group-hover:rotate-6 transition-all duration-300" aria-hidden="true">EG</span>
+                    <span class="font-heading font-bold text-[18px] tracking-tight text-neutral-900">Elon Group</span>
                 </a>
 
                 <div id="desktop-nav" class="hidden md:flex items-center gap-0.5">
@@ -107,39 +126,46 @@
                     {% for href, label in nav_links %}
                     <a href="{{ href }}" class="nav-link {% if request.url.path == href %}active{% endif %}">{{ label }}</a>
                     {% endfor %}
-                    <a href="/login" class="ml-3 bg-brand hover:bg-brand-dark text-white text-[13px] font-semibold px-5 py-2 rounded-xl transition-all duration-300 shadow-sm hover:shadow-lg hover:shadow-brand/20 hover:-translate-y-0.5">Login</a>
+                    <a href="/login" class="ml-3 bg-gradient-to-r from-brand to-rose-500 hover:from-brand-dark hover:to-rose-600 text-white text-[13px] font-semibold px-5 py-2 rounded-xl transition-all duration-300 shadow-sm hover:shadow-lg hover:shadow-brand/20 hover:-translate-y-0.5">Login</a>
                 </div>
 
-                <button id="menu-btn" class="md:hidden p-1.5 rounded-lg hover:bg-neutral-warm-100 transition-colors" aria-label="Toggle navigation menu" aria-expanded="false">
+                <button id="menu-btn" class="md:hidden p-1.5 rounded-lg hover:bg-neutral-100 transition-colors" aria-label="Toggle navigation menu" aria-expanded="false">
                     <div class="hamburger" id="hamburger-icon">
                         <span></span><span></span><span></span>
                     </div>
                 </button>
             </div>
 
-            <div id="mobile-menu" class="md:hidden hidden pb-5 pt-3 border-t border-neutral-warm-200/60 animate-slide-down" role="menu">
+            <div id="mobile-menu" class="md:hidden hidden pb-5 pt-3 border-t border-neutral-200/60 animate-slide-down" role="menu">
                 {% for href, label in nav_links %}
-                <a href="{{ href }}" class="block px-3 py-2.5 rounded-lg text-sm text-neutral-warm-600 hover:text-brand hover:bg-brand-faint font-medium transition-all duration-200" role="menuitem">{{ label }}</a>
+                <a href="{{ href }}" class="block px-3 py-2.5 rounded-lg text-sm text-neutral-600 hover:text-brand hover:bg-brand-faint font-medium transition-all duration-200" role="menuitem">{{ label }}</a>
                 {% endfor %}
-                <a href="/login" class="block mt-2 mx-3 bg-brand hover:bg-brand-dark text-white text-sm font-semibold px-4 py-2.5 rounded-xl text-center transition-all duration-300" role="menuitem">Login</a>
+                <a href="/login" class="block mt-2 mx-3 bg-gradient-to-r from-brand to-rose-500 text-white text-sm font-semibold px-4 py-2.5 rounded-xl text-center transition-all duration-300" role="menuitem">Login</a>
             </div>
         </div>
     </nav>
 
     {% block hero %}{% endblock %}
 
-    <main class="flex-grow w-full mx-auto px-5 sm:px-8 py-12 md:py-16 max-w-6xl animate-fade-page" role="main">
+    <main class="flex-grow w-full mx-auto px-5 sm:px-8 py-12 md:py-16 max-w-6xl animate-[fade-in-page_.4s_ease-out]" role="main">
         {% block content %}{% endblock %}
     </main>
 
-    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-10 h-10 rounded-xl bg-white border border-neutral-warm-200/80 shadow-lg flex items-center justify-center text-neutral-warm-500 hover:text-brand hover:border-brand/30 hover:-translate-y-0.5 transition-all duration-300" aria-label="Scroll to top">
+    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-10 h-10 rounded-xl bg-gradient-to-br from-brand to-rose-400 border-0 shadow-lg flex items-center justify-center text-white hover:-translate-y-1 transition-all duration-300 shadow-brand/20" aria-label="Scroll to top">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
     </button>
 
-    <footer class="bg-white border-t border-neutral-warm-200/60 py-10">
+    <footer class="bg-gradient-to-br from-neutral-900 via-stone-900 to-neutral-900 py-12 border-t border-white/5">
         <div class="max-w-6xl mx-auto px-5 sm:px-8 text-center">
-            <p class="text-sm text-neutral-warm-400">&copy; 2026 Friends Group &mdash; Built with memories.</p>
-            <p class="text-xs mt-1.5 text-neutral-warm-300">Ten friends. Four years. A lifetime of memories.</p>
+            <div class="flex justify-center gap-2 mb-5">
+                <span class="w-2 h-2 rounded-full bg-accent-rose"></span>
+                <span class="w-2 h-2 rounded-full bg-accent-amber"></span>
+                <span class="w-2 h-2 rounded-full bg-accent-sky"></span>
+                <span class="w-2 h-2 rounded-full bg-accent-violet"></span>
+                <span class="w-2 h-2 rounded-full bg-accent-emerald"></span>
+            </div>
+            <p class="text-sm text-white/40">&copy; 2026 Friends Group &mdash; Built with memories.</p>
+            <p class="text-xs mt-1.5 text-white/25 font-fancy text-lg">Ten friends. Four years. A lifetime of memories.</p>
         </div>
     </footer>
 

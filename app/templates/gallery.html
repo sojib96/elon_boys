@@ -4,33 +4,44 @@
 {% block content %}
 <div class="max-w-6xl mx-auto">
     <div class="text-center mb-12 reveal">
-        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-warm-400 font-medium">Moments</span>
-        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-warm-900 mt-2">Gallery</h1>
-        <p class="text-neutral-warm-400 text-sm mt-2">Our favourite moments, frozen in time.</p>
+        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-400 font-medium font-sans">Moments</span>
+        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-900 mt-2">Gallery</h1>
+        <p class="text-neutral-400 text-sm mt-2">Our favourite moments, frozen in time.</p>
     </div>
 
     <div class="flex gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide reveal justify-center flex-wrap">
-        <span class="bg-brand text-white text-sm px-5 py-1.5 rounded-full whitespace-nowrap font-medium shadow-sm">All</span>
+        <span class="bg-gradient-to-r from-brand to-rose-500 text-white text-sm px-5 py-1.5 rounded-full whitespace-nowrap font-medium shadow-sm">All</span>
         {% for cat in categories %}
-        <span class="bg-white border border-neutral-warm-200/80 text-neutral-warm-500 text-sm px-5 py-1.5 rounded-full whitespace-nowrap hover:border-brand/30 hover:text-brand transition-colors cursor-default font-medium">{{ cat }}</span>
+        <span class="bg-white border border-neutral-200/60 text-neutral-500 text-sm px-5 py-1.5 rounded-full whitespace-nowrap hover:border-brand/30 hover:text-brand hover:bg-brand-faint transition-colors cursor-default font-medium">{{ cat }}</span>
         {% endfor %}
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 stagger">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 stagger">
         {% set gradient_palettes = [
-            '#fef2e8','#fce8f0','#e8f2fe','#e8fcf0','#eee8fc','#fefae8',
-            '#e8fafc','#fce8fc','#eefce8','#fce8e8','#f0f7f0','#f8f2ea'
+            ['from-rose-400 to-amber-400', 'from-rose-50 to-amber-50'],
+            ['from-sky-400 to-violet-400', 'from-sky-50 to-violet-50'],
+            ['from-emerald-400 to-teal-400', 'from-emerald-50 to-teal-50'],
+            ['from-amber-400 to-rose-400', 'from-amber-50 to-rose-50'],
+            ['from-violet-400 to-pink-400', 'from-violet-50 to-pink-50'],
+            ['from-teal-400 to-sky-400', 'from-teal-50 to-sky-50'],
+            ['from-pink-400 to-violet-400', 'from-pink-50 to-violet-50'],
+            ['from-lime-400 to-emerald-400', 'from-lime-50 to-emerald-50'],
+            ['from-rose-400 to-violet-400', 'from-rose-50 to-violet-50'],
+            ['from-amber-400 to-emerald-400', 'from-amber-50 to-emerald-50'],
+            ['from-sky-400 to-rose-400', 'from-sky-50 to-rose-50'],
+            ['from-violet-400 to-amber-400', 'from-violet-50 to-amber-50'],
         ] %}
         {% for item in gallery_items %}
-        <div class="group relative rounded-xl border border-neutral-warm-200/80 overflow-hidden aspect-square cursor-pointer reveal-scale hover:border-brand/30 transition-all duration-300" style="background:{{ gradient_palettes[loop.index0 % gradient_palettes|length] }}">
+        {% set gp = gradient_palettes[loop.index0 % gradient_palettes|length] %}
+        <div class="group relative rounded-xl border border-neutral-200/60 overflow-hidden aspect-square cursor-pointer reveal-scale hover:-translate-y-1 hover:shadow-md transition-all duration-300 bg-gradient-to-br {{ gp[1] }}">
+            <div class="h-1 bg-gradient-to-r {{ gp[0] }}"></div>
             <div class="absolute inset-0 flex items-center justify-center">
-                <span class="text-4xl opacity-25 group-hover:scale-125 group-hover:opacity-40 transition-all duration-500">&#128247;</span>
+                <span class="text-4xl opacity-20 group-hover:scale-125 group-hover:opacity-40 transition-all duration-500">&#128247;</span>
             </div>
-            <div class="absolute inset-0 bg-white/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent translate-y-2 group-hover:translate-y-0 transition-transform duration-300"></div>
+            <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/30 to-transparent translate-y-2 group-hover:translate-y-0 transition-transform duration-300"></div>
             <div class="absolute bottom-0 left-0 right-0 p-3 translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
-                <p class="text-white font-medium text-sm leading-tight">{{ item.title }}</p>
-                <p class="text-white/50 text-[11px] mt-0.5">{{ item.category }}</p>
+                <p class="text-white font-heading font-semibold text-sm leading-tight">{{ item.title }}</p>
+                <p class="text-white/60 text-[11px] mt-0.5">{{ item.category }}</p>
             </div>
         </div>
         {% endfor %}

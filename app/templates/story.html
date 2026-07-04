@@ -2,16 +2,17 @@
 {% block title %}Our Story — Friends Group{% endblock %}
 
 {% block hero %}
-<section class="relative h-[42vh] min-h-[320px] flex items-center justify-center overflow-hidden bg-neutral-warm-900">
-    <div class="absolute inset-0 animate-gradient" style="background:linear-gradient(135deg,#0a0a0a,#1a1412,#241712,#0a0a0a)"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,#b85c3e28,transparent_55%)]"></div>
+<section class="relative h-[42vh] min-h-[320px] flex items-center justify-center overflow-hidden bg-neutral-900">
+    <div class="absolute inset-0 animate-gradient" style="background:linear-gradient(135deg,#0f0c29,#302b63,#24243e,#1a0a2e);background-size:300% 300%"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,#e85d3a25,transparent_55%)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_30%,#a78bfa20,transparent_45%)]"></div>
     <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface to-transparent"></div>
     <div class="relative z-10 text-center px-4 max-w-3xl mx-auto">
         <div class="animate-fade-in">
-            <div class="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-5">
-                <span class="text-white/50 text-[11px] uppercase tracking-[.25em] font-medium">Our Story</span>
+            <div class="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full px-5 py-2 mb-5">
+                <span class="text-white/40 text-[11px] uppercase tracking-[.25em] font-medium font-sans">Our Story</span>
             </div>
-            <h1 class="text-4xl md:text-5xl font-heading font-bold text-white leading-tight">How ten strangers<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-200">became a family.</span></h1>
+            <h1 class="text-4xl md:text-5xl font-heading font-bold text-white leading-tight">How ten strangers<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-300 via-amber-200 to-violet-300">became a family.</span></h1>
         </div>
     </div>
 </section>
@@ -20,22 +21,29 @@
 {% block content %}
 <div class="max-w-3xl mx-auto">
     <div class="space-y-6 reveal">
-        <div class="bg-white rounded-2xl border border-neutral-warm-200/80 p-7 hover:border-brand/20 transition-colors">
-            <p class="text-neutral-warm-600 leading-relaxed text-[15px]">It all began in the autumn of 2019, when ten freshmen walked into the same lecture hall &mdash; Introduction to Something None of Us Remember. We bonded over bad cafeteria food, shared notes, and the universal fear of not making friends.</p>
+        <div class="bg-white rounded-2xl shadow-sm border border-neutral-200/60 p-7 hover:shadow-md transition-all duration-300 card-sparkle hover:-translate-y-0.5">
+            <div class="h-1 w-16 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-5"></div>
+            <p class="text-neutral-600 leading-relaxed text-[15px]">It all began in the autumn of 2019, when ten freshmen walked into the same lecture hall &mdash; Introduction to Something None of Us Remember. We bonded over bad cafeteria food, shared notes, and the universal fear of not making friends.</p>
         </div>
 
-        <div class="bg-white rounded-2xl border border-neutral-warm-200/80 p-7 hover:border-brand/20 transition-colors reveal-left">
-            <div class="w-8 h-0.5 bg-brand rounded-full mb-4"></div>
-            <p class="text-neutral-warm-600 leading-relaxed text-[15px]">What started as a study group became a dinner group. The dinner group became a road trip group. And somewhere between all-nighters, inside jokes, and accidental matching pyjamas, we became a family.</p>
+        <div class="bg-white rounded-2xl shadow-sm border border-neutral-200/60 p-7 hover:shadow-md transition-all duration-300 card-sparkle hover:-translate-y-0.5 reveal-left">
+            <div class="h-1 w-16 bg-gradient-to-r from-sky-400 to-violet-400 rounded-full mb-5"></div>
+            <p class="text-neutral-600 leading-relaxed text-[15px]">What started as a study group became a dinner group. The dinner group became a road trip group. And somewhere between all-nighters, inside jokes, and accidental matching pyjamas, we became a family.</p>
         </div>
 
-        <div class="bg-white rounded-2xl border border-neutral-warm-200/80 p-7 hover:border-brand/20 transition-colors reveal-right">
-            <div class="w-8 h-0.5 bg-amber-400 rounded-full mb-4"></div>
-            <p class="text-neutral-warm-600 leading-relaxed text-[15px]">Four years, countless memories, and one global pandemic later, we graduated. But unlike most university groups that drift apart, we stayed close. This website is our way of keeping the story going.</p>
+        <div class="bg-white rounded-2xl shadow-sm border border-neutral-200/60 p-7 hover:shadow-md transition-all duration-300 card-sparkle hover:-translate-y-0.5 reveal-right">
+            <div class="h-1 w-16 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full mb-5"></div>
+            <p class="text-neutral-600 leading-relaxed text-[15px]">Four years, countless memories, and one global pandemic later, we graduated. But unlike most university groups that drift apart, we stayed close. This website is our way of keeping the story going.</p>
         </div>
 
         <div class="text-center py-10 reveal-scale">
-            <p class="text-xl text-neutral-warm-500 italic font-light font-heading">This is only the beginning.</p>
+            <p class="text-2xl text-neutral-400 italic font-fancy font-light">This is only the beginning.</p>
+            <div class="flex justify-center gap-2 mt-4">
+                <span class="w-2 h-2 rounded-full bg-accent-rose animate-pulse-soft" style="animation-delay:0s"></span>
+                <span class="w-2 h-2 rounded-full bg-accent-amber animate-pulse-soft" style="animation-delay:.2s"></span>
+                <span class="w-2 h-2 rounded-full bg-accent-sky animate-pulse-soft" style="animation-delay:.4s"></span>
+                <span class="w-2 h-2 rounded-full bg-accent-violet animate-pulse-soft" style="animation-delay:.6s"></span>
+            </div>
         </div>
     </div>
 </div>
