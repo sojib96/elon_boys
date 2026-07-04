@@ -1,6 +1,75 @@
 {% extends "base.html" %}
 {% block title %}Home — Friends Group{% endblock %}
+
+{% block hero %}
+<section class="relative h-[70vh] min-h-[500px] flex items-center justify-center bg-gradient-to-br from-amber-700 via-orange-800 to-stone-900">
+    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="relative z-10 text-center px-4 max-w-3xl">
+        <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tight">
+            Ten friends. Four years.<br>
+            <span class="text-amber-300">A lifetime of memories.</span>
+        </h1>
+        <a href="/squad" class="mt-8 inline-block bg-[#b85c3e] hover:bg-[#9e4d33] text-white font-semibold px-8 py-3 rounded-lg shadow-lg transition-colors text-lg">
+            Meet the Squad
+        </a>
+    </div>
+</section>
+{% endblock %}
+
 {% block content %}
-    <h1 class="text-4xl font-bold text-center mt-12">Welcome to Our Story</h1>
-    <p class="text-center text-gray-600 mt-4 max-w-xl mx-auto">Home page content coming soon.</p>
+<section class="bg-amber-50 -mx-4 px-4 py-6 text-center mb-12 border-y border-amber-200">
+    <p class="text-lg md:text-xl text-stone-700 italic max-w-2xl mx-auto font-light">
+        &ldquo;We didn&rsquo;t realise we were making memories — we were just having fun.&rdquo;
+    </p>
+</section>
+
+<section>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <a href="/our-story" class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
+            <div class="h-48 bg-gradient-to-br from-amber-200 to-orange-300 flex items-center justify-center">
+                <span class="text-5xl opacity-60 group-hover:scale-110 transition-transform">&#128214;</span>
+            </div>
+            <div class="p-5">
+                <h3 class="text-lg font-semibold text-stone-800 group-hover:text-[#b85c3e] transition-colors">Our Story</h3>
+                <p class="text-sm text-stone-500 mt-1">How it all began</p>
+            </div>
+        </a>
+
+        <a href="/squad" class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
+            <div class="h-48 bg-gradient-to-br from-sky-200 to-blue-300 flex items-center justify-center">
+                <span class="text-5xl opacity-60 group-hover:scale-110 transition-transform">&#128101;</span>
+            </div>
+            <div class="p-5">
+                <h3 class="text-lg font-semibold text-stone-800 group-hover:text-[#b85c3e] transition-colors">The Squad</h3>
+                <p class="text-sm text-stone-500 mt-1">Meet the 10 of us</p>
+            </div>
+        </a>
+
+        <a href="/timeline" class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
+            <div class="h-48 bg-gradient-to-br from-emerald-200 to-teal-300 flex items-center justify-center">
+                <span class="text-5xl opacity-60 group-hover:scale-110 transition-transform">&#128197;</span>
+            </div>
+            <div class="p-5">
+                <h3 class="text-lg font-semibold text-stone-800 group-hover:text-[#b85c3e] transition-colors">Timeline</h3>
+                <p class="text-sm text-stone-500 mt-1">Year by year journey</p>
+            </div>
+        </a>
+
+        <a href="/gallery" class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
+            <div class="h-48 bg-gradient-to-br from-purple-200 to-pink-300 flex items-center justify-center">
+                <span class="text-5xl opacity-60 group-hover:scale-110 transition-transform">&#128247;</span>
+            </div>
+            <div class="p-5">
+                <h3 class="text-lg font-semibold text-stone-800 group-hover:text-[#b85c3e] transition-colors">Gallery</h3>
+                <p class="text-sm text-stone-500 mt-1">Photos &amp; videos</p>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section class="bg-amber-50 -mx-4 px-4 py-10 text-center mt-12 border-y border-amber-200">
+    <p class="text-xl md:text-2xl text-stone-700 italic max-w-xl mx-auto font-light">
+        &ldquo;Here&rsquo;s to the nights we&rsquo;ll never forget&hellip;&rdquo;
+    </p>
+</section>
 {% endblock %}
