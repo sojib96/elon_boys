@@ -1,44 +1,37 @@
 {% extends "base.html" %}
-{% block title %}Private Uploads — Friends Group{% endblock %}
+{% block title %}Private Uploads — Elon Group{% endblock %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto">
     <div class="text-center mb-12 reveal">
-        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-400 font-medium font-sans">Files</span>
-        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-900 mt-2">Private Uploads</h1>
-        <p class="text-neutral-400 text-sm mt-2">Raw photos, videos, and files &mdash; just for the group.</p>
+        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Files</span>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Private Uploads</h1>
+        <p class="text-gray-500 text-sm mt-2">Raw photos, videos, and files &mdash; just for the group.</p>
     </div>
 
-    {% set upload_colors = [
-        { 'gradient': 'from-rose-400 to-amber-400', 'icon': 'from-rose-50 to-amber-50' },
-        { 'gradient': 'from-sky-400 to-violet-400', 'icon': 'from-sky-50 to-violet-50' },
-        { 'gradient': 'from-emerald-400 to-teal-400', 'icon': 'from-emerald-50 to-teal-50' },
-        { 'gradient': 'from-amber-400 to-rose-400', 'icon': 'from-amber-50 to-rose-50' },
-    ] %}
-
     <div class="reveal mb-10">
-        <div class="bg-white rounded-2xl shadow-sm border-2 border-dashed border-neutral-200/80 p-12 text-center hover:border-brand/20 transition-colors">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-50 to-amber-50 flex items-center justify-center mx-auto mb-3">
-                <span class="text-2xl">&#128228;</span>
+        <div class="bg-white rounded-xl shadow-card border-2 border-dashed border-gray-200 p-12 text-center hover:border-coral-300 transition-colors">
+            <div class="w-12 h-12 rounded-xl bg-coral-50 flex items-center justify-center mx-auto mb-3">
+                <span class="text-xl">&#128228;</span>
             </div>
-            <p class="text-neutral-600 text-sm font-medium">Upload area coming in a future sprint.</p>
-            <p class="text-neutral-400 text-xs mt-1">Drag &amp; drop files here</p>
+            <p class="text-gray-600 text-sm font-medium">Upload area coming in a future sprint.</p>
+            <p class="text-gray-400 text-xs mt-1">Drag &amp; drop files here</p>
         </div>
     </div>
 
     <div class="space-y-3 stagger">
         {% for upload in uploads %}
-        {% set uc = upload_colors[loop.index0 % upload_colors|length] %}
-        <div class="group bg-white rounded-xl shadow-sm border border-neutral-200/60 hover:shadow-md transition-all duration-300 overflow-hidden hover:-translate-y-0.5 card-sparkle">
+        {% set is_teal = loop.index0 % 2 == 0 %}
+        <div class="bg-white rounded-xl shadow-card border border-gray-100 hover:shadow-card-hover transition-all duration-300 overflow-hidden hover:-translate-y-0.5">
             <div class="flex items-center gap-4 p-4">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br {{ uc.icon }} border border-current/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <span class="text-base">&#128196;</span>
+                <div class="w-9 h-9 rounded-lg {% if is_teal %}bg-teal-50{% else %}bg-coral-50{% endif %} flex items-center justify-center flex-shrink-0">
+                    <span class="text-sm">&#128196;</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-heading font-semibold text-neutral-800 truncate group-hover:text-brand transition-colors">{{ upload.title }}</p>
-                    <p class="text-xs text-neutral-400 mt-0.5">Uploaded by {{ upload.uploaded_by }} &sdot; {{ upload.uploaded_at }}</p>
+                    <p class="text-sm font-semibold text-gray-800 truncate">{{ upload.title }}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">Uploaded by {{ upload.uploaded_by }} &sdot; {{ upload.uploaded_at }}</p>
                 </div>
-                <span class="text-neutral-300 group-hover:text-brand transition-colors text-sm">&rarr;</span>
+                <svg class="text-gray-300" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
             </div>
         </div>
         {% endfor %}

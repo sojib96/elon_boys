@@ -1,47 +1,39 @@
 {% extends "base.html" %}
-{% block title %}Guestbook — Friends Group{% endblock %}
+{% block title %}Guestbook — Elon Group{% endblock %}
 
 {% block content %}
 <div class="max-w-3xl mx-auto">
     <div class="text-center mb-14 reveal">
-        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-400 font-medium font-sans">Messages</span>
-        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-900 mt-2">Guestbook</h1>
-        <p class="text-neutral-400 text-sm mt-2">Leave a message for the group.</p>
+        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Messages</span>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Guestbook</h1>
+        <p class="text-gray-500 text-sm mt-2">Leave a message for the group.</p>
     </div>
 
-    {% set entry_colors = [
-        { 'gradient': 'from-rose-400 to-amber-400', 'avatar': 'from-rose-100 to-amber-200' },
-        { 'gradient': 'from-sky-400 to-violet-400', 'avatar': 'from-sky-100 to-violet-200' },
-        { 'gradient': 'from-emerald-400 to-teal-400', 'avatar': 'from-emerald-100 to-teal-200' },
-        { 'gradient': 'from-amber-400 to-rose-400', 'avatar': 'from-amber-100 to-rose-200' },
-        { 'gradient': 'from-violet-400 to-pink-400', 'avatar': 'from-violet-100 to-pink-200' },
-    ] %}
-
     <div class="reveal mb-12">
-        <div class="bg-white rounded-2xl shadow-sm border-2 border-dashed border-neutral-200/80 p-8 text-center hover:border-brand/20 transition-colors">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-100 to-amber-100 flex items-center justify-center mx-auto mb-3">
-                <span class="text-2xl">&#128221;</span>
+        <div class="bg-white rounded-xl shadow-card border-2 border-dashed border-gray-200 p-8 text-center hover:border-coral-300 transition-colors">
+            <div class="w-12 h-12 rounded-xl bg-coral-50 flex items-center justify-center mx-auto mb-3">
+                <span class="text-xl">&#128221;</span>
             </div>
-            <h3 class="font-heading font-semibold text-neutral-700 text-[16px] mb-1">Sign the Guestbook</h3>
-            <p class="text-neutral-400 text-sm mb-4">Form coming soon.</p>
-            <span class="text-xs text-neutral-400 italic bg-neutral-50 px-4 py-2 rounded-lg border border-neutral-200/60">Guestbook form will be added in a future sprint.</span>
+            <h3 class="font-semibold text-gray-700 text-[15px] mb-1">Sign the Guestbook</h3>
+            <p class="text-gray-400 text-sm mb-4">Form coming soon.</p>
+            <span class="text-xs text-gray-400 italic bg-gray-50 px-4 py-2 rounded-lg border border-gray-100">Guestbook form will be added in a future sprint.</span>
         </div>
     </div>
 
     <div class="space-y-4 stagger">
         {% for entry in entries %}
-        {% set ec = entry_colors[loop.index0 % entry_colors|length] %}
-        <div class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden hover:-translate-y-0.5 card-sparkle">
-            <div class="h-1 bg-gradient-to-r {{ ec.gradient }}"></div>
+        {% set is_teal = loop.index0 % 2 == 0 %}
+        <div class="bg-white rounded-xl shadow-card border border-gray-100 transition-all duration-300 overflow-hidden hover:shadow-card-hover hover:-translate-y-0.5">
+            <div class="h-1 {% if is_teal %}bg-teal-500{% else %}bg-coral-500{% endif %}"></div>
             <div class="p-5">
                 <div class="flex items-start justify-between mb-3">
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-full bg-gradient-to-br {{ ec.avatar }} flex items-center justify-center text-sm font-bold text-neutral-600 font-heading">{{ entry.name[:1] }}</div>
-                        <span class="font-heading font-semibold text-neutral-800 text-sm">{{ entry.name }}</span>
+                        <div class="w-8 h-8 rounded-full {% if is_teal %}bg-teal-50{% else %}bg-coral-50{% endif %} flex items-center justify-center text-sm font-bold text-gray-600">{{ entry.name[:1] }}</div>
+                        <span class="font-semibold text-gray-800 text-sm">{{ entry.name }}</span>
                     </div>
-                    <span class="text-neutral-400 text-[11px] bg-neutral-50 px-2 py-0.5 rounded-full border border-neutral-200/60">{{ entry.posted_at }}</span>
+                    <span class="text-gray-400 text-[11px] bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100">{{ entry.posted_at }}</span>
                 </div>
-                <p class="text-neutral-600 text-sm leading-relaxed pl-12">{{ entry.message }}</p>
+                <p class="text-gray-600 text-sm leading-relaxed pl-11">{{ entry.message }}</p>
             </div>
         </div>
         {% endfor %}

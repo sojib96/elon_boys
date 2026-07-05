@@ -1,33 +1,56 @@
 {% extends "base.html" %}
-{% block title %}Home — Friends Group{% endblock %}
+{% block title %}Home — Elon Group{% endblock %}
 
 {% block hero %}
-<section class="relative h-[88vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-neutral-900">
-    <div class="absolute inset-0 animate-gradient" style="background:linear-gradient(135deg,#0f0c29,#302b63,#24243e,#1a0a2e,#0f0c29);background-size:300% 300%"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_40%,#e85d3a25,transparent_55%)]"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,#fb718520,transparent_45%)]"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_80%,#a78bfa20,transparent_50%)]"></div>
-    <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-surface to-transparent"></div>
-    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-    <div class="relative z-10 text-center px-4 max-w-3xl mx-auto">
-        <div class="animate-fade-in">
-            <div class="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full px-5 py-2 mb-8">
-                <span class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse-soft"></span>
-                <span class="text-white/40 text-[11px] uppercase tracking-[.25em] font-medium font-sans">University Friends Group</span>
+<section class="bg-coral-50 border-b border-coral-100 overflow-hidden relative">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-coral-200/30 to-transparent rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-teal-200/20 to-transparent rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 relative">
+        <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 py-16 md:py-24 lg:py-32">
+            <div class="flex-1 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 bg-white/80 border border-coral-200 rounded-full px-4 py-1.5 mb-6 shadow-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-coral-500 animate-pulse"></span>
+                    <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold">University Friends Group &middot; Est. 2019</span>
+                </div>
+                <h1 class="text-[clamp(2.2rem,6vw,4rem)] font-bold text-gray-900 leading-[1.1] tracking-[-0.03em]">
+                    Ten friends.<br>
+                    <span class="text-coral-500">Four years.</span>
+                </h1>
+                <p class="text-gray-500 text-lg mt-4 max-w-md mx-auto lg:mx-0 leading-relaxed">
+                    We walked into the same lecture hall as strangers in 2019. We walked out as family in 2023. This is where our story lives on.
+                </p>
+                <div class="mt-8 flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start">
+                    <a href="/squad" class="bg-coral-500 hover:bg-coral-600 text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 text-[15px] inline-flex items-center gap-2 shadow-sm hover:shadow-glow">
+                        Meet the Squad
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="/timeline" class="text-gray-500 hover:text-gray-900 border border-gray-300 bg-white/80 hover:bg-white px-6 py-2.5 rounded-lg transition-all duration-200 text-[15px] font-medium">
+                        View Timeline
+                    </a>
+                </div>
             </div>
-            <h1 class="text-[clamp(2.5rem,8vw,4.8rem)] font-heading font-bold text-white leading-[1.08] tracking-tight">
-                Ten friends.<br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-300 via-amber-200 to-violet-300">Four years.</span>
-            </h1>
-            <p class="text-xl text-white/40 font-light mt-4 max-w-lg mx-auto leading-relaxed font-fancy">A lifetime of memories.</p>
-            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="/squad" class="group bg-white text-neutral-800 font-semibold px-8 py-3 rounded-xl hover:bg-neutral-50 transition-all duration-300 text-[15px] inline-flex items-center gap-2 shadow-xl shadow-white/5">
-                    Meet the Squad
-                    <span class="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
-                </a>
-                <a href="/timeline" class="text-white/50 hover:text-white border border-white/15 hover:border-white/30 px-8 py-3 rounded-xl transition-all duration-300 text-[15px] backdrop-blur-sm">
-                    View Timeline
-                </a>
+            <div class="flex-1 w-full max-w-lg stagger">
+                {% set years_data = [
+                    { 'num': '01', 'label': 'Year One', 'title': 'The Beginning', 'desc': 'Ten strangers walked into the same lecture hall. We left as friends.', 'color': 'bg-coral-500' },
+                    { 'num': '02', 'label': 'Year Two', 'title': 'Finding Our Rhythm', 'desc': 'Late-night study sessions, road trips, and inside jokes that stuck.', 'color': 'bg-teal-500' },
+                    { 'num': '03', 'label': 'Year Three', 'title': 'The Golden Days', 'desc': 'Our first shared house. Broken boiler, full hearts.', 'color': 'bg-coral-500' },
+                    { 'num': '04', 'label': 'Year Four', 'title': 'The Final Chapter', 'desc': 'Caps in the air. Tears in our eyes. Promises to stay close.', 'color': 'bg-teal-500' },
+                ] %}
+                {% for y in years_data %}
+                <div class="bg-white rounded-xl shadow-card border border-gray-100 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-300 mb-4 overflow-hidden group" style="transform: rotate({%- if loop.index0 is odd %}{{ loop.index0 * 0.5 }}{% else %}-{{ loop.index0 * 0.4 }}{% endif %}deg);">
+                    <div class="flex items-stretch">
+                        <div class="w-1.5 {{ y.color }} flex-shrink-0"></div>
+                        <div class="p-4 flex-1">
+                            <div class="flex items-center gap-3 mb-0.5">
+                                <span class="text-gray-300 text-xs font-mono font-semibold tracking-wider">{{ y.num }}</span>
+                                <span class="text-gray-400 text-[10px] font-medium uppercase tracking-widest">{{ y.label }}</span>
+                            </div>
+                            <h3 class="font-semibold text-gray-900 text-sm">{{ y.title }}</h3>
+                            <p class="text-gray-500 text-xs mt-0.5">{{ y.desc }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -36,102 +59,134 @@
 
 {% block content %}
 <section class="max-w-2xl mx-auto text-center mb-20 reveal">
-    <div class="border-b border-neutral-200 pb-8">
-        <p class="text-xl md:text-2xl text-neutral-400 italic leading-relaxed font-fancy">
+    <div class="border-b border-coral-100 pb-8">
+        <p class="text-xl md:text-2xl text-gray-400 italic leading-relaxed">
             &ldquo;We didn&rsquo;t realise we were making memories — we were just having fun.&rdquo;
         </p>
-        <div class="flex justify-center gap-1.5 mt-4">
-            <span class="w-2 h-2 rounded-full bg-accent-coral"></span>
-            <span class="w-2 h-2 rounded-full bg-accent-amber"></span>
-            <span class="w-2 h-2 rounded-full bg-accent-sky"></span>
+        <div class="flex items-center justify-center gap-3 mt-5">
+            <span class="h-px w-8 bg-coral-200"></span>
+            <span class="text-coral-400 text-xs font-medium">2019 &mdash; 2023</span>
+            <span class="h-px w-8 bg-coral-200"></span>
         </div>
     </div>
 </section>
 
 <section class="mb-24">
     <div class="text-center mb-14 reveal">
-        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-400 font-medium font-sans">Navigate</span>
-        <h2 class="text-2xl md:text-3xl font-heading font-bold text-neutral-900 mt-2">Explore Our World</h2>
+        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Navigate</span>
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-[-0.02em]">Explore Our World</h2>
+        <p class="text-gray-500 text-sm mt-2">Four years of friendship, captured in one place.</p>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger">
-        <a href="/our-story" class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-1 card-sparkle">
-            <div class="h-1.5 bg-gradient-to-r from-rose-400 to-amber-400"></div>
-            <div class="relative h-36 flex items-center justify-center overflow-hidden bg-gradient-to-br from-rose-50 to-amber-50">
-                <div class="w-14 h-14 rounded-2xl bg-white/80 backdrop-blur shadow-sm border border-rose-200/60 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-all duration-400">
-                    <span class="text-xl">&#128214;</span>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 stagger">
+        <a href="/our-story" class="group bg-white rounded-xl shadow-card border border-gray-100 transition-all duration-300 overflow-hidden hover:shadow-card-hover hover:-translate-y-1">
+            <div class="h-32 bg-gradient-to-br from-coral-50 to-coral-100/50 flex items-center justify-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-[0.03] pattern-dots"></div>
+                <div class="w-12 h-12 rounded-xl bg-white shadow-sm border border-coral-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <span class="text-lg">&#128214;</span>
                 </div>
             </div>
-            <div class="px-6 py-5 flex items-center justify-between">
+            <div class="px-5 py-4 flex items-center justify-between">
                 <div>
-                    <h3 class="font-heading font-semibold text-neutral-800 text-[16px] group-hover:text-brand transition-colors">Our Story</h3>
-                    <p class="text-sm text-neutral-400 mt-0.5">How it all began</p>
+                    <h3 class="font-semibold text-gray-900 text-[15px] group-hover:text-coral-600 transition-colors">Our Story</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">How it all began</p>
                 </div>
-                <span class="text-neutral-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
+                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
             </div>
         </a>
-
-        <a href="/squad" class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-1 card-sparkle">
-            <div class="h-1.5 bg-gradient-to-r from-sky-400 to-violet-400"></div>
-            <div class="relative h-36 flex items-center justify-center overflow-hidden bg-gradient-to-br from-sky-50 to-violet-50">
-                <div class="w-14 h-14 rounded-2xl bg-white/80 backdrop-blur shadow-sm border border-sky-200/60 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-all duration-400">
-                    <span class="text-xl">&#128101;</span>
+        <a href="/squad" class="group bg-white rounded-xl shadow-card border border-gray-100 transition-all duration-300 overflow-hidden hover:shadow-card-hover hover:-translate-y-1">
+            <div class="h-32 bg-gradient-to-br from-teal-50 to-teal-100/50 flex items-center justify-center">
+                <div class="w-12 h-12 rounded-xl bg-white shadow-sm border border-teal-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <span class="text-lg">&#128101;</span>
                 </div>
             </div>
-            <div class="px-6 py-5 flex items-center justify-between">
+            <div class="px-5 py-4 flex items-center justify-between">
                 <div>
-                    <h3 class="font-heading font-semibold text-neutral-800 text-[16px] group-hover:text-brand transition-colors">The Squad</h3>
-                    <p class="text-sm text-neutral-400 mt-0.5">Meet the 10 of us</p>
+                    <h3 class="font-semibold text-gray-900 text-[15px] group-hover:text-coral-600 transition-colors">The Squad</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Meet the 10 of us</p>
                 </div>
-                <span class="text-neutral-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
+                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
             </div>
         </a>
-
-        <a href="/timeline" class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-1 card-sparkle">
-            <div class="h-1.5 bg-gradient-to-r from-emerald-400 to-teal-400"></div>
-            <div class="relative h-36 flex items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-50 to-teal-50">
-                <div class="w-14 h-14 rounded-2xl bg-white/80 backdrop-blur shadow-sm border border-emerald-200/60 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-all duration-400">
-                    <span class="text-xl">&#128197;</span>
+        <a href="/timeline" class="group bg-white rounded-xl shadow-card border border-gray-100 transition-all duration-300 overflow-hidden hover:shadow-card-hover hover:-translate-y-1">
+            <div class="h-32 bg-gradient-to-br from-coral-50 to-coral-100/50 flex items-center justify-center">
+                <div class="w-12 h-12 rounded-xl bg-white shadow-sm border border-coral-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <span class="text-lg">&#128197;</span>
                 </div>
             </div>
-            <div class="px-6 py-5 flex items-center justify-between">
+            <div class="px-5 py-4 flex items-center justify-between">
                 <div>
-                    <h3 class="font-heading font-semibold text-neutral-800 text-[16px] group-hover:text-brand transition-colors">Timeline</h3>
-                    <p class="text-sm text-neutral-400 mt-0.5">Year by year journey</p>
+                    <h3 class="font-semibold text-gray-900 text-[15px] group-hover:text-coral-600 transition-colors">Timeline</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Year by year journey</p>
                 </div>
-                <span class="text-neutral-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
+                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
             </div>
         </a>
-
-        <a href="/gallery" class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-1 card-sparkle">
-            <div class="h-1.5 bg-gradient-to-r from-amber-400 to-rose-400"></div>
-            <div class="relative h-36 flex items-center justify-center overflow-hidden bg-gradient-to-br from-amber-50 to-rose-50">
-                <div class="w-14 h-14 rounded-2xl bg-white/80 backdrop-blur shadow-sm border border-amber-200/60 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-all duration-400">
-                    <span class="text-xl">&#128247;</span>
+        <a href="/gallery" class="group bg-white rounded-xl shadow-card border border-gray-100 transition-all duration-300 overflow-hidden hover:shadow-card-hover hover:-translate-y-1">
+            <div class="h-32 bg-gradient-to-br from-teal-50 to-teal-100/50 flex items-center justify-center">
+                <div class="w-12 h-12 rounded-xl bg-white shadow-sm border border-teal-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <span class="text-lg">&#128247;</span>
                 </div>
             </div>
-            <div class="px-6 py-5 flex items-center justify-between">
+            <div class="px-5 py-4 flex items-center justify-between">
                 <div>
-                    <h3 class="font-heading font-semibold text-neutral-800 text-[16px] group-hover:text-brand transition-colors">Gallery</h3>
-                    <p class="text-sm text-neutral-400 mt-0.5">Photos &amp; videos</p>
+                    <h3 class="font-semibold text-gray-900 text-[15px] group-hover:text-coral-600 transition-colors">Gallery</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Photos &amp; videos</p>
                 </div>
-                <span class="text-neutral-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all duration-300 text-lg">&rarr;</span>
+                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
             </div>
         </a>
     </div>
 </section>
 
-<section class="reveal">
-    <div class="relative -mx-5 sm:-mx-8 px-5 sm:px-8 py-20 text-center overflow-hidden" style="background:linear-gradient(135deg,#0f0c29,#302b63,#24243e)">
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,#e85d3a15,transparent_60%)]"></div>
-        <div class="relative z-10">
-            <p class="text-3xl md:text-4xl text-white/80 italic font-fancy max-w-xl mx-auto leading-relaxed">
-                &ldquo;Here&rsquo;s to the nights we&rsquo;ll never forget.&rdquo;
-            </p>
-            <div class="mt-8 flex justify-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-rose-400 animate-pulse-soft" style="animation-delay:0s"></span>
-                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse-soft" style="animation-delay:.3s"></span>
-                <span class="w-2 h-2 rounded-full bg-violet-400 animate-pulse-soft" style="animation-delay:.6s"></span>
+<section class="mb-24 reveal">
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden">
+        <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-gray-100">
+            <div class="p-8 text-center hover:bg-coral-50/50 transition-colors duration-300">
+                <span class="block text-3xl font-bold text-coral-500 tracking-[-0.02em]">10</span>
+                <span class="block text-xs text-gray-400 uppercase tracking-wider mt-1 font-medium">Friends</span>
             </div>
+            <div class="p-8 text-center hover:bg-teal-50/50 transition-colors duration-300">
+                <span class="block text-3xl font-bold text-teal-500 tracking-[-0.02em]">4</span>
+                <span class="block text-xs text-gray-400 uppercase tracking-wider mt-1 font-medium">Years Together</span>
+            </div>
+            <div class="p-8 text-center hover:bg-coral-50/50 transition-colors duration-300">
+                <span class="block text-3xl font-bold text-coral-500 tracking-[-0.02em]">12</span>
+                <span class="block text-xs text-gray-400 uppercase tracking-wider mt-1 font-medium">Major Events</span>
+            </div>
+            <div class="p-8 text-center hover:bg-teal-50/50 transition-colors duration-300">
+                <span class="block text-3xl font-bold text-teal-500 tracking-[-0.02em]">&infin;</span>
+                <span class="block text-xs text-gray-400 uppercase tracking-wider mt-1 font-medium">Memories</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mb-24">
+    <div class="grid md:grid-cols-2 gap-8 reveal">
+        <div class="bg-white rounded-xl shadow-card border border-gray-100 p-8 hover:shadow-card-hover transition-all duration-300">
+            <span class="text-coral-500 text-2xl mb-4 block">&#128172;</span>
+            <h3 class="font-semibold text-gray-900 text-lg mb-2">Still going strong</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Graduation didn&rsquo;t mean goodbye. We&rsquo;ve kept the group chat alive, planned reunions, celebrated milestones, and added new members to the family. Some bonds don&rsquo;t fade.</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-card border border-gray-100 p-8 hover:shadow-card-hover transition-all duration-300">
+            <span class="text-teal-500 text-2xl mb-4 block">&#127912;</span>
+            <h3 class="font-semibold text-gray-900 text-lg mb-2">A living archive</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">This website grows with us. New photos, new updates, new memories. It&rsquo;s not a time capsule — it&rsquo;s a living room where the door&rsquo;s always open.</p>
+        </div>
+    </div>
+</section>
+
+<section class="reveal">
+    <div class="bg-gradient-to-br from-coral-50 to-teal-50 rounded-2xl border border-coral-100 px-8 py-16 md:py-20 text-center shadow-sm">
+        <p class="text-2xl md:text-3xl text-gray-700 italic font-light max-w-xl mx-auto leading-relaxed">
+            &ldquo;Here&rsquo;s to the nights we&rsquo;ll never forget — and the friends who made them unforgettable.&rdquo;
+        </p>
+        <div class="mt-8 flex items-center justify-center gap-3">
+            <span class="h-px w-12 bg-coral-300"></span>
+            <span class="w-2 h-2 rounded-full bg-coral-400"></span>
+            <span class="w-2 h-2 rounded-full bg-teal-400"></span>
+            <span class="w-2 h-2 rounded-full bg-coral-400"></span>
+            <span class="h-px w-12 bg-coral-300"></span>
         </div>
     </div>
 </section>

@@ -1,31 +1,31 @@
 {% extends "base.html" %}
-{% block title %}Events — Friends Group{% endblock %}
+{% block title %}Events — Elon Group{% endblock %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto">
     <div class="text-center mb-14 reveal">
-        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-400 font-medium font-sans">Calendar</span>
-        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-900 mt-2">Events</h1>
-        <p class="text-neutral-400 text-sm mt-2">Past and upcoming reunions and meetups.</p>
+        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Calendar</span>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Events</h1>
+        <p class="text-gray-500 text-sm mt-2">Past and upcoming reunions and meetups.</p>
     </div>
 
     <div class="space-y-10">
         <div class="reveal">
-            <h2 class="font-heading font-semibold text-neutral-700 text-sm mb-4 flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse-soft inline-block"></span> Upcoming
+            <h2 class="font-semibold text-gray-700 text-sm mb-4 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-coral-400 inline-block"></span> Upcoming
             </h2>
             <div class="grid gap-4">
                 {% for event in events_list if event.is_upcoming %}
-                <div class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-emerald-200/60 hover:border-emerald-300/80 transition-all duration-300 overflow-hidden card-sparkle">
-                    <div class="h-1 bg-gradient-to-r from-emerald-400 to-teal-400"></div>
+                <div class="bg-white rounded-xl shadow-card border border-coral-100 transition-all duration-300 overflow-hidden hover:shadow-card-hover hover:-translate-y-0.5">
+                    <div class="h-1 bg-coral-500"></div>
                     <div class="p-5">
                         <div class="flex items-start justify-between gap-4">
                             <div class="flex-1">
-                                <h3 class="font-heading font-semibold text-neutral-800 mb-1">{{ event.title }}</h3>
-                                <p class="text-emerald-600 text-[13px] font-medium mb-2">{{ event.date }}</p>
-                                <p class="text-neutral-500 text-sm leading-relaxed">{{ event.description }}</p>
+                                <h3 class="font-semibold text-gray-900 mb-1">{{ event.title }}</h3>
+                                <p class="text-coral-600 text-[13px] font-medium mb-2">{{ event.date }}</p>
+                                <p class="text-gray-500 text-sm leading-relaxed">{{ event.description }}</p>
                             </div>
-                            <span class="bg-emerald-50 text-emerald-600 text-[11px] font-medium px-2.5 py-1 rounded-full border border-emerald-200 whitespace-nowrap">Upcoming</span>
+                            <span class="bg-coral-50 text-coral-600 text-[11px] font-medium px-2.5 py-1 rounded-lg border border-coral-200 whitespace-nowrap">Upcoming</span>
                         </div>
                     </div>
                 </div>
@@ -34,17 +34,17 @@
         </div>
 
         <div class="reveal">
-            <h2 class="font-heading font-medium text-neutral-400 text-sm mb-4 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-neutral-300 inline-block"></span> Past
+            <h2 class="font-medium text-gray-400 text-sm mb-4 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300 inline-block"></span> Past
             </h2>
             <div class="grid gap-3">
                 {% for event in events_list if not event.is_upcoming %}
-                <div class="group bg-white rounded-2xl shadow-sm border border-neutral-200/60 hover:border-neutral-300/80 transition-all duration-300 overflow-hidden opacity-80 hover:opacity-100">
-                    <div class="h-0.5 bg-gradient-to-r from-neutral-300 to-neutral-200"></div>
+                <div class="bg-white rounded-xl shadow-card border border-gray-100 transition-all duration-300 overflow-hidden opacity-70 hover:opacity-100 hover:-translate-y-0.5">
+                    <div class="h-0.5 bg-gray-200"></div>
                     <div class="p-5">
-                        <h3 class="font-heading font-medium text-neutral-600 text-[15px] mb-0.5">{{ event.title }}</h3>
-                        <p class="text-neutral-400 text-[13px] mb-1.5">{{ event.date }}</p>
-                        <p class="text-neutral-500 text-sm leading-relaxed">{{ event.description }}</p>
+                        <h3 class="font-medium text-gray-600 text-[15px] mb-0.5">{{ event.title }}</h3>
+                        <p class="text-gray-400 text-[13px] mb-1.5">{{ event.date }}</p>
+                        <p class="text-gray-500 text-sm leading-relaxed">{{ event.description }}</p>
                     </div>
                 </div>
                 {% endfor %}

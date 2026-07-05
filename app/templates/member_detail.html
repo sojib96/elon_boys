@@ -1,25 +1,31 @@
 {% extends "base.html" %}
-{% block title %}{% if member %}{{ member.name }} — Friends Group{% else %}Member Not Found — Friends Group{% endif %}{% endblock %}
+{% block title %}{% if member %}{{ member.name }} — Elon Group{% else %}Member Not Found — Elon Group{% endif %}{% endblock %}
 
 {% block content %}
 <div class="max-w-3xl mx-auto text-center">
     {% if member %}
-    <div class="w-32 h-32 rounded-full bg-gradient-to-br from-rose-200 via-amber-100 to-violet-200 flex items-center justify-center mx-auto mb-6 shadow-md">
-        <span class="text-3xl font-bold text-neutral-600 font-heading">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
+    <div class="w-24 h-24 rounded-full bg-coral-50 flex items-center justify-center mx-auto mb-5 shadow-sm border border-coral-100">
+        <span class="text-2xl font-bold text-gray-700">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
     </div>
-    <h1 class="text-3xl font-heading font-bold text-neutral-900">{{ member.name }}</h1>
-    <p class="text-neutral-400 italic text-lg mb-4 font-fancy">{{ member.nickname }}</p>
-    <p class="text-neutral-600 max-w-xl mx-auto mb-6 leading-relaxed">{{ member.bio }}</p>
-    <span class="inline-block bg-gradient-to-r from-rose-50 to-amber-50 text-amber-700 border border-amber-200 text-sm px-4 py-1.5 rounded-full mb-4 font-medium">Fun fact: {{ member.fun_fact }}</span>
-    <p class="text-neutral-500 text-sm mt-4">{{ member.current_status }}</p>
-    <p class="text-neutral-400 text-xs mt-12 italic">Full member profile — coming soon.</p>
-    <a href="/squad" class="mt-6 inline-flex items-center gap-1.5 text-brand hover:text-brand-dark font-medium text-sm transition-colors">&larr; Back to The Squad</a>
+    <h1 class="text-3xl font-bold text-gray-900 tracking-[-0.02em]">{{ member.name }}</h1>
+    <p class="text-gray-400 italic text-lg mb-4">{{ member.nickname }}</p>
+    <p class="text-gray-600 max-w-xl mx-auto mb-5 leading-relaxed">{{ member.bio }}</p>
+    <span class="inline-block bg-coral-50 text-coral-600 border border-coral-200 text-sm px-4 py-1.5 rounded-lg font-medium mb-4">Fun fact: {{ member.fun_fact }}</span>
+    <p class="text-gray-500 text-sm mt-4">{{ member.current_status }}</p>
+    <p class="text-gray-400 text-xs mt-10 italic">Full member profile — coming soon.</p>
+    <a href="/squad" class="mt-6 inline-flex items-center gap-1.5 text-coral-600 hover:text-coral-700 font-medium text-sm transition-colors">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Back to The Squad
+    </a>
     {% else %}
-    <div class="py-16">
-        <span class="text-6xl mb-6 inline-block">&#128533;</span>
-        <h1 class="text-3xl font-heading font-bold text-neutral-900">Member not found</h1>
-        <p class="text-neutral-500 mt-3">This member doesn't seem to exist.</p>
-        <a href="/squad" class="mt-8 inline-flex items-center gap-1.5 text-brand hover:text-brand-dark font-medium text-sm transition-colors">&larr; Back to The Squad</a>
+    <div class="py-16 reveal">
+        <span class="text-5xl mb-4 inline-block opacity-60">&#128533;</span>
+        <h1 class="text-3xl font-bold text-gray-900 tracking-[-0.02em]">Member not found</h1>
+        <p class="text-gray-500 mt-3">This member doesn't seem to exist.</p>
+        <a href="/squad" class="mt-6 inline-flex items-center gap-1.5 text-coral-600 hover:text-coral-700 font-medium text-sm transition-colors">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            Back to The Squad
+        </a>
     </div>
     {% endif %}
 </div>

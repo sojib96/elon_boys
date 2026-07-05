@@ -1,33 +1,27 @@
 {% extends "base.html" %}
-{% block title %}Updates — Friends Group{% endblock %}
+{% block title %}Updates — Elon Group{% endblock %}
 
 {% block content %}
 <div class="max-w-3xl mx-auto">
     <div class="text-center mb-14 reveal">
-        <span class="text-[11px] uppercase tracking-[.2em] text-neutral-400 font-medium font-sans">News</span>
-        <h1 class="text-3xl md:text-4xl font-heading font-bold text-neutral-900 mt-2">Updates</h1>
-        <p class="text-neutral-400 text-sm mt-2">Life updates, news, and stories from the group.</p>
+        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">News</span>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Updates</h1>
+        <p class="text-gray-500 text-sm mt-2">Life updates, news, and stories from the group.</p>
     </div>
 
-    {% set card_colors = [
-        { 'gradient': 'from-rose-400 to-amber-400', 'badge': 'bg-rose-50 text-rose-600' },
-        { 'gradient': 'from-sky-400 to-violet-400', 'badge': 'bg-sky-50 text-sky-600' },
-        { 'gradient': 'from-emerald-400 to-teal-400', 'badge': 'bg-emerald-50 text-emerald-600' },
-    ] %}
-
-    <div class="space-y-6">
+    <div class="space-y-5">
         {% for post in updates %}
-        {% set cc = card_colors[loop.index0 % card_colors|length] %}
-        <article class="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-neutral-200/60 transition-all duration-300 overflow-hidden reveal-scale hover:-translate-y-0.5 card-sparkle">
-            <div class="h-1 bg-gradient-to-r {{ cc.gradient }}"></div>
-            <div class="px-6 py-6">
-                <div class="flex items-center gap-3 text-xs text-neutral-400 mb-3">
-                    <span class="px-2.5 py-0.5 rounded-full {{ cc.badge }} border border-current/20 font-medium">{{ post.posted_at }}</span>
-                    <span class="text-neutral-300">&sdot;</span>
-                    <span class="text-neutral-500">{{ post.author }}</span>
+        {% set is_teal = loop.index0 % 2 == 0 %}
+        <article class="bg-white rounded-xl shadow-card border border-gray-100 transition-all duration-300 overflow-hidden hover:shadow-card-hover hover:-translate-y-0.5 reveal">
+            <div class="h-1 {% if is_teal %}bg-teal-500{% else %}bg-coral-500{% endif %}"></div>
+            <div class="px-6 py-5">
+                <div class="flex items-center gap-3 text-xs text-gray-400 mb-3">
+                    <span class="px-2.5 py-0.5 rounded-full {% if is_teal %}bg-teal-50 text-teal-600 border border-teal-200{% else %}bg-coral-50 text-coral-600 border border-coral-200{% endif %} font-medium">{{ post.posted_at }}</span>
+                    <span class="text-gray-300">&sdot;</span>
+                    <span class="text-gray-500">{{ post.author }}</span>
                 </div>
-                <h2 class="text-lg font-heading font-semibold text-neutral-800 mb-2 group-hover:text-brand transition-colors">{{ post.title }}</h2>
-                <p class="text-neutral-600 text-sm leading-relaxed">{{ post.content }}</p>
+                <h2 class="text-lg font-semibold text-gray-900 mb-1.5">{{ post.title }}</h2>
+                <p class="text-gray-600 text-sm leading-relaxed">{{ post.content }}</p>
             </div>
         </article>
         {% endfor %}
