@@ -3,30 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#FF6B4A">
+    <meta name="theme-color" content="#D56B4D">
     <meta name="description" content="Ten friends. Four years. A lifetime of memories.">
     <title>{% block title %}Elon Group{% endblock %}</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23FF6B4A'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='16' font-weight='700' font-family='system-ui'>EG</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600;1,9..144,700&display=swap" rel="stylesheet">
     <script>
     tailwind.config = {
         theme: {
             extend: {
                 fontFamily: {
                     sans: ['Inter', 'system-ui', 'sans-serif'],
+                    display: ['Sora', 'Inter', 'system-ui', 'sans-serif'],
+                    serif: ['Fraunces', 'Georgia', 'serif'],
                 },
                 colors: {
-                    coral: { 50: '#FFF7ED', 100: '#FFEDD5', 200: '#FED7AA', 300: '#FDBA74', 400: '#FB923C', 500: '#FF6B4A', 600: '#EA580C', 700: '#C2410C' },
-                    teal: { 50: '#F0FDFA', 100: '#CCFBF1', 200: '#99F6E4', 300: '#5EEAD4', 400: '#2DD4BF', 500: '#14B8A6', 600: '#0D9488', 700: '#0F766E' },
+                    coral: { 50: '#FFF7ED', 100: '#FFEDD5', 200: '#FED7AA', 300: '#FDBA74', 400: '#FB923C', 500: '#D56B4D', 600: '#C25A3E', 700: '#A8472F' },
+                    forest: { 50: '#EDF5F0', 100: '#D1E4D7', 200: '#A3C9AF', 300: '#6EAD83', 400: '#4B8E63', 500: '#3A7D5C', 600: '#2D6247', 700: '#1F4834' },
+                    ink: '#1A1A2E',
+                    espresso: { 50: '#f5f1ea', 100: '#e8e4dc', 200: '#c4b8a8', 300: '#9e8c78', 400: '#7a6854', 500: '#4a3427', 600: '#3d2c1e', 700: '#2d2418' },
+                    pine: '#2d4a3e',
+                    sangria: '#4a2a3a',
                 },
                 boxShadow: {
                     'card': '0 4px 12px rgba(0,0,0,0.08)',
                     'card-hover': '0 12px 32px rgba(0,0,0,0.12)',
-                    'glow': '0 8px 20px rgba(255,107,74,0.35)',
-                    'glow-teal': '0 8px 20px rgba(20,184,166,0.35)',
+                    'glow': '0 8px 20px rgba(213,107,77,0.35)',
+                    'glow-forest': '0 8px 20px rgba(58,125,92,0.35)',
                 },
             }
         }
@@ -34,28 +40,59 @@
     </script>
     <style>
         body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        ::selection { background: #FF6B4A33; color: #EA580C; }
-        :focus-visible { outline: 2px solid #FF6B4A; outline-offset: 2px; border-radius: 6px; }
+        ::selection { background: #D56B4D33; color: #C25A3E; }
+        :focus-visible { outline: 2px solid #D56B4D; outline-offset: 2px; border-radius: 6px; }
         * { transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease; }
 
         .nav-link { position: relative; padding: 6px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; color: #6B7280; letter-spacing: -0.01em; }
-        .nav-link:hover { color: #FF6B4A; background: #FFF7ED; }
-        .nav-link.active { color: #FF6B4A; font-weight: 600; }
+        .nav-link:hover { color: #D56B4D; background: #FFF7ED; }
+        .nav-link.active { color: #D56B4D; font-weight: 600; }
+
+        .card-hover { transition: transform 250ms ease, box-shadow 250ms ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,52,39,0.12); }
+        .card-hover-dark { transition: transform 250ms ease, box-shadow 250ms ease; }
+        .card-hover-dark:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,52,39,0.25); }
+        .card-photo { position: relative; overflow: hidden; }
+        .card-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms ease; }
+        .card-tag { position: absolute; top: 10px; left: 10px; background: #3d2c1e; color: #f5f1ea; font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; }
+        .quote-serif { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 600; }
+        .bento-card { transition: transform 250ms ease, box-shadow 250ms ease; }
+        .bento-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,52,39,0.12); }
+        .card-beige { transition: transform 250ms ease, box-shadow 250ms ease; }
+        .card-beige:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,52,39,0.10); }
+        .dark-card { transition: transform 250ms ease, box-shadow 250ms ease; }
+        .dark-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,52,39,0.25); }
+        .avatar-circle { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+        .initials-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
         .hamburger { width: 20px; height: 14px; position: relative; cursor: pointer; }
         .hamburger span { display: block; width: 100%; height: 2px; background: #6B7280; border-radius: 2px; position: absolute; left: 0; }
         .hamburger span:nth-child(1) { top: 0; }
         .hamburger span:nth-child(2) { top: 6px; }
         .hamburger span:nth-child(3) { top: 12px; }
-        .hamburger.open span:nth-child(1) { transform: rotate(45deg); top: 6px; background: #FF6B4A; }
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg); top: 6px; background: #D56B4D; }
         .hamburger.open span:nth-child(2) { opacity: 0; }
-        .hamburger.open span:nth-child(3) { transform: rotate(-45deg); top: 6px; background: #FF6B4A; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg); top: 6px; background: #D56B4D; }
 
         #scroll-top { opacity: 0; pointer-events: none; transform: translateY(12px); }
         #scroll-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
         @keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes badgeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes wordIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes dotPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.8); } }
+
+        .eyebrow-badge { opacity: 0; }
+        .eyebrow-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #E8A585; animation: dotPulse 2s ease-in-out infinite; box-shadow: 0 0 6px rgba(232,165,133,0.5); }
+        .word-stagger > span { display: inline-block; opacity: 0; transform: translateY(10px); }
+        .word-highlight { background: linear-gradient(135deg, #D56B4D 0%, #4a2a3a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        #squad-heading.visible .eyebrow-badge { animation: badgeIn 0.3s ease-out forwards; }
+        #squad-heading.visible .word-stagger > span:nth-child(1) { animation: wordIn 0.2s cubic-bezier(0.22,1,0.36,1) 0.05s forwards; }
+        #squad-heading.visible .word-stagger > span:nth-child(2) { animation: wordIn 0.2s cubic-bezier(0.22,1,0.36,1) 0.1s forwards; }
+        #squad-heading.visible .word-stagger > span:nth-child(3) { animation: wordIn 0.2s cubic-bezier(0.22,1,0.36,1) 0.15s forwards; }
+        #squad-heading.visible .word-stagger > span:nth-child(4) { animation: wordIn 0.2s cubic-bezier(0.22,1,0.36,1) 0.2s forwards; }
+        #squad-heading.visible .word-stagger > span:nth-child(5) { animation: wordIn 0.2s cubic-bezier(0.22,1,0.36,1) 0.25s forwards; }
 
         .reveal { opacity: 0; transform: translateY(16px); transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
         .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -80,16 +117,21 @@
         @media (prefers-reduced-motion: reduce) {
             .reveal, .reveal-left, .reveal-right { opacity: 1; transform: none; }
             .stagger > * { opacity: 1; transform: none; animation: none; }
+            .eyebrow-badge { opacity: 1; }
+            .word-stagger > span { opacity: 1; transform: none; }
+            .eyebrow-dot { animation: none; }
+            #squad-heading.visible .eyebrow-badge,
+            #squad-heading.visible .word-stagger > span { animation: none; opacity: 1; transform: none; }
         }
     </style>
 </head>
-<body class="font-sans text-gray-900 bg-[#FFFAF5] flex flex-col min-h-screen">
+<body class="font-sans text-ink bg-espresso-50 flex flex-col min-h-screen">
     <nav class="bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 sticky top-0 z-50 border-b border-gray-200" role="navigation" aria-label="Main navigation">
         <div class="max-w-7xl mx-auto px-6 sm:px-8">
             <div class="flex items-center justify-between h-14">
                 <a href="/" class="flex items-center gap-2.5 flex-shrink-0" aria-label="Home">
                     <span class="w-8 h-8 rounded-lg bg-coral-500 flex items-center justify-center text-white text-[10px] font-bold tracking-wider" aria-hidden="true">EG</span>
-                    <span class="font-semibold text-[15px] tracking-tight text-gray-900">Elon Group</span>
+                    <span class="font-semibold text-[15px] tracking-tight text-ink">Elon Group</span>
                 </a>
 
                 <div id="desktop-nav" class="hidden md:flex items-center gap-0.5">
@@ -127,11 +169,11 @@
 
     {% block hero %}{% endblock %}
 
-    <main class="flex-grow w-full mx-auto px-6 sm:px-8 py-16 md:py-24 max-w-7xl" role="main">
+    <main class="flex-grow w-full mx-auto px-6 sm:px-8 pt-8 md:pt-10 pb-16 md:pb-24 max-w-7xl" role="main">
         {% block content %}{% endblock %}
     </main>
 
-    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-9 h-9 rounded-lg bg-coral-500 border-0 shadow-md flex items-center justify-center text-white hover:bg-coral-600 hover:-translate-y-0.5 transition-all duration-200 shadow-coral-500/20" aria-label="Scroll to top">
+    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-9 h-9 rounded-lg bg-coral-500 border-0 shadow-md flex items-center justify-center text-white hover:bg-coral-600 hover:-translate-y-0.5 transition-all duration-200 shadow-[0_4px_12px_rgba(213,107,77,0.35)]" aria-label="Scroll to top">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
     </button>
 
@@ -185,6 +227,9 @@
 
         var st=document.getElementById('scroll-top');
         if(st) window.addEventListener('scroll',function(){ st.classList.toggle('visible',window.scrollY>400); });
+
+        var sh=document.getElementById('squad-heading');
+        if(sh&&window.IntersectionObserver){ (new IntersectionObserver(function(e){ if(e[0].isIntersecting){ e[0].target.classList.add('visible'); this.unobserve(e[0].target); } },{threshold:0.3})).observe(sh); }
     })();
     </script>
 </body>
