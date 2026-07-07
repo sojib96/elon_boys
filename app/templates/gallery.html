@@ -2,35 +2,161 @@
 {% block title %}Gallery — Elon Group{% endblock %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto">
-    <div class="text-center mb-12 reveal">
-        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Moments</span>
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Gallery</h1>
-        <p class="text-gray-500 text-sm mt-2">Our favourite moments, frozen in time.</p>
+<style>
+    .noise::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 9998;
+        pointer-events: none;
+        opacity: 0.02;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        background-size: 256px 256px;
+    }
+    .tilt-p { transform: rotate(0.6deg); }
+    .tilt-n { transform: rotate(-0.9deg); }
+    .card-up { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .card-up:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(26,22,20,0.1); }
+    .card-shadow { transition: box-shadow 0.3s ease; }
+    .card-shadow:hover { box-shadow: 0 8px 30px rgba(26,22,20,0.1); }
+    .gallery-img { transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+    .group:hover .gallery-img { transform: scale(1.06); }
+    .cat-glow { transition: opacity 0.5s ease; }
+    .group:hover .cat-glow { opacity: 1; }
+
+    .hero-text {
+        background: linear-gradient(135deg, #C1633B 0%, #C4A35A 60%, #7A9A7A 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .hero-underline {
+        position: relative;
+        display: inline-block;
+    }
+    .hero-underline::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 15%;
+        width: 70%;
+        height: 3px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, #C1633B, #C4A35A 60%, transparent);
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        .hero-enter {
+            animation: slideUpFade 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .hero-underline::after {
+            animation: expandLine 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+        }
+    }
+    @keyframes slideUpFade {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes expandLine {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .noise::before { display: none; }
+        .card-up, .card-up:hover { transform: none; }
+        .card-shadow, .card-shadow:hover { box-shadow: none !important; }
+        .gallery-img, .group:hover .gallery-img { transform: none; }
+        .cat-glow, .group:hover .cat-glow { opacity: 0; }
+        .hero-enter { opacity: 1; transform: none; }
+        .hero-underline::after { transform: scaleX(1); }
+    }
+</style>
+
+{% set cat_colors = {
+    'Events': {'accent': '#C1633B', 'bg': '#F9EDE8'},
+    'Trips': {'accent': '#7A9A7A', 'bg': '#EDF3ED'},
+    'Campus Life': {'accent': '#C4A35A', 'bg': '#F8F3E8'},
+    'Random': {'accent': '#8A7F76', 'bg': '#F0EDE8'},
+} %}
+
+{% set featured_ids = [1, 10, 11] %}
+
+<div class="noise max-w-7xl mx-auto px-4 sm:px-6">
+
+    {# ─── HEADER ─── #}
+    <div class="pt-10 pb-4 mb-8">
+        <h1 class="hero-enter hero-text hero-underline font-serif text-[clamp(2rem,5vw,3.5rem)] font-extrabold tracking-[-0.02em] leading-[1.1] opacity-0">
+            The moments that made us us
+        </h1>
     </div>
 
-    <div class="flex gap-2 overflow-x-auto pb-4 mb-8 reveal justify-center flex-wrap">
-        <span class="bg-coral-500 text-white text-sm px-4 py-1.5 rounded-lg font-medium shadow-sm">All</span>
+    {# ─── MOBILE FILTERS ─── #}
+    <div class="md:hidden flex gap-4 overflow-x-auto pb-3 mb-8">
+        <span class="whitespace-nowrap text-[10px] uppercase tracking-[0.14em] font-semibold text-[#C1633B]">All</span>
         {% for cat in categories %}
-        <span class="bg-white border border-gray-200 text-gray-500 text-sm px-4 py-1.5 rounded-lg hover:border-coral-300 hover:text-coral-600 transition-colors cursor-default font-medium">{{ cat }}</span>
+        {% set fc = cat_colors.get(cat, cat_colors['Random']) %}
+        <span class="whitespace-nowrap text-[10px] uppercase tracking-[0.1em]" style="color: {{ fc.accent }}80;">{{ cat }}</span>
         {% endfor %}
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 stagger">
-        {% for item in gallery_items %}
-        {% set is_teal = loop.index0 % 2 == 0 %}
-        <div class="group relative rounded-xl border border-gray-100 overflow-hidden aspect-square cursor-pointer hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300 bg-white shadow-card">
-            <div class="h-1 {% if is_teal %}bg-teal-500{% else %}bg-coral-500{% endif %}"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <span class="text-4xl opacity-20 group-hover:scale-125 group-hover:opacity-30 transition-all duration-500">&#128247;</span>
-            </div>
-            <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent translate-y-2 group-hover:translate-y-0 transition-transform duration-300"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-3 translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
-                <p class="text-white font-semibold text-sm leading-tight">{{ item.title }}</p>
-                <p class="text-white/60 text-[11px] mt-0.5">{{ item.category }}</p>
+    {# ─── MAIN: GRID + SIDEBAR ─── #}
+    <div class="flex gap-8 md:gap-12 lg:gap-16">
+
+        {# ─── GALLERY GRID ─── #}
+        <div class="flex-1 min-w-0">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+                {% for item in gallery_items %}
+                {% set cc = cat_colors.get(item.category, cat_colors['Random']) %}
+                {% set is_featured = item.id in featured_ids %}
+
+                {% if is_featured %}
+                    {% set hover_class = "card-up" %}
+                    {% set tilt_class = "" %}
+                {% elif item.id % 3 == 0 %}
+                    {% set hover_class = "card-shadow" %}
+                    {% set tilt_class = "tilt-p" %}
+                {% elif item.id % 3 == 1 %}
+                    {% set hover_class = "card-shadow" %}
+                    {% set tilt_class = "tilt-n" %}
+                {% else %}
+                    {% set hover_class = "card-up" %}
+                    {% set tilt_class = "" %}
+                {% endif %}
+
+                <div class="group relative rounded-lg overflow-hidden bg-white border border-[#E8E0D6] {{ hover_class }} {{ tilt_class }}
+                    {% if is_featured %}col-span-2{% endif %}"
+                    style="border-top: 3px solid {{ cc.accent }};">
+                    <div class="{% if is_featured %}aspect-[4/3]{% else %}aspect-square{% endif %} flex items-center justify-center overflow-hidden" style="background: {{ cc.bg }};">
+                        <span class="gallery-img block text-3xl sm:text-4xl opacity-30 group-hover:opacity-40">📷</span>
+                    </div>
+                    <div class="cat-glow absolute inset-0 opacity-0 pointer-events-none" style="background: linear-gradient(135deg, {{ cc.accent }} 0%, transparent 60%);"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-[#1A1614]/50 to-transparent pointer-events-none translate-y-3 group-hover:translate-y-0 transition-transform duration-300"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-3 sm:p-4 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                        <p class="font-serif font-semibold text-sm leading-tight text-white">{{ item.title }}</p>
+                        <p class="text-white/65 text-[10px] mt-0.5 uppercase tracking-[0.08em] font-medium">{{ item.category }}</p>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
+
+        {# ─── SIDEBAR FILTERS ─── #}
+        <aside class="hidden md:block w-32 lg:w-40 flex-shrink-0 sticky top-24 self-start pt-1">
+            <nav class="flex flex-col items-end gap-0.5">
+                <span class="block w-full text-right pl-3 pr-0 py-2 text-[11px] uppercase tracking-[0.14em] font-semibold text-[#C1633B] bg-[#C1633B]/8 border-l-[3px] border-[#C1633B]">All</span>
+                {% for cat in categories %}
+                {% set fc = cat_colors.get(cat, cat_colors['Random']) %}
+                <span class="block w-full text-right pl-3 pr-0 py-2 text-[11px] uppercase tracking-[0.1em] border-l-[3px] border-transparent transition-all duration-200"
+                      style="color: {{ fc.accent }}80;"
+                      onmouseover="this.style.color='{{ fc.accent }}'; this.style.borderLeftColor='{{ fc.accent }}'"
+                      onmouseout="this.style.color='{{ fc.accent }}80'; this.style.borderLeftColor='transparent'">{{ cat }}</span>
+                {% endfor %}
+            </nav>
+        </aside>
+
     </div>
 </div>
 {% endblock %}
