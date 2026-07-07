@@ -44,9 +44,10 @@
         :focus-visible { outline: 2px solid #D56B4D; outline-offset: 2px; border-radius: 6px; }
         * { transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease; }
 
-        .nav-link { position: relative; padding: 6px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; color: #6B7280; letter-spacing: -0.01em; }
-        .nav-link:hover { color: #D56B4D; background: #FFF7ED; }
+        .nav-link { position: relative; padding: 6px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; color: #E8E1D6; letter-spacing: -0.01em; }
+        .nav-link:hover { color: #D56B4D; background: rgba(213,107,77,0.1); }
         .nav-link.active { color: #D56B4D; font-weight: 600; }
+        .nav-link.active::after { content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); width: 16px; height: 2.5px; background: #D56B4D; border-radius: 2px; }
 
         .card-hover { transition: transform 250ms ease, box-shadow 250ms ease; }
         .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,52,39,0.12); }
@@ -66,7 +67,7 @@
         .initials-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
         .hamburger { width: 20px; height: 14px; position: relative; cursor: pointer; }
-        .hamburger span { display: block; width: 100%; height: 2px; background: #6B7280; border-radius: 2px; position: absolute; left: 0; }
+        .hamburger span { display: block; width: 100%; height: 2px; background: #B8AFA2; border-radius: 2px; position: absolute; left: 0; }
         .hamburger span:nth-child(1) { top: 0; }
         .hamburger span:nth-child(2) { top: 6px; }
         .hamburger span:nth-child(3) { top: 12px; }
@@ -126,15 +127,16 @@
     </style>
 </head>
 <body class="font-sans text-ink bg-espresso-50 flex flex-col min-h-screen">
-    <nav class="bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 sticky top-0 z-50 border-b border-gray-200" role="navigation" aria-label="Main navigation">
+    <nav class="bg-[#1A1510] sticky top-0 z-50 border-b border-[rgba(232,225,214,0.08)] shadow-md shadow-black/20 relative" role="navigation" aria-label="Main navigation">
+        <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-coral-500/0 via-coral-500 to-coral-500/0" aria-hidden="true"></div>
         <div class="max-w-7xl mx-auto px-6 sm:px-8">
-            <div class="flex items-center justify-between h-14">
-                <a href="/" class="flex items-center gap-2.5 flex-shrink-0" aria-label="Home">
-                    <span class="w-8 h-8 rounded-lg bg-coral-500 flex items-center justify-center text-white text-[10px] font-bold tracking-wider" aria-hidden="true">EG</span>
-                    <span class="font-semibold text-[15px] tracking-tight text-ink">Elon Group</span>
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <a href="/" class="flex items-center gap-3 flex-shrink-0" aria-label="Home">
+                    <span class="w-9 h-9 rounded-lg bg-gradient-to-br from-coral-400 to-coral-500 flex items-center justify-center text-white text-[11px] font-bold tracking-wider shadow-sm shadow-coral-500/20 ring-1 ring-white/10" aria-hidden="true">EG</span>
+                    <span class="font-bold text-[15px] tracking-tight text-white/90">Elon Group</span>
                 </a>
 
-                <div id="desktop-nav" class="hidden md:flex items-center gap-0.5">
+                <div id="desktop-nav" class="hidden md:flex items-center gap-6 lg:gap-8">
                     {% set nav_links = [
                         ('/our-story', 'Our Story'),
                         ('/squad', 'Squad'),
@@ -148,19 +150,19 @@
                     {% for href, label in nav_links %}
                     <a href="{{ href }}" class="nav-link {% if request.url.path == href %}active{% endif %}">{{ label }}</a>
                     {% endfor %}
-                    <a href="/login" class="ml-2 bg-coral-500 hover:bg-coral-600 text-white text-[13px] font-semibold px-4 py-1.5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-glow">Login</a>
+                    <a href="/login" class="ml-3 bg-coral-500 hover:bg-coral-600 text-white text-[13px] font-semibold px-5 py-2 rounded-lg transition-all duration-200 shadow-md hover:shadow-glow">Login</a>
                 </div>
 
-                <button id="menu-btn" class="md:hidden p-1.5 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Toggle navigation menu" aria-expanded="false">
+                <button id="menu-btn" class="md:hidden p-1.5 rounded-lg hover:bg-[rgba(232,225,214,0.08)] transition-colors" aria-label="Toggle navigation menu" aria-expanded="false">
                     <div class="hamburger" id="hamburger-icon">
                         <span></span><span></span><span></span>
                     </div>
                 </button>
             </div>
 
-            <div id="mobile-menu" class="md:hidden hidden pb-4 pt-2 border-t border-gray-100" role="menu">
+            <div id="mobile-menu" class="md:hidden hidden pb-4 pt-2 border-t border-white/10" role="menu">
                 {% for href, label in nav_links %}
-                <a href="{{ href }}" class="block px-3 py-2 rounded-lg text-sm text-gray-600 hover:text-coral-600 hover:bg-coral-50 font-medium transition-all duration-200" role="menuitem">{{ label }}</a>
+                <a href="{{ href }}" class="block px-3 py-2 rounded-lg text-sm text-[#B8AFA2] hover:text-coral-400 hover:bg-[rgba(213,107,77,0.1)] font-medium transition-all duration-200" role="menuitem">{{ label }}</a>
                 {% endfor %}
                 <a href="/login" class="block mt-2 mx-3 bg-coral-500 text-white text-sm font-semibold px-4 py-2 rounded-lg text-center">Login</a>
             </div>
@@ -177,40 +179,103 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
     </button>
 
-    <footer class="bg-slate-900 border-t border-slate-800 py-16">
+    <footer id="site-footer" class="bg-[#1A1510] pt-12 md:pt-14 pb-0 relative">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(232,225,214,0.12)] to-transparent" aria-hidden="true"></div>
+
         <div class="max-w-7xl mx-auto px-6 sm:px-8">
-            <div class="grid md:grid-cols-3 gap-8 mb-10 text-center md:text-left">
-                <div>
-                    <div class="flex items-center justify-center md:justify-start gap-2 mb-3">
-                        <span class="w-7 h-7 rounded-lg bg-coral-500 flex items-center justify-center text-white text-[9px] font-bold tracking-wider">EG</span>
-                        <span class="font-semibold text-white text-sm">Elon Group</span>
+            <div class="grid md:grid-cols-12 gap-8 md:gap-6 pb-8">
+                <div class="md:col-span-4 reveal" style="transition-delay:0ms">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-9 h-9 rounded-lg bg-gradient-to-br from-coral-400 to-coral-500 flex items-center justify-center text-white text-[11px] font-bold tracking-wider shadow-sm shadow-coral-500/20 ring-1 ring-white/10">EG</span>
+                        <span class="font-bold text-white/90 text-[15px] tracking-tight">Elon Group</span>
                     </div>
-                    <p class="text-gray-500 text-xs leading-relaxed">Ten friends. Four years. A lifetime of memories. This is our story.</p>
+                    <p class="text-[#B8AFA2] text-sm leading-normal max-w-[280px]">Ten friends. Four years. A lifetime of memories.</p>
                 </div>
-                <div>
-                    <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold block mb-3">Pages</span>
-                    <div class="flex flex-wrap gap-x-4 gap-y-1.5 justify-center md:justify-start">
-                        <a href="/our-story" class="text-gray-500 hover:text-coral-400 text-xs transition-colors">Story</a>
-                        <a href="/squad" class="text-gray-500 hover:text-coral-400 text-xs transition-colors">Squad</a>
-                        <a href="/timeline" class="text-gray-500 hover:text-coral-400 text-xs transition-colors">Timeline</a>
-                        <a href="/gallery" class="text-gray-500 hover:text-coral-400 text-xs transition-colors">Gallery</a>
-                        <a href="/updates" class="text-gray-500 hover:text-coral-400 text-xs transition-colors">Updates</a>
-                        <a href="/events" class="text-gray-500 hover:text-coral-400 text-xs transition-colors">Events</a>
-                        <a href="/guestbook" class="text-gray-500 hover:text-coral-400 text-xs transition-colors">Guestbook</a>
+
+                <div class="md:col-span-2 reveal" style="transition-delay:80ms">
+                    <span class="text-[#B8AFA2] text-[11px] uppercase tracking-[0.15em] font-semibold block mb-3">Pages</span>
+                    <div class="flex flex-col gap-2">
+                        <a href="/our-story" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">Story</a>
+                        <a href="/squad" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">Squad</a>
+                        <a href="/timeline" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">Timeline</a>
+                        <a href="/gallery" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">Gallery</a>
+                        <a href="/updates" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">Updates</a>
+                        <a href="/events" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">Events</a>
+                        <a href="/guestbook" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">Guestbook</a>
                     </div>
                 </div>
-                <div>
-                    <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold block mb-3">Founded</span>
-                    <p class="text-gray-500 text-xs">Est. 2019 &middot; Graduated 2023<br>Still going strong.</p>
-                    <div class="flex items-center justify-center md:justify-start gap-1.5 mt-3">
-                        <span class="w-1.5 h-1.5 rounded-full bg-coral-400"></span>
-                        <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
-                        <span class="w-1.5 h-1.5 rounded-full bg-coral-400"></span>
+
+                <div class="md:col-span-2 reveal" style="transition-delay:160ms">
+                    <span class="text-[#B8AFA2] text-[11px] uppercase tracking-[0.15em] font-semibold block mb-3">Connect</span>
+                    <div class="flex flex-col gap-2">
+                        <a href="#" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">Instagram</a>
+                        <a href="#" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">X (Twitter)</a>
+                        <a href="#" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">Facebook</a>
+                        <a href="#" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">YouTube</a>
+                        <a href="/contact" class="text-[#E8E1D6] hover:text-[#F5F1EA] text-sm font-medium transition-all duration-200 relative footer-link">Contact</a>
+                    </div>
+                </div>
+
+                <div class="md:col-span-4 reveal" style="transition-delay:240ms">
+                    <span class="text-[#B8AFA2] text-[11px] uppercase tracking-[0.15em] font-semibold block mb-3">Founded</span>
+                    <div class="flex flex-col gap-2">
+                        <p class="text-[#C4B8A8] text-sm">Est. 2019 &middot; Graduated 2023</p>
+                        <div class="flex items-center gap-2">
+                            <span class="relative flex h-2.5 w-2.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-coral-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-coral-500"></span>
+                            </span>
+                            <span class="text-[#C4B8A8] text-sm">Still going strong.</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <div class="border-t border-[rgba(232,225,214,0.08)] py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="text-[#9E8C78] text-xs">&copy; 2026 Elon Group. All rights reserved.</p>
+                <div class="flex items-center gap-4">
+                    <a href="#" class="text-[#9E8C78] hover:text-coral-400 transition-colors duration-200" aria-label="Instagram">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    </a>
+                    <a href="#" class="text-[#9E8C78] hover:text-coral-400 transition-colors duration-200" aria-label="X (Twitter)">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="#" class="text-[#9E8C78] hover:text-coral-400 transition-colors duration-200" aria-label="Facebook">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                    </a>
+                    <a href="#" class="text-[#9E8C78] hover:text-coral-400 transition-colors duration-200" aria-label="YouTube">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+                    </a>
+                </div>
+            </div>
         </div>
+
+        <style>
+            .footer-link::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 1px;
+                background: #D56B4D;
+                transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            .footer-link:hover::after {
+                width: 100%;
+            }
+            .footer-link:focus-visible {
+                outline: 2px solid #D56B4D;
+                outline-offset: 2px;
+                border-radius: 2px;
+            }
+            @media (prefers-reduced-motion: reduce) {
+                #site-footer .animate-ping {
+                    animation: none;
+                    opacity: 1;
+                }
+            }
+        </style>
     </footer>
 
     <script>

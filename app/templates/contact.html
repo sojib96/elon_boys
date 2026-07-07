@@ -3,11 +3,12 @@
 
 {% block content %}
 <style>
-    body {
-        background: #F0EBE3 !important;
-    }
-    main {
+    main:has(.contact-container) {
         padding: 0 !important;
+        max-width: none !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     @keyframes float {
@@ -61,7 +62,7 @@
     }
 </style>
 
-<div class="relative px-4 h-full flex flex-col items-center justify-center">
+<div class="contact-container relative w-full flex flex-col items-center justify-center px-4 py-6">
     {# ─── DOT GRID ─── #}
     <div class="fixed inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(45,36,24,0.04) 1px, transparent 1px); background-size: 24px 24px;"></div>
 
@@ -71,46 +72,46 @@
         <div class="absolute w-[350px] h-[350px] rounded-full" style="background: radial-gradient(circle, rgba(196,163,90,0.08), transparent 70%); bottom: -10%; left: -5%; filter: blur(70px); animation: blobPulse 10s ease-in-out infinite 2s;"></div>
     </div>
 
-    {# ─── CONTENT ─── #}
+        {# ─── CONTENT ─── #}
     <div class="relative z-10 w-full max-w-3xl">
-        <div class="text-center mb-8 sm:mb-10">
+        <div class="text-center mb-4 sm:mb-5">
             <p class="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#D56B4D]/70 mb-3">If You Must</p>
-            <h1 class="font-serif text-[clamp(1.75rem,4.5vw,3rem)] font-bold text-[#2B2420] tracking-[-0.02em] leading-[1.1]">Fine, Talk To Us</h1>
-            <p class="text-[#7A6854] text-sm mt-2 font-medium">We probably won&rsquo;t reply immediately, but go ahead.</p>
+            <h1 class="font-serif text-[clamp(1.5rem,4vw,2.5rem)] font-bold text-[#2B2420] tracking-[-0.02em] leading-[1.1]">Fine, Talk To Us</h1>
+            <p class="text-[#7A6854] text-sm mt-1.5">We probably won&rsquo;t reply immediately, but go ahead.</p>
         </div>
 
         {# ─── GLASS CARD ─── #}
         <div class="rounded-2xl shadow-[0_8px_32px_rgba(43,36,32,0.10)]" style="background: linear-gradient(135deg, rgba(213,107,77,0.18), rgba(196,163,90,0.10), transparent); padding: 1px;">
-            <div class="rounded-2xl p-6 sm:p-8 md:p-10 bg-[#FFFEFC]">
-                <div class="grid gap-8 md:grid-cols-3">
+            <div class="rounded-2xl p-5 sm:p-6 md:p-8 bg-[#FFFEFC]">
+                <div class="grid gap-5 md:gap-6 md:grid-cols-3">
                     {# ── Email ── #}
-                    <div class="contact-card card-stagger flex flex-col items-center text-center p-2 rounded-xl cursor-default">
-                        <div class="icon-wrap w-14 h-14 rounded-full flex items-center justify-center text-xl mb-4 icon-email">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+                    <div class="contact-card card-stagger flex flex-col items-center text-center p-3 rounded-xl cursor-default">
+                        <div class="icon-wrap w-12 h-12 rounded-full flex items-center justify-center text-lg mb-3 icon-email">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
                         </div>
                          <h3 class="font-semibold text-[#2B2420] text-[15px]">Email</h3>
-                         <p class="text-[#7A6854] text-sm mt-1.5">hello@thegroup.com</p>
-                         <p class="text-[11px] mt-2.5 italic leading-relaxed text-[#D56B4D]">Slide into our inbox,<br>not our DMs</p>
+                         <p class="text-[#7A6854] text-sm mt-1">reply@korbo.na</p>
+                         <p class="text-[11px] mt-2 leading-relaxed text-[#D56B4D]">We reply slower than<br>a govt office during hartal.</p>
                     </div>
 
                     {# ── Phone ── #}
-                    <div class="contact-card card-stagger flex flex-col items-center text-center p-2 rounded-xl cursor-default">
-                        <div class="icon-wrap icon-wrap-delayed w-14 h-14 rounded-full flex items-center justify-center text-xl mb-4 icon-phone">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <div class="contact-card card-stagger flex flex-col items-center text-center p-3 rounded-xl cursor-default">
+                        <div class="icon-wrap icon-wrap-delayed w-12 h-12 rounded-full flex items-center justify-center text-lg mb-3 icon-phone">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                         </div>
                          <h3 class="font-semibold text-[#2B2420] text-[15px]">Phone</h3>
-                         <p class="text-[#7A6854] text-sm mt-1.5">+1 (555) 000-0000</p>
-                         <p class="text-[11px] mt-2.5 italic leading-relaxed text-[#4A8F8F]">Calls? In this economy?<br>Bold of you.</p>
+                         <p class="text-[#7A6854] text-sm mt-1">+880 1700-000000</p>
+                         <p class="text-[11px] mt-2 leading-relaxed text-[#4A8F8F]">Missed call is our love language.<br>We'll miss yours too.</p>
                     </div>
 
                     {# ── Social ── #}
-                    <div class="contact-card card-stagger flex flex-col items-center text-center p-2 rounded-xl cursor-default">
-                        <div class="icon-wrap icon-wrap-delayed-2 w-14 h-14 rounded-full flex items-center justify-center text-xl mb-4 icon-social">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    <div class="contact-card card-stagger flex flex-col items-center text-center p-3 rounded-xl cursor-default">
+                        <div class="icon-wrap icon-wrap-delayed-2 w-12 h-12 rounded-full flex items-center justify-center text-lg mb-3 icon-social">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                         </div>
                          <h3 class="font-semibold text-[#2B2420] text-[15px]">Social</h3>
-                        <p class="text-[#7A6854] text-sm mt-1.5">Instagram &middot; X &middot; Facebook</p>
-                        <p class="text-[11px] mt-2.5 italic leading-relaxed text-[#C4A35A]">Stalk us professionally</p>
+                        <p class="text-[#7A6854] text-sm mt-1">Facebook &middot; YouTube &middot; Telegram</p>
+                        <p class="text-[11px] mt-2 leading-relaxed text-[#C4A35A]">10k followers, zero replies.<br>We keep the ratio balanced.</p>
                     </div>
                 </div>
             </div>
