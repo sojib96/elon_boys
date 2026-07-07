@@ -3,112 +3,243 @@
 
 {% block content %}
 <div class="max-w-6xl mx-auto">
-    <div class="mb-12 reveal">
-        <span class="text-espresso-400 text-[10px] uppercase tracking-[0.18em] font-semibold">The Squad</span>
-        <h1 class="mt-3 font-display text-4xl sm:text-5xl font-extrabold text-espresso-700 tracking-tight leading-[1.1]">Proud members of<br>the Elon Group.</h1>
-        <p class="mt-3 text-sm leading-6 text-espresso-300 max-w-md">The ten people who turned strangers into family and four years into a lifetime of stories.</p>
+
+<div id="squad-heading" class="text-center">
+  <span class="eyebrow-badge inline-flex items-center gap-2 text-sm sm:text-base font-serif font-semibold tracking-[1.5px] uppercase text-espresso-50 px-4 py-1.5 rounded-full mb-4" style="background: linear-gradient(135deg, #B85C3A, #C97250)">
+    <span class="eyebrow-dot"></span>
+    MEET THE MEMBERS
+  </span>
+  <h1 class="word-stagger font-sans text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-espresso-700 tracking-tight whitespace-nowrap">
+    <span>EACH</span> <span>ONE</span> <span>IS</span> <span class="word-highlight">BUILT</span> <span>DIFFERENTLY</span>
+  </h1>
+  <div class="w-full h-px bg-sangria mt-6"></div>
+</div>
+
+
+{# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ #}
+{#  ROW 1 — Members 1–3 (3 cols)         #}
+{#  Type A · Type B · Type C             #}
+{# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ #}
+{% set m1 = members[0] %}
+{% set m2 = members[1] %}
+{% set m3 = members[2] %}
+{% set r1 = m1.current_status|replace(" at ", " • ") %}
+{% set r2 = m2.current_status|replace(" at ", " • ") %}
+{% set r3 = m3.current_status|replace(" at ", " • ") %}
+
+<div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5">
+
+  {# ── Card 1 — Type A: Full-bleed + pine gradient ── #}
+  <a href="/squad/{{ m1.id }}" class="relative overflow-hidden group min-h-[300px] md:h-[340px] rounded-2xl">
+    <div class="absolute inset-0">
+      {% if m1.image1 %}
+      <img src="{{ m1.image1 }}" alt="{{ m1.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out" loading="lazy">
+      {% else %}
+      <div class="w-full h-full bg-espresso-200 flex items-center justify-center"><span class="font-serif text-5xl font-bold text-espresso-400">{{ m1.name[:1] }}{{ m1.name.split()[-1][:1] }}</span></div>
+      {% endif %}
     </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {% for m in members %}
-        {% set card_type = loop.index0 % 4 %}
-        {% set role_company = m.current_status|replace(" at ", " • ") %}
-
-        {# WIDE — Photo-left card (idx % 4 == 0) #}
-        {% if card_type == 0 %}
-        <a href="/squad/{{ m.id }}" class="bento-card md:col-span-2 bg-white rounded-2xl border border-espresso-100 overflow-hidden flex flex-col sm:flex-row group">
-            <div class="card-photo sm:w-2/5 h-48 sm:h-auto relative bg-espresso-50">
-                {% if m.image1 %}
-                <img src="{{ m.image1 }}" alt="{{ m.name }}" class="w-full h-full object-cover" loading="lazy">
-                {% else %}
-                <div class="w-full h-full flex items-center justify-center">
-                    <span class="font-serif text-5xl font-bold text-espresso-200">{{ m.name[:1] }}{{ m.name.split()[-1][:1] }}</span>
-                </div>
-                {% endif %}
-                <span class="card-tag">{{ m.tag }}</span>
-            </div>
-            <div class="sm:w-3/5 p-5 sm:p-7 flex flex-col justify-between">
-                <div>
-                    <p class="quote-serif text-xl sm:text-2xl leading-snug text-espresso-700">&ldquo;{{ m.quote }}&rdquo;</p>
-                    <h3 class="mt-4 text-lg font-bold text-espresso-700">{{ m.name }}</h3>
-                    <p class="text-[10px] uppercase tracking-[0.12em] text-espresso-300 font-medium mt-1">{{ role_company }}</p>
-                    <p class="mt-3 text-sm text-espresso-400 leading-relaxed">{{ m.bio }}</p>
-                </div>
-                <span class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-espresso-500 group-hover:underline underline-offset-2">
-                    VIEW PROFILE
-                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                </span>
-            </div>
-        </a>
-
-        {# NARROW — Circular-avatar card (idx % 4 == 1) #}
-        {% elif card_type == 1 %}
-        <a href="/squad/{{ m.id }}" class="bento-card md:col-span-1 bg-white rounded-2xl border border-espresso-100 p-6 sm:p-7 flex flex-col items-center text-center group">
-            {% if m.image1 %}
-            <img src="{{ m.image1 }}" alt="{{ m.name }}" class="avatar-circle shadow-sm ring-2 ring-espresso-100" loading="lazy">
-            {% else %}
-            <div class="initials-circle bg-gradient-to-br from-espresso-100 to-espresso-200 shadow-sm ring-2 ring-espresso-100">
-                <span class="font-serif text-xl font-bold text-espresso-500">{{ m.name[:1] }}{{ m.name.split()[-1][:1] }}</span>
-            </div>
-            {% endif %}
-            <p class="quote-serif mt-5 text-base leading-relaxed text-espresso-600">&ldquo;{{ m.quote }}&rdquo;</p>
-            <h3 class="mt-4 text-[15px] font-bold text-espresso-700">{{ m.name }}</h3>
-            <p class="mt-2 text-xs text-espresso-400 leading-relaxed line-clamp-3">{{ m.bio }}</p>
-            <span class="mt-5 text-[10px] font-semibold text-espresso-400 uppercase tracking-[0.12em] group-hover:text-espresso-600 transition-colors">
-                VIEW PROFILE →
-            </span>
-        </a>
-
-        {# NARROW — Photo-left compact (idx % 4 == 2) #}
-        {% elif card_type == 2 %}
-        <a href="/squad/{{ m.id }}" class="bento-card md:col-span-1 bg-white rounded-2xl border border-espresso-100 overflow-hidden group">
-            <div class="card-photo h-36 relative bg-espresso-50">
-                {% if m.image1 %}
-                <img src="{{ m.image1 }}" alt="{{ m.name }}" class="w-full h-full object-cover" loading="lazy">
-                {% else %}
-                <div class="w-full h-full flex items-center justify-center">
-                    <span class="font-serif text-4xl font-bold text-espresso-200">{{ m.name[:1] }}{{ m.name.split()[-1][:1] }}</span>
-                </div>
-                {% endif %}
-                <span class="card-tag">{{ m.tag }}</span>
-            </div>
-            <div class="p-4">
-                <p class="quote-serif text-sm leading-relaxed text-espresso-600">&ldquo;{{ m.quote }}&rdquo;</p>
-                <h3 class="mt-2 text-sm font-bold text-espresso-700">{{ m.name }}</h3>
-                <p class="text-[9px] uppercase tracking-[0.12em] text-espresso-300 font-medium mt-0.5">{{ role_company }}</p>
-                <span class="mt-3 inline-block text-[10px] font-semibold text-espresso-400 group-hover:text-espresso-600 transition-colors">
-                    VIEW PROFILE →
-                </span>
-            </div>
-        </a>
-
-        {# WIDE — Dark/inverted card (idx % 4 == 3) #}
-        {% elif card_type == 3 %}
-        <a href="/squad/{{ m.id }}" class="dark-card md:col-span-2 bg-espresso-500 rounded-2xl overflow-hidden flex flex-col sm:flex-row group">
-            <div class="sm:w-3/5 p-5 sm:p-7 flex flex-col justify-between order-2 sm:order-1">
-                <div>
-                    <p class="quote-serif text-xl sm:text-2xl leading-snug text-espresso-100/50">&ldquo;{{ m.quote }}&rdquo;</p>
-                    <h3 class="mt-4 text-lg font-bold text-espresso-50">{{ m.name }}</h3>
-                    <p class="text-[10px] uppercase tracking-[0.12em] text-espresso-200/70 font-medium mt-1">{{ role_company }}</p>
-                    <p class="mt-3 text-sm text-espresso-100/70 leading-relaxed">{{ m.bio }}</p>
-                </div>
-                <span class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-espresso-100 group-hover:underline underline-offset-2">
-                    VIEW PROFILE
-                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                </span>
-            </div>
-            <div class="card-photo sm:w-2/5 h-48 sm:h-auto relative bg-espresso-600 order-1 sm:order-2">
-                {% if m.image1 %}
-                <img src="{{ m.image1 }}" alt="{{ m.name }}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" loading="lazy">
-                {% else %}
-                <div class="w-full h-full flex items-center justify-center">
-                    <span class="font-serif text-5xl font-bold text-espresso-400">{{ m.name[:1] }}{{ m.name.split()[-1][:1] }}</span>
-                </div>
-                {% endif %}
-            </div>
-        </a>
-        {% endif %}
-        {% endfor %}
+    <div class="absolute inset-0 bg-gradient-to-t from-pine/85 via-pine/15 to-transparent"></div>
+    <span class="card-tag absolute top-3 left-3 z-10">{{ m1.tag }}</span>
+    <div class="absolute bottom-0 left-0 right-0 p-5 z-10">
+      <p class="quote-serif text-sm leading-snug text-espresso-50/80">&ldquo;{{ m1.quote }}&rdquo;</p>
+      <h3 class="mt-1.5 text-base font-bold text-espresso-50">{{ m1.name }}</h3>
+      <p class="text-[9px] uppercase tracking-[0.12em] text-espresso-100/60 font-medium mt-0.5">{{ r1 }}</p>
     </div>
+  </a>
+
+  {# ── Card 2 — Type B: Full-bleed + floating caption ── #}
+  <a href="/squad/{{ m2.id }}" class="relative overflow-hidden group min-h-[300px] md:h-[340px] rounded-2xl">
+    <div class="absolute inset-0">
+      {% if m2.image1 %}
+      <img src="{{ m2.image1 }}" alt="{{ m2.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out" loading="lazy">
+      {% else %}
+      <div class="w-full h-full bg-espresso-200 flex items-center justify-center"><span class="font-serif text-5xl font-bold text-espresso-400">{{ m2.name[:1] }}{{ m2.name.split()[-1][:1] }}</span></div>
+      {% endif %}
+    </div>
+    <span class="card-tag absolute top-3 left-3 z-10">{{ m2.tag }}</span>
+    <div class="absolute bottom-3 left-3 right-3 z-10 bg-espresso-50/90 backdrop-blur-sm rounded-xl p-3 shadow-sm">
+      <p class="quote-serif text-xs leading-snug text-espresso-600/90">&ldquo;{{ m2.quote }}&rdquo;</p>
+      <h3 class="mt-1 text-sm font-bold text-espresso-700">{{ m2.name }}</h3>
+      <p class="text-[8px] uppercase tracking-[0.12em] text-espresso-400 font-medium">{{ r2 }}</p>
+    </div>
+  </a>
+
+  {# ── Card 3 — Type C: Image 70% + sangria bar 30% ── #}
+  <a href="/squad/{{ m3.id }}" class="overflow-hidden group min-h-[300px] md:h-[340px] rounded-2xl flex flex-col">
+    <div class="relative flex-[7] min-h-0">
+      {% if m3.image1 %}
+      <img src="{{ m3.image1 }}" alt="{{ m3.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out" loading="lazy">
+      {% else %}
+      <div class="w-full h-full bg-espresso-200 flex items-center justify-center"><span class="font-serif text-5xl font-bold text-espresso-400">{{ m3.name[:1] }}{{ m3.name.split()[-1][:1] }}</span></div>
+      {% endif %}
+      <span class="card-tag absolute top-3 left-3">{{ m3.tag }}</span>
+    </div>
+    <div class="flex-[3] bg-sangria p-3 flex flex-col justify-center">
+      <p class="quote-serif text-xs leading-snug text-espresso-50/70">&ldquo;{{ m3.quote }}&rdquo;</p>
+      <h3 class="mt-1 text-sm font-bold text-espresso-50">{{ m3.name }}</h3>
+      <p class="text-[8px] uppercase tracking-[0.12em] text-espresso-100/50 font-medium">{{ r3 }}</p>
+    </div>
+  </a>
+</div>
+
+{# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ #}
+{#  ROW 2 — Members 4–5 (2 cols)         #}
+{#  Type D · Type A                      #}
+{# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ #}
+{% set m4 = members[3] %}
+{% set m5 = members[4] %}
+{% set r4 = m4.current_status|replace(" at ", " • ") %}
+{% set r5 = m5.current_status|replace(" at ", " • ") %}
+
+<div class="mt-7 grid grid-cols-1 md:grid-cols-2 gap-5">
+
+  {# ── Card 4 — Type D: Image 75% + espresso panel 25% ── #}
+  <a href="/squad/{{ m4.id }}" class="overflow-hidden group min-h-[300px] md:h-[380px] rounded-2xl flex">
+    <div class="relative flex-[3]">
+      {% if m4.image1 %}
+      <img src="{{ m4.image1 }}" alt="{{ m4.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out" loading="lazy">
+      {% else %}
+      <div class="w-full h-full bg-espresso-200 flex items-center justify-center"><span class="font-serif text-5xl font-bold text-espresso-400">{{ m4.name[:1] }}{{ m4.name.split()[-1][:1] }}</span></div>
+      {% endif %}
+      <span class="card-tag absolute top-3 left-3">{{ m4.tag }}</span>
+    </div>
+    <div class="flex-[1] bg-espresso-500 p-4 flex flex-col justify-center min-w-[90px]">
+      <p class="quote-serif text-xs leading-snug text-espresso-50/70">&ldquo;{{ m4.quote }}&rdquo;</p>
+      <h3 class="mt-1.5 text-sm font-bold text-espresso-50">{{ m4.name }}</h3>
+      <p class="text-[8px] uppercase tracking-[0.12em] text-espresso-100/50 font-medium mt-0.5">{{ r4 }}</p>
+    </div>
+  </a>
+
+  {# ── Card 5 — Type A: Full-bleed + sangria gradient ── #}
+  <a href="/squad/{{ m5.id }}" class="relative overflow-hidden group min-h-[300px] md:h-[380px] rounded-2xl">
+    <div class="absolute inset-0">
+      {% if m5.image1 %}
+      <img src="{{ m5.image1 }}" alt="{{ m5.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out" loading="lazy">
+      {% else %}
+      <div class="w-full h-full bg-espresso-200 flex items-center justify-center"><span class="font-serif text-5xl font-bold text-espresso-400">{{ m5.name[:1] }}{{ m5.name.split()[-1][:1] }}</span></div>
+      {% endif %}
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-sangria/85 via-sangria/15 to-transparent"></div>
+    <span class="card-tag absolute top-3 left-3 z-10">{{ m5.tag }}</span>
+    <div class="absolute bottom-0 left-0 right-0 p-6 z-10">
+      <p class="quote-serif text-base leading-snug text-espresso-50/80">&ldquo;{{ m5.quote }}&rdquo;</p>
+      <h3 class="mt-1.5 text-lg font-bold text-espresso-50">{{ m5.name }}</h3>
+      <p class="text-[9px] uppercase tracking-[0.12em] text-espresso-100/60 font-medium mt-0.5">{{ r5 }}</p>
+    </div>
+  </a>
+</div>
+
+{# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ #}
+{#  ROW 3 — Members 6–8 (3 cols)         #}
+{#  Type B · Type C · Type D             #}
+{# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ #}
+{% set m6 = members[5] %}
+{% set m7 = members[6] %}
+{% set m8 = members[7] %}
+{% set r6 = m6.current_status|replace(" at ", " • ") %}
+{% set r7 = m7.current_status|replace(" at ", " • ") %}
+{% set r8 = m8.current_status|replace(" at ", " • ") %}
+
+<div class="mt-7 grid grid-cols-1 md:grid-cols-3 gap-5">
+
+  {# ── Card 6 — Type B: Full-bleed + floating caption ── #}
+  <a href="/squad/{{ m6.id }}" class="relative overflow-hidden group min-h-[300px] md:h-[340px] rounded-2xl">
+    <div class="absolute inset-0">
+      {% if m6.image1 %}
+      <img src="{{ m6.image1 }}" alt="{{ m6.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out" loading="lazy">
+      {% else %}
+      <div class="w-full h-full bg-espresso-200 flex items-center justify-center"><span class="font-serif text-5xl font-bold text-espresso-400">{{ m6.name[:1] }}{{ m6.name.split()[-1][:1] }}</span></div>
+      {% endif %}
+    </div>
+    <span class="card-tag absolute top-3 left-3 z-10">{{ m6.tag }}</span>
+    <div class="absolute bottom-3 left-3 right-3 z-10 bg-espresso-50/90 backdrop-blur-sm rounded-xl p-3 shadow-sm">
+      <p class="quote-serif text-xs leading-snug text-espresso-600/90">&ldquo;{{ m6.quote }}&rdquo;</p>
+      <h3 class="mt-1 text-sm font-bold text-espresso-700">{{ m6.name }}</h3>
+      <p class="text-[8px] uppercase tracking-[0.12em] text-espresso-400 font-medium">{{ r6 }}</p>
+    </div>
+  </a>
+
+  {# ── Card 7 — Type C: Image 70% + espresso bar 30% ── #}
+  <a href="/squad/{{ m7.id }}" class="overflow-hidden group min-h-[300px] md:h-[340px] rounded-2xl flex flex-col">
+    <div class="relative flex-[7] min-h-0">
+      {% if m7.image1 %}
+      <img src="{{ m7.image1 }}" alt="{{ m7.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out" loading="lazy">
+      {% else %}
+      <div class="w-full h-full bg-espresso-200 flex items-center justify-center"><span class="font-serif text-5xl font-bold text-espresso-400">{{ m7.name[:1] }}{{ m7.name.split()[-1][:1] }}</span></div>
+      {% endif %}
+      <span class="card-tag absolute top-3 left-3">{{ m7.tag }}</span>
+    </div>
+    <div class="flex-[3] bg-espresso-500 p-3 flex flex-col justify-center">
+      <p class="quote-serif text-xs leading-snug text-espresso-50/70">&ldquo;{{ m7.quote }}&rdquo;</p>
+      <h3 class="mt-1 text-sm font-bold text-espresso-50">{{ m7.name }}</h3>
+      <p class="text-[8px] uppercase tracking-[0.12em] text-espresso-100/50 font-medium">{{ r7 }}</p>
+    </div>
+  </a>
+
+  {# ── Card 8 — Type D: Image 75% + pine panel 25% ── #}
+  <a href="/squad/{{ m8.id }}" class="overflow-hidden group min-h-[300px] md:h-[340px] rounded-2xl flex">
+    <div class="relative flex-[3]">
+      {% if m8.image1 %}
+      <img src="{{ m8.image1 }}" alt="{{ m8.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out" loading="lazy">
+      {% else %}
+      <div class="w-full h-full bg-espresso-200 flex items-center justify-center"><span class="font-serif text-5xl font-bold text-espresso-400">{{ m8.name[:1] }}{{ m8.name.split()[-1][:1] }}</span></div>
+      {% endif %}
+      <span class="card-tag absolute top-3 left-3">{{ m8.tag }}</span>
+    </div>
+    <div class="flex-[1] bg-pine p-4 flex flex-col justify-center min-w-[90px]">
+      <p class="quote-serif text-xs leading-snug text-espresso-50/70">&ldquo;{{ m8.quote }}&rdquo;</p>
+      <h3 class="mt-1.5 text-sm font-bold text-espresso-50">{{ m8.name }}</h3>
+      <p class="text-[8px] uppercase tracking-[0.12em] text-espresso-100/50 font-medium mt-0.5">{{ r8 }}</p>
+    </div>
+  </a>
+</div>
+
+{# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ #}
+{#  ROW 4 — Members 9–10 (2 cols)        #}
+{#  Type A · Type E                      #}
+{# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ #}
+{% set m9 = members[8] %}
+{% set m10 = members[9] %}
+{% set r9 = m9.current_status|replace(" at ", " • ") %}
+{% set r10 = m10.current_status|replace(" at ", " • ") %}
+
+<div class="mt-7 grid grid-cols-1 md:grid-cols-2 gap-5">
+
+  {# ── Card 9 — Type A: Full-bleed + espresso gradient ── #}
+  <a href="/squad/{{ m9.id }}" class="relative overflow-hidden group min-h-[300px] md:h-[380px] rounded-2xl">
+    <div class="absolute inset-0">
+      {% if m9.image1 %}
+      <img src="{{ m9.image1 }}" alt="{{ m9.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out" loading="lazy">
+      {% else %}
+      <div class="w-full h-full bg-espresso-200 flex items-center justify-center"><span class="font-serif text-5xl font-bold text-espresso-400">{{ m9.name[:1] }}{{ m9.name.split()[-1][:1] }}</span></div>
+      {% endif %}
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-espresso-600/85 via-espresso-600/15 to-transparent"></div>
+    <span class="card-tag absolute top-3 left-3 z-10">{{ m9.tag }}</span>
+    <div class="absolute bottom-0 left-0 right-0 p-6 z-10">
+      <p class="quote-serif text-base leading-snug text-espresso-50/80">&ldquo;{{ m9.quote }}&rdquo;</p>
+      <h3 class="mt-1.5 text-lg font-bold text-espresso-50">{{ m9.name }}</h3>
+      <p class="text-[9px] uppercase tracking-[0.12em] text-espresso-100/60 font-medium mt-0.5">{{ r9 }}</p>
+    </div>
+  </a>
+
+  {# ── Card 10 — Type E: Full-bleed + minimal overlay ── #}
+  <a href="/squad/{{ m10.id }}" class="relative overflow-hidden group min-h-[300px] md:h-[380px] rounded-2xl">
+    <div class="absolute inset-0">
+      {% if m10.image1 %}
+      <img src="{{ m10.image1 }}" alt="{{ m10.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out" loading="lazy">
+      {% else %}
+      <div class="w-full h-full bg-espresso-200 flex items-center justify-center"><span class="font-serif text-5xl font-bold text-espresso-400">{{ m10.name[:1] }}{{ m10.name.split()[-1][:1] }}</span></div>
+      {% endif %}
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-espresso-600/70 via-espresso-600/10 to-transparent"></div>
+    <span class="card-tag absolute top-3 left-3 z-10 bg-espresso-50 text-espresso-700">{{ m10.tag }}</span>
+    <div class="absolute bottom-0 left-0 right-0 p-5 z-10">
+      <h3 class="text-base font-bold text-espresso-50">{{ m10.name }}</h3>
+      <p class="text-[9px] uppercase tracking-[0.12em] text-espresso-100/60 font-medium mt-0.5">{{ r10 }}</p>
+    </div>
+  </a>
+</div>
+
 </div>
 {% endblock %}
