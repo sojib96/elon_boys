@@ -14,6 +14,13 @@
         line-height: 1.08;
     }
 
+    .home-stat {
+        border-right: 1px solid #E8E0D6;
+    }
+    .home-stat:last-child {
+        border-right: 0;
+    }
+
     .explore-tile {
         border: 1px solid #E8E0D6;
         transition: border-color 0.25s ease;
@@ -133,22 +140,22 @@
 
         {# ── STATS (sits on hero edge) ── #}
         <div class="md:col-span-2">
-            <div class="flex items-stretch rounded-sm overflow-hidden bg-[#FAF8F4]" style="border: 1px solid #E8E0D6; box-shadow: 0 2px 8px rgba(26,22,20,0.06);">
-                <div class="flex-1 px-2 py-4 text-center border-r border-[#E8E0D6] last:border-r-0">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 24px; color: #C1633B;">10</span>
-                    <span class="block text-[8px] text-[#8A7F76] uppercase tracking-[0.16em] font-medium font-sans mt-0.5">Friends</span>
+            <div class="grid grid-cols-2 rounded-sm overflow-hidden bg-[#FAF8F4]" style="border: 1px solid #E8E0D6; box-shadow: 0 2px 8px rgba(26,22,20,0.06);">
+                <div class="home-stat px-4 py-5 text-center">
+                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C1633B;">10</span>
+                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Friends</span>
                 </div>
-                <div class="flex-1 px-2 py-4 text-center border-r border-[#E8E0D6] last:border-r-0">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 24px; color: #7A9A7A;">4</span>
-                    <span class="block text-[8px] text-[#8A7F76] uppercase tracking-[0.16em] font-medium font-sans mt-0.5">Years</span>
+                <div class="home-stat px-4 py-5 text-center">
+                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #7A9A7A;">4</span>
+                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Years</span>
                 </div>
-                <div class="flex-1 px-2 py-4 text-center border-r border-[#E8E0D6] last:border-r-0">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 24px; color: #C4A35A;">12</span>
-                    <span class="block text-[8px] text-[#8A7F76] uppercase tracking-[0.16em] font-medium font-sans mt-0.5">Events</span>
+                <div class="home-stat px-4 py-5 text-center">
+                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C4A35A;">12</span>
+                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Events</span>
                 </div>
-                <div class="flex-1 px-2 py-4 text-center">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 24px; color: #8A7F76;">&infin;</span>
-                    <span class="block text-[8px] text-[#8A7F76] uppercase tracking-[0.16em] font-medium font-sans mt-0.5">Memories</span>
+                <div class="home-stat px-4 py-5 text-center">
+                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #8A7F76;">&infin;</span>
+                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Memories</span>
                 </div>
             </div>
             <p class="text-center text-[11px] text-[#8A7F76] font-sans italic tracking-wide mt-3">&mdash; Still texting the group chat every day. &mdash;</p>
