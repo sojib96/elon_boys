@@ -3,274 +3,154 @@
 
 {% block content %}
 <style>
-    .paper-texture {
-        background-color: #F5F0E8;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    .noise::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 9998;
+        pointer-events: none;
+        opacity: 0.02;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        background-size: 256px 256px;
     }
-
-    .issue-label {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 11px;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: #8B3A3A;
-        font-weight: 500;
-    }
-    .issue-rule {
-        width: 72px;
-        height: 1.5px;
-        background: #8B3A3A;
-        border: 0;
-        margin-top: 8px;
-        margin-bottom: 0;
-    }
-
-    .mag-headline {
-        font-family: 'Fraunces', Georgia, serif;
-        font-weight: 300;
-        font-style: italic;
-        font-size: clamp(2.4rem, 6vw, 4rem);
-        line-height: 1.05;
-        letter-spacing: -0.02em;
-        color: #1A1614;
-    }
-
-    .mag-headline-sub {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-weight: 500;
-        font-style: italic;
-        font-size: clamp(1rem, 2vw, 1.25rem);
-        color: #8B3A3A;
-        line-height: 1.3;
-    }
-
-    .body-text {
-        font-family: Georgia, 'Times New Roman', serif;
-        font-size: 16px;
-        line-height: 1.85;
-        color: #2C2824;
-        word-spacing: 0.5px;
-    }
-    .body-text p {
-        margin-bottom: 1.2em;
-    }
-    @media (min-width: 768px) {
-        .body-text {
-            text-align: justify;
-        }
-    }
-
-    .drop-cap::first-letter {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 4.2em;
-        font-weight: 700;
-        float: left;
-        line-height: 0.75;
-        margin-right: 0.12em;
-        margin-top: 0.08em;
-        color: #1A1614;
-    }
-
-    .divider-ornament {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        border: 0;
-        user-select: none;
-    }
-    .divider-ornament .line {
-        display: block;
-        width: 40px;
-        height: 1px;
-        background: #C4B8A8;
-    }
-    .divider-ornament .dot {
-        display: block;
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        background: #C4B8A8;
-    }
-
-    .divider-double {
-        border: 0;
-        height: 3px;
-        background: linear-gradient(to bottom, #D4C9B8 0px, #D4C9B8 1px, transparent 1px, transparent 2px, #D4C9B8 2px, #D4C9B8 3px);
-        opacity: 0.6;
-    }
-
-    .vintage-frame {
-        border: 1px solid #D4C9B8;
-        box-shadow:
-            0 2px 12px rgba(26,22,20,0.06),
-            inset 0 0 0 1px rgba(255,255,255,0.5);
-        border-radius: 2px;
-        overflow: hidden;
-    }
-    .vintage-frame img {
-        filter: sepia(0.12) contrast(0.92) brightness(1.02);
-        transition: filter 0.6s ease;
-        display: block;
-        width: 100%;
-        height: auto;
-    }
-    .vintage-frame:hover img {
-        filter: sepia(0) contrast(1) brightness(1);
-    }
-
-    .fact-label {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 9px;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: #8A7F76;
-        font-weight: 600;
-    }
-    .fact-value {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 15px;
-        color: #1A1614;
-        font-weight: 600;
-    }
-
+    .back-link svg { transition: transform 0.2s ease; }
+    .back-link:hover svg { transform: translateX(-3px); }
+    .hero-img { transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+    .hero-wrap:hover .hero-img { transform: scale(1.03); }
+    .stat-card { transition: background-color 0.2s ease; }
+    .stat-card:hover { background-color: #FAF7F4; }
     @media (prefers-reduced-motion: reduce) {
-        .vintage-frame img { filter: sepia(0.12) contrast(0.92) brightness(1.02); }
-        .vintage-frame:hover img { filter: sepia(0.12) contrast(0.92) brightness(1.02); }
+        .noise::before { display: none; }
+        .back-link svg, .back-link:hover svg { transition: none; transform: none; }
+        .hero-img, .hero-wrap:hover .hero-img { transition: none; transform: none; }
+        .stat-card { transition: none; }
+        .stat-card:hover { background: inherit; }
     }
 </style>
 
-{% if member %}
-<div class="paper-texture min-h-screen -mt-8 md:-mt-10 pb-16 md:pb-24 px-6 sm:px-8" style="margin-left: calc(-1 * (100vw - 100%) / 2); margin-right: calc(-1 * (100vw - 100%) / 2); padding-left: calc((100vw - 100%) / 2 + 1.5rem); padding-right: calc((100vw - 100%) / 2 + 1.5rem);">
+<div class="noise">
+    {% if member %}
+    {% set role_company = member.current_status|replace(" at ", " • ") %}
 
-    <div class="max-w-4xl mx-auto">
+    {# ─── HERO ─── #}
+    <div class="hero-wrap relative overflow-hidden" style="min-height: clamp(360px, 65vh, 680px);">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#3D2C1E]/90 via-[#2D2418]/60 to-[#1A1614]"></div>
+        {% if member.image2 %}
+        <img src="{{ member.image2 }}" alt="" class="hero-img absolute inset-0 w-full h-full object-cover" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#1A1614]/85 via-[#1A1614]/15 to-[#1A1614]/30"></div>
+        {% endif %}
 
-        {# ── BACK LINK ── #}
-        <a href="/squad" class="inline-flex items-center gap-1.5 text-[#8A7F76] hover:text-[#8B3A3A] text-xs font-sans font-medium uppercase tracking-wider transition-colors duration-200 no-underline mb-8 group">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:-translate-x-0.5"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-            Back to The Squad
-        </a>
-
-        {# ── HEADER ── #}
-        <div class="mb-8">
-            <div class="issue-label">{{ member.tag }}</div>
-            <hr class="issue-rule">
-            <h1 class="mag-headline mt-5 mb-3">{{ member.name }}</h1>
-            <div class="mag-headline-sub">
-                {{ member.nickname }} <span class="text-[#C4B8A8] font-sans not-italic text-xs mx-1">—</span>
-                <span class="font-sans not-italic text-[#8A7F76] text-sm font-medium">{{ member.current_status }}</span>
-            </div>
+        {# Profile pic top-right #}
+        {% if member.image1 %}
+        <div class="absolute top-6 right-6 sm:top-10 sm:right-10 z-10">
+            <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-16 h-16 sm:w-24 sm:h-24 rounded-lg object-cover ring-2 ring-white/30 shadow-2xl" loading="lazy">
         </div>
-
-        <div class="divider-ornament mb-10">
-            <span class="line"></span>
-            <span class="dot"></span>
-            <span class="line"></span>
+        {% else %}
+        <div class="absolute top-6 right-6 sm:top-10 sm:right-10 z-10 w-16 h-16 sm:w-24 sm:h-24 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center ring-2 ring-white/30 shadow-2xl">
+            <span class="text-lg sm:text-3xl font-serif font-bold text-white/80">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
         </div>
+        {% endif %}
 
-        {# ── SPREAD: IMAGE + QUOTE + FACTS ── #}
-        <div class="grid md:grid-cols-2 gap-8 mb-12 items-start">
-            {# ── Main photo ── #}
-            <figure class="vintage-frame md:sticky md:top-24">
-                {% if member.image2 %}
-                <img src="{{ member.image2 }}" alt="{{ member.name }}" loading="lazy"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="hidden w-full aspect-[4/3] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
-                {% elif member.image1 %}
-                <img src="{{ member.image1 }}" alt="{{ member.name }}" loading="lazy"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="hidden w-full aspect-[4/3] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
-                {% else %}
-                <div class="w-full aspect-[4/3] flex items-center justify-center bg-[#F0EBE2]">
-                    <span class="text-5xl font-serif font-bold text-[#C4B8A8]">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
-                </div>
-                {% endif %}
-                {% if member.image2 and member.image1 %}
-                <div class="absolute -bottom-3 -right-3 w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-[#F5F0E8] overflow-hidden shadow-md">
-                    <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-full object-cover" loading="lazy">
-                </div>
-                {% endif %}
-            </figure>
-
-            {# ── Quote + quick facts ── #}
-            <div>
-                <div class="mb-6">
-                    <span class="text-6xl leading-none font-serif text-[#C1633B]/20 block -mb-6" aria-hidden="true">&ldquo;</span>
-                    <blockquote class="font-serif italic text-[clamp(1.05rem,2.2vw,1.35rem)] leading-[1.65] text-[#4A423E] pl-6 border-l-2 border-[#C4B8A8]">
-                        {{ member.quote }}
-                    </blockquote>
-                </div>
-
-                <div class="divider-ornament my-8">
-                    <span class="line"></span>
-                    <span class="dot"></span>
-                    <span class="line"></span>
-                </div>
-
-                {# ── Quick facts ── #}
-                <div class="space-y-4">
-                    <div class="flex items-baseline gap-4 pb-3 border-b border-[#EDE6DC]">
-                        <span class="fact-label w-20 flex-shrink-0">Known For</span>
-                        <span class="fact-value">{{ member.tag }}</span>
-                    </div>
-                    <div class="flex items-baseline gap-4 pb-3 border-b border-[#EDE6DC]">
-                        <span class="fact-label w-20 flex-shrink-0">Role</span>
-                        <span class="fact-value">{{ member.current_status }}</span>
-                    </div>
-                    <div class="flex items-baseline gap-4 pb-3 border-b border-[#EDE6DC]">
-                        <span class="fact-label w-20 flex-shrink-0">Alias</span>
-                        <span class="fact-value">{{ member.nickname }}</span>
-                    </div>
+        {# Name + info bottom-left #}
+        <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-10 md:p-14">
+            <div class="max-w-3xl mx-auto w-full">
+                <p class="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-medium mb-2">{{ member.tag }}</p>
+                <h1 class="font-serif text-[clamp(2.2rem,6vw,4.5rem)] tracking-[-0.02em] text-white leading-[1.05] max-w-2xl">{{ member.name }}</h1>
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-3">
+                    <span class="text-white/50 text-sm italic font-serif">{{ member.nickname }}</span>
+                    <span class="text-white/20 hidden sm:inline">/</span>
+                    <span class="text-white/55 text-[13px] font-medium">{{ role_company }}</span>
                 </div>
             </div>
         </div>
+    </div>
 
-        {# ── DOUBLE HAIRLINE before body ── #}
-        <hr class="divider-double my-10 max-w-3xl mx-auto">
-
-        {# ── BIO ── #}
-        <div class="body-text max-w-3xl mx-auto">
-            <p class="drop-cap">{{ member.bio }}</p>
+    {# ─── QUOTE CARD (overlaps hero) ─── #}
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 -mt-16 sm:-mt-20 relative z-10">
+        <div class="bg-white rounded-lg border border-[#E8E0D6] p-7 sm:p-10 shadow-[0_4px_24px_rgba(26,22,20,0.06)]">
+            <div class="flex gap-5 sm:gap-7 mb-6 sm:mb-7">
+                <span class="text-5xl sm:text-7xl leading-none font-serif text-[#C1633B]/15 flex-shrink-0 -mt-2" aria-hidden="true">&ldquo;</span>
+                <blockquote class="font-serif italic text-[clamp(1.05rem,2.2vw,1.35rem)] leading-[1.65] text-[#4A423E]">
+                    {{ member.quote }}
+                </blockquote>
+            </div>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 pt-5 border-t border-[#EDE6DC] text-[11px]">
+                <span class="font-semibold uppercase tracking-[0.15em] text-[#C1633B]">{{ member.tag }}</span>
+                <span class="text-[#D5CBC0]" aria-hidden="true">/</span>
+                <span class="text-[#5A5450]">{{ member.current_status }}</span>
+                <span class="text-[#D5CBC0]" aria-hidden="true">/</span>
+                <span class="text-[#8A7F76] italic">{{ member.nickname }}</span>
+            </div>
         </div>
+    </div>
 
-        {# ── Fun fact ── #}
-        <div class="max-w-3xl mx-auto mt-8 pl-6 border-l-2 border-[#C1633B]/30">
-            <p class="text-[11px] uppercase tracking-[0.2em] font-semibold text-[#C1633B] mb-1">Fun Fact</p>
-            <p class="text-[14px] italic leading-relaxed text-[#5A5450]" style="font-family: Georgia, 'Times New Roman', serif;">{{ member.fun_fact }}</p>
+    {# ─── ABOUT ─── #}
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 mt-14 sm:mt-20">
+        <p class="text-[11px] uppercase tracking-[0.2em] font-semibold text-[#C1633B] pl-4 border-l-2 border-[#C1633B] mb-6">About</p>
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-10">
+            {% if member.image1 %}
+            <div class="md:col-span-2">
+                <div class="rounded-lg overflow-hidden border border-[#E8E0D6]">
+                    <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-auto object-cover" loading="lazy">
+                </div>
+            </div>
+            <div class="md:col-span-3">
+            {% else %}
+            <div class="md:col-span-5">
+            {% endif %}
+                <p class="text-[15px] leading-[1.85] text-[#5A5450] mb-6">{{ member.bio }}</p>
+                <div class="pl-5 border-l-2 border-[#C1633B]/25">
+                    <p class="text-sm text-[#8A7F76] leading-relaxed">
+                        <span class="italic">{{ member.fun_fact }}</span>
+                    </p>
+                </div>
+            </div>
         </div>
+    </div>
 
-        {# ── ORNAMENT before footer ── #}
-        <div class="divider-ornament my-14">
-            <span class="line"></span>
-            <span class="dot"></span>
-            <span class="line"></span>
+    {# ─── STAT STRIP ─── #}
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 mt-14 sm:mt-16">
+        <p class="text-[11px] uppercase tracking-[0.2em] font-semibold text-[#C1633B] pl-4 border-l-2 border-[#C1633B] mb-6">Quick Facts</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#EDE6DC] rounded-lg overflow-hidden">
+            <div class="stat-card bg-white p-6 sm:p-7">
+                <p class="text-[9px] uppercase tracking-[0.2em] font-semibold text-[#8A7F76] mb-2">Known For</p>
+                <p class="font-serif text-[15px] text-[#1F1B18] font-semibold">{{ member.tag }}</p>
+            </div>
+            <div class="stat-card bg-white p-6 sm:p-7">
+                <p class="text-[9px] uppercase tracking-[0.2em] font-semibold text-[#8A7F76] mb-2">Role</p>
+                <p class="font-serif text-[15px] text-[#1F1B18] font-semibold">{{ member.current_status }}</p>
+            </div>
+            <div class="stat-card bg-white p-6 sm:p-7">
+                <p class="text-[9px] uppercase tracking-[0.2em] font-semibold text-[#8A7F76] mb-2">Alias</p>
+                <p class="font-serif text-[15px] text-[#1F1B18] font-semibold">{{ member.nickname }}</p>
+            </div>
         </div>
+    </div>
 
-        {# ── FOOTER ── #}
-        <div class="max-w-3xl mx-auto flex items-center justify-between pt-6 border-t border-[#D4C9B8]">
-            <a href="/squad" class="inline-flex items-center gap-1.5 text-[#8A7F76] hover:text-[#8B3A3A] text-xs font-sans font-medium uppercase tracking-wider transition-colors duration-200 no-underline group">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:-translate-x-0.5"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    {# ─── FOOTER ─── #}
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 mt-14 sm:mt-16 mb-10 sm:mb-14">
+        <div class="flex items-center justify-between pt-6 sm:pt-8 border-t border-[#EDE6DC]">
+            <a href="/squad" class="back-link inline-flex items-center gap-2 text-[13px] font-medium text-[#5A5450] hover:text-[#C1633B] transition-colors duration-200">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
                 Back to The Squad
             </a>
             <span class="text-[10px] uppercase tracking-[0.12em] text-[#8A7F76] font-medium">{{ member.current_status }}</span>
         </div>
-
     </div>
-</div>
 
-{% else %}
-<div class="paper-texture min-h-screen -mt-8 md:-mt-10 pb-16 px-6 sm:px-8" style="margin-left: calc(-1 * (100vw - 100%) / 2); margin-right: calc(-1 * (100vw - 100%) / 2); padding-left: calc((100vw - 100%) / 2 + 1.5rem); padding-right: calc((100vw - 100%) / 2 + 1.5rem);">
-    <div class="max-w-3xl mx-auto pt-24 text-center">
-        <div class="w-12 h-12 border border-[#D4C9B8] flex items-center justify-center mx-auto mb-6">
-            <span class="text-lg font-serif font-bold text-[#C4B8A8]">?</span>
+    {% else %}
+    <div class="text-center py-24 max-w-3xl mx-auto px-4">
+        <div class="w-12 h-12 rounded-lg bg-[#E8E0D6] flex items-center justify-center mx-auto mb-6">
+            <span class="text-xl font-serif font-bold text-[#8A7F76]">?</span>
         </div>
-        <h1 class="text-3xl font-bold text-[#1A1614] mb-2" style="font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300;">Member not found</h1>
-        <p class="text-[#8A7F76] text-sm mb-8">No one here by that ID. Maybe they graduated early.</p>
-        <a href="/squad" class="inline-flex items-center gap-1.5 text-[#8A7F76] hover:text-[#8B3A3A] text-xs font-sans font-medium uppercase tracking-wider transition-colors duration-200 no-underline group">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:-translate-x-0.5"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        <h1 class="font-serif text-3xl font-bold text-[#1F1B18] mb-2">Member not found</h1>
+        <p class="text-[#8A7F76] text-sm mb-7">No one here by that ID. Maybe they graduated early.</p>
+        <a href="/squad" class="back-link inline-flex items-center gap-2 text-sm font-medium text-[#C1633B] hover:text-[#8A5540] transition-colors duration-200">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
             Back to The Squad
         </a>
     </div>
+    {% endif %}
 </div>
-{% endif %}
 {% endblock %}

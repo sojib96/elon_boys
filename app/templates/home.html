@@ -184,10 +184,7 @@
         <p class="home-body mt-3">
             Four years later, we walked across that same stage together &mdash; caps in the air, arms around each other, still laughing at the same inside jokes.
         </p>
-        <a href="/our-story" class="inline-flex items-center gap-1.5 mt-4 text-[13px] text-[#8B3A3A] font-sans font-medium hover:text-[#C1633B] transition-colors duration-200 no-underline">
-            Read the full story
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-        </a>
+
     </div>
 </div>
 
@@ -207,10 +204,9 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {% set explore_links = [
-            ('/our-story', 'Our Story', 'How it all began.', palette[0].accent, group_photo),
-            ('/squad', 'The Squad', 'Meet the ten of us.', palette[1].accent, photo2),
-            ('/timeline', 'Timeline', 'Year by year.', palette[2].accent, photo3),
-            ('/gallery', 'Gallery', 'Photos & memories.', palette[3].accent, group_photo),
+            ('/squad', 'The Squad', 'Meet the ten of us.', palette[0].accent, photo2),
+            ('/timeline', 'Timeline', 'Year by year.', palette[1].accent, photo3),
+            ('/gallery', 'Gallery', 'Photos & memories.', palette[2].accent, group_photo),
         ] %}
         {% for href, title, desc, color, img in explore_links %}
         <a href="{{ href }}" class="explore-tile group">
