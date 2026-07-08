@@ -14,11 +14,16 @@
         line-height: 1.08;
     }
 
-    .home-stat {
-        border-right: 1px solid #E8E0D6;
+    .stat-sep {
+        display: none;
     }
-    .home-stat:last-child {
-        border-right: 0;
+    @media (min-width: 768px) {
+        .stat-sep {
+            display: block;
+            width: 1px;
+            height: 32px;
+            background: #D4C9B8;
+        }
     }
 
     .explore-tile {
@@ -136,33 +141,35 @@
 
 {# ── STATS + EXPLORE (overlaps hero bottom) ── #}
 <div class="-mt-12 md:-mt-14 mb-16">
-    <div class="grid md:grid-cols-5 gap-6 md:gap-8">
 
-        {# ── STATS (sits on hero edge) ── #}
-        <div class="md:col-span-2">
-            <div class="grid grid-cols-2 rounded-sm overflow-hidden bg-[#FAF8F4]" style="border: 1px solid #E8E0D6; box-shadow: 0 2px 8px rgba(26,22,20,0.06);">
-                <div class="home-stat px-4 py-5 text-center">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C1633B;">10</span>
-                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Friends</span>
-                </div>
-                <div class="home-stat px-4 py-5 text-center">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #7A9A7A;">4</span>
-                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Years</span>
-                </div>
-                <div class="home-stat px-4 py-5 text-center">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C4A35A;">12</span>
-                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Events</span>
-                </div>
-                <div class="home-stat px-4 py-5 text-center">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #8A7F76;">&infin;</span>
-                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Memories</span>
-                </div>
+    {# ── STATS (horizontal editorial row, no box) ── #}
+    <div class="mb-10 md:mb-12">
+        <div class="flex flex-wrap items-center justify-center gap-y-3">
+            <div class="px-5 md:px-10 text-center">
+                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 30px; color: #C1633B;">10</span>
+                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.18em] font-medium font-sans mt-1">Friends</span>
             </div>
-            <p class="text-center text-[11px] text-[#8A7F76] font-sans italic tracking-wide mt-3">&mdash; Still texting the group chat every day. &mdash;</p>
+            <span class="stat-sep" aria-hidden="true"></span>
+            <div class="px-5 md:px-10 text-center">
+                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 30px; color: #7A9A7A;">4</span>
+                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.18em] font-medium font-sans mt-1">Years</span>
+            </div>
+            <span class="stat-sep" aria-hidden="true"></span>
+            <div class="px-5 md:px-10 text-center">
+                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 30px; color: #C4A35A;">12</span>
+                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.18em] font-medium font-sans mt-1">Events</span>
+            </div>
+            <span class="stat-sep" aria-hidden="true"></span>
+            <div class="px-5 md:px-10 text-center">
+                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 30px; color: #8A7F76;">&infin;</span>
+                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.18em] font-medium font-sans mt-1">Memories</span>
+            </div>
         </div>
+        <p class="text-center text-[12px] text-[#8A7F76] italic mt-4" style="font-family: Georgia, 'Times New Roman', serif;">&mdash; Still texting the group chat every day. &mdash;</p>
+    </div>
 
-        {# ── EXPLORE ── #}
-        <div class="md:col-span-3">
+    {# ── EXPLORE ── #}
+    <div>
             <div class="text-center mb-5">
                 <h2 class="text-[12px] text-[#8B3A3A] font-sans uppercase tracking-[0.22em] font-medium">Explore</h2>
                 <div class="w-10 h-px mx-auto mt-2" style="background: #D4C9B8;"></div>
@@ -194,8 +201,6 @@
                 {% endfor %}
             </div>
         </div>
-
-    </div>
 </div>
 
 {# ── FEATURED MEMORY ── #}
