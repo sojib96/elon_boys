@@ -3,6 +3,8 @@
 
 {% block content %}
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap');
+
     main:has(.contact-container) {
         padding: 0 !important;
         max-width: none !important;
@@ -11,110 +13,116 @@
         justify-content: center;
     }
 
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-5px); }
+    .issue-label {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #8B3A3A;
+        font-weight: 500;
     }
-    @keyframes cardIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes blobPulse {
-        0%, 100% { transform: scale(1); opacity: 0.5; }
-        50% { transform: scale(1.05); opacity: 0.8; }
+    .issue-rule {
+        width: 72px;
+        height: 1.5px;
+        background: #8B3A3A;
+        border: 0;
+        margin-top: 8px;
+        margin-bottom: 0;
     }
 
-    .icon-email { color: #D56B4D; background: rgba(213,107,77,0.14); box-shadow: 0 0 20px rgba(213,107,77,0.14); }
-    .icon-phone { color: #4A8F8F; background: rgba(74,143,143,0.14); box-shadow: 0 0 20px rgba(74,143,143,0.14); }
-    .icon-social { color: #C4A35A; background: rgba(196,163,90,0.18); box-shadow: 0 0 20px rgba(196,163,90,0.15); }
-
-    .icon-wrap {
-        display: flex;
-        animation: float 3.5s ease-in-out infinite;
-        transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .icon-wrap-delayed { animation-delay: -1.2s; }
-    .icon-wrap-delayed-2 { animation-delay: -2.4s; }
-
-    .contact-card:hover .icon-wrap {
-        animation: none;
-        transform: scale(1.12) rotate(-4deg);
+    .page-headline {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: 700;
+        font-size: clamp(1.6rem, 4vw, 2.5rem);
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+        color: #1A1614;
     }
 
     .contact-card {
-        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+        background-color: #FAF8F4;
+        border: 1px solid #E8E0D6;
+        box-shadow: 0 1px 3px rgba(26, 22, 20, 0.04);
+        border-radius: 2px;
+        padding: 24px 20px;
+        transition: background-color 0.25s ease;
     }
     .contact-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 36px rgba(45,36,24,0.12);
+        background-color: #F5F0E8;
     }
 
-    .card-stagger { opacity: 0; transform: translateY(20px); }
-    .card-stagger:nth-child(1) { animation: cardIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.15s forwards; }
-    .card-stagger:nth-child(2) { animation: cardIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.35s forwards; }
-    .card-stagger:nth-child(3) { animation: cardIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.55s forwards; }
+    .contact-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .card-divider {
+        border: 0;
+        height: 3px;
+        background: linear-gradient(to bottom, #D4C9B8 0px, #D4C9B8 1px, transparent 1px, transparent 2px, #D4C9B8 2px, #D4C9B8 3px);
+        opacity: 0.5;
+    }
 
     @media (prefers-reduced-motion: reduce) {
-        .icon-wrap { animation: none; }
-        .contact-card:hover .icon-wrap { transform: none; }
-        .contact-card:hover { transform: none; }
-        .card-stagger { opacity: 1; transform: none; animation: none; }
+        .contact-card { transition: none; }
+        .contact-card:hover { background-color: inherit; }
     }
 </style>
 
 <div class="contact-container relative w-full flex flex-col items-center justify-center px-4 py-6">
-    {# ─── DOT GRID ─── #}
-    <div class="fixed inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(45,36,24,0.04) 1px, transparent 1px); background-size: 24px 24px;"></div>
-
-    {# ─── BLUR BLOBS ─── #}
-    <div class="fixed inset-0 pointer-events-none overflow-hidden">
-        <div class="absolute w-[450px] h-[450px] rounded-full" style="background: radial-gradient(circle, rgba(213,107,77,0.1), transparent 70%); top: -15%; right: -5%; filter: blur(70px); animation: blobPulse 8s ease-in-out infinite;"></div>
-        <div class="absolute w-[350px] h-[350px] rounded-full" style="background: radial-gradient(circle, rgba(196,163,90,0.08), transparent 70%); bottom: -10%; left: -5%; filter: blur(70px); animation: blobPulse 10s ease-in-out infinite 2s;"></div>
-    </div>
-
-        {# ─── CONTENT ─── #}
-    <div class="relative z-10 w-full max-w-3xl">
-        <div class="text-center mb-4 sm:mb-5">
-            <p class="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#D56B4D]/70 mb-3">If You Must</p>
-            <h1 class="font-serif text-[clamp(1.5rem,4vw,2.5rem)] font-bold text-[#2B2420] tracking-[-0.02em] leading-[1.1]">Fine, Talk To Us</h1>
-            <p class="text-[#7A6854] text-sm mt-1.5">We probably won&rsquo;t reply immediately, but go ahead.</p>
+    <div class="w-full max-w-2xl">
+        <div class="text-center mb-6">
+            <div class="issue-label">If You Must</div>
+            <hr class="issue-rule mx-auto">
+            <h1 class="page-headline mt-4 mb-2">Fine, Talk To Us</h1>
+            <p class="text-[#8A7F76] text-sm leading-relaxed max-w-xs mx-auto" style="font-family: Georgia, 'Times New Roman', serif;">We probably won&rsquo;t reply immediately, but go ahead.</p>
         </div>
 
-        {# ─── GLASS CARD ─── #}
-        <div class="rounded-2xl shadow-[0_8px_32px_rgba(43,36,32,0.10)]" style="background: linear-gradient(135deg, rgba(213,107,77,0.18), rgba(196,163,90,0.10), transparent); padding: 1px;">
-            <div class="rounded-2xl p-5 sm:p-6 md:p-8 bg-[#FFFEFC]">
-                <div class="grid gap-5 md:gap-6 md:grid-cols-3">
-                    {# ── Email ── #}
-                    <div class="contact-card card-stagger flex flex-col items-center text-center p-3 rounded-xl cursor-default">
-                        <div class="icon-wrap w-12 h-12 rounded-full flex items-center justify-center text-lg mb-3 icon-email">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
-                        </div>
-                         <h3 class="font-semibold text-[#2B2420] text-[15px]">Email</h3>
-                         <p class="text-[#7A6854] text-sm mt-1">reply@korbo.na</p>
-                         <p class="text-[11px] mt-2 leading-relaxed text-[#D56B4D]">We reply slower than<br>a govt office during hartal.</p>
-                    </div>
+        <hr class="card-divider mb-6">
 
-                    {# ── Phone ── #}
-                    <div class="contact-card card-stagger flex flex-col items-center text-center p-3 rounded-xl cursor-default">
-                        <div class="icon-wrap icon-wrap-delayed w-12 h-12 rounded-full flex items-center justify-center text-lg mb-3 icon-phone">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                        </div>
-                         <h3 class="font-semibold text-[#2B2420] text-[15px]">Phone</h3>
-                         <p class="text-[#7A6854] text-sm mt-1">+880 1700-000000</p>
-                         <p class="text-[11px] mt-2 leading-relaxed text-[#4A8F8F]">Missed call is our love language.<br>We'll miss yours too.</p>
-                    </div>
+        <div class="grid gap-4 md:grid-cols-3">
 
-                    {# ── Social ── #}
-                    <div class="contact-card card-stagger flex flex-col items-center text-center p-3 rounded-xl cursor-default">
-                        <div class="icon-wrap icon-wrap-delayed-2 w-12 h-12 rounded-full flex items-center justify-center text-lg mb-3 icon-social">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        </div>
-                         <h3 class="font-semibold text-[#2B2420] text-[15px]">Social</h3>
-                        <p class="text-[#7A6854] text-sm mt-1">Facebook &middot; YouTube &middot; Telegram</p>
-                        <p class="text-[11px] mt-2 leading-relaxed text-[#C4A35A]">10k followers, zero replies.<br>We keep the ratio balanced.</p>
-                    </div>
+            {# ── EMAIL ── #}
+            <div class="contact-card">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="contact-icon" style="background: rgba(193,99,59,0.12);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C1633B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+                    </span>
+                    <span class="text-[10px] uppercase tracking-[0.18em] font-semibold" style="color: #C1633B;">Email</span>
                 </div>
+                <p class="text-[14px] text-[#1A1614] font-medium mb-2" style="font-family: 'Inter', system-ui, sans-serif;">reply@korbo.na</p>
+                <p class="text-[12px] italic leading-relaxed text-[#8A7F76]" style="font-family: Georgia, 'Times New Roman', serif;">We reply slower than a govt office during hartal.</p>
             </div>
+
+            {# ── PHONE ── #}
+            <div class="contact-card">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="contact-icon" style="background: rgba(122,154,122,0.15);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7A9A7A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </span>
+                    <span class="text-[10px] uppercase tracking-[0.18em] font-semibold" style="color: #7A9A7A;">Phone</span>
+                </div>
+                <p class="text-[14px] text-[#1A1614] font-medium mb-2" style="font-family: 'Inter', system-ui, sans-serif;">+880 1700-000000</p>
+                <p class="text-[12px] italic leading-relaxed text-[#8A7F76]" style="font-family: Georgia, 'Times New Roman', serif;">Missed call is our love language. We&rsquo;ll miss yours too.</p>
+            </div>
+
+            {# ── SOCIAL ── #}
+            <div class="contact-card">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="contact-icon" style="background: rgba(196,163,90,0.18);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C4A35A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    </span>
+                    <span class="text-[10px] uppercase tracking-[0.18em] font-semibold" style="color: #C4A35A;">Social</span>
+                </div>
+                <p class="text-[14px] text-[#1A1614] font-medium mb-2" style="font-family: 'Inter', system-ui, sans-serif;">Facebook &middot; YouTube &middot; Telegram</p>
+                <p class="text-[12px] italic leading-relaxed text-[#8A7F76]" style="font-family: Georgia, 'Times New Roman', serif;">10k followers, zero replies. We keep the ratio balanced.</p>
+            </div>
+
         </div>
     </div>
 </div>
