@@ -2,113 +2,26 @@
 {% block title %}Member Login — Elon Group{% endblock %}
 
 {% block content %}
-<style>
-    .paper-texture {
-        background-color: #F5F0E8;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    }
+<div class="max-w-sm mx-auto mt-8">
+    <div class="text-center mb-8 reveal">
+        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Private</span>
+        <h1 class="text-2xl font-bold text-gray-900 tracking-[-0.02em]">Member Login</h1>
+        <p class="text-gray-500 text-sm mt-1">Private area for the 10 of us.</p>
+    </div>
 
-    .login-headline {
-        font-family: 'Fraunces', Georgia, serif;
-        font-weight: 300;
-        font-style: italic;
-        font-size: clamp(1.8rem, 4vw, 2.8rem);
-        line-height: 1.1;
-        color: #1A1614;
-    }
-
-    .login-label {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 10px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: #8A7F76;
-        font-weight: 600;
-        display: block;
-        margin-bottom: 6px;
-    }
-
-    .login-input {
-        display: block;
-        width: 100%;
-        padding: 10px 0 8px;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 14px;
-        color: #1A1614;
-        background: transparent;
-        border: 0;
-        border-bottom: 1.5px solid #D4C9B8;
-        outline: none;
-        transition: border-color 0.2s ease;
-    }
-    .login-input::placeholder {
-        color: #C4B8A8;
-        font-size: 13px;
-    }
-    .login-input:focus {
-        border-bottom-color: #C1633B;
-    }
-
-    .login-stamp {
-        display: inline-block;
-        padding: 10px 32px;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 13px;
-        font-weight: 500;
-        letter-spacing: 0.05em;
-        color: #C1633B;
-        background: transparent;
-        border: 1.5px solid #C1633B;
-        border-radius: 24px;
-        cursor: pointer;
-        transition: all 0.25s ease;
-    }
-    .login-stamp:hover {
-        background: #C1633B;
-        color: #fff;
-    }
-    .login-stamp:active {
-        transform: scale(0.97);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .login-input { transition: none; }
-        .login-stamp { transition: none; }
-        .login-stamp:active { transform: none; }
-    }
-</style>
-
-<div class="paper-texture min-h-screen -mt-8 md:-mt-10 pb-16 md:pb-24 px-6 sm:px-8" style="margin-left: calc(-1 * (100vw - 100%) / 2); margin-right: calc(-1 * (100vw - 100%) / 2); padding-left: calc((100vw - 100%) / 2 + 1.5rem); padding-right: calc((100vw - 100%) / 2 + 1.5rem);">
-
-    <div class="max-w-sm mx-auto pt-12 md:pt-16">
-
-        {# ── HEADER ── #}
-        <div class="mb-10">
-            <p class="text-[#8B3A3A] text-[11px] font-sans uppercase tracking-[0.22em] font-medium mb-2">Private / Members</p>
-            <h1 class="login-headline mb-2">Welcome back.</h1>
-            <p class="text-[#8A7F76] text-sm leading-relaxed" style="font-family: Georgia, 'Times New Roman', serif;">The door's open — sign in to pick up where you left off.</p>
-        </div>
-
-        {# ── FORM (ledger entry) ── #}
-        <form class="pt-6 border-t border-[#E8E0D6]">
+    <div class="bg-white rounded-xl shadow-card border border-gray-100 p-8 reveal">
+        <form>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-medium mb-1.5">Username</label>
+                <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 transition-all bg-gray-50 focus:bg-white" placeholder="Enter your username">
+            </div>
             <div class="mb-6">
-                <label class="login-label" for="username">Username</label>
-                <input type="text" id="username" class="login-input" placeholder="e.g. elonm">
+                <label class="block text-gray-700 text-sm font-medium mb-1.5">Password</label>
+                <input type="password" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 transition-all bg-gray-50 focus:bg-white" placeholder="Enter your password">
             </div>
-            <div class="mb-8">
-                <label class="login-label" for="password">Password</label>
-                <input type="password" id="password" class="login-input" placeholder="············">
-            </div>
-            <div class="flex items-center justify-end">
-                <button type="submit" class="login-stamp">Sign In</button>
-            </div>
+            <button type="submit" class="w-full bg-coral-500 hover:bg-coral-600 text-white font-medium py-2.5 rounded-lg transition-all duration-200 text-sm shadow-sm hover:shadow-glow">Sign In</button>
         </form>
-
-        {# ── FOOTNOTE ── #}
-        <p class="text-[#C4B8A8] text-[12px] italic leading-relaxed mt-8 pt-6 border-t border-[#E8E0D6]" style="font-family: Georgia, 'Times New Roman', serif;">
-            Authentication coming in a future sprint.
-        </p>
-
+        <p class="text-gray-400 text-xs text-center mt-4 italic">Authentication coming in a future sprint.</p>
     </div>
 </div>
 {% endblock %}
