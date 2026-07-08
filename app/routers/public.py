@@ -1,7 +1,9 @@
+import os
+
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
-from app.jinja import templates
+from app.jinja import BASE_DIR, templates
 
 router = APIRouter()
 
@@ -51,6 +53,9 @@ UPDATES = [
     {"id": 3, "title": "New Addition to the Squad", "content": "Big news — Maya and her partner just welcomed a baby girl! Little Sofia already has the whole group wrapped around her finger. Mazel tov!", "author": "Priya Sharma", "posted_at": "2026-05-20"},
     {"id": 4, "title": "Tomás Dropped a New Track", "content": "Our very own music producer just released a new single. It's called 'Nostalgia' and yes, there's a sample of our graduation night in there. Go stream it!", "author": "Leo Kim", "posted_at": "2026-04-10"},
     {"id": 5, "title": "Remembering the House", "content": "James found a video from our old house share. It's 3 minutes of chaos, burnt toast, and someone falling off a chair. It's perfect.", "author": "Sara Johansson", "posted_at": "2026-03-05"},
+    {"id": 6, "title": "Beach Day Flashback", "content": "Remember when we spent an entire Saturday building a sandcastle that looked more like a sand-blob? Best Worst Castle 2023, right there.", "author": "Yuki Tanaka", "posted_at": "2026-02-18"},
+    {"id": 7, "title": "The Great Pancake Disaster", "content": "Someone (Leo) thought it was a good idea to flip pancakes without a spatula. The ceiling still has a stain. We framed it as modern art.", "author": "David Park", "posted_at": "2026-01-22"},
+    {"id": 8, "title": "Midnight Rooftop Conversations", "content": "Some of the best talks happened on that creaky rooftop. Life, love, dreams, and whether pineapple belongs on pizza. The jury's still out.", "author": "Aisha Mohammed", "posted_at": "2025-12-14"},
 ]
 
 EVENTS_LIST = [
@@ -107,13 +112,39 @@ async def timeline(request: Request):
 
 @router.get("/gallery", response_class=HTMLResponse)
 async def gallery(request: Request):
-    categories = sorted(set(item["category"] for item in GALLERY_ITEMS))
-    return templates.TemplateResponse("gallery.html", {"request": request, "gallery_items": GALLERY_ITEMS, "categories": categories})
+    uploads_dir = BASE_DIR / "static" / "uploads"
+    valid_exts = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+    skip = {"IMG_20200902_125947.jpg"}
+    uploads = sorted(
+        f.name for f in uploads_dir.iterdir()
+        if f.suffix.lower() in valid_exts and not f.name.startswith(".") and f.name not in skip
+    )
+
+    items = []
+    for i, item in enumerate(GALLERY_ITEMS):
+        item = dict(item)
+        item["photo_url"] = f"/static/uploads/{uploads[i % len(uploads)]}" if uploads else None
+        items.append(item)
+
+    categories = sorted(set(item["category"] for item in items))
+    return templates.TemplateResponse("gallery.html", {"request": request, "gallery_items": items, "categories": categories})
 
 
 @router.get("/updates", response_class=HTMLResponse)
 async def updates(request: Request):
     return templates.TemplateResponse("updates.html", {"request": request, "updates": UPDATES})
+
+
+@router.get("/updates/{update_id:int}", response_class=HTMLResponse)
+async def update_detail(request: Request, update_id: int):
+    post = next((u for u in UPDATES if u["id"] == update_id), None)
+    if not post:
+        from starlette.exceptions import HTTPException as StarletteHTTPException
+        raise StarletteHTTPException(status_code=404)
+    related = [u for u in UPDATES if u["id"] != update_id][:2]
+    return templates.TemplateResponse("update_detail.html", {
+        "request": request, "post": post, "related": related
+    })
 
 
 @router.get("/events", response_class=HTMLResponse)
