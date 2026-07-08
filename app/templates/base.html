@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#C1633B">
+    <meta name="theme-color" content="#D56B4D">
     <meta name="description" content="Ten friends. Four years. A lifetime of memories.">
     <title>{% block title %}Elon Group{% endblock %}</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23FF6B4A'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='16' font-weight='700' font-family='system-ui'>EG</text></svg>">
@@ -40,14 +40,14 @@
     </script>
     <style>
         body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        ::selection { background: #C1633B33; color: #8B3A3A; }
-        :focus-visible { outline: 2px solid #C1633B; outline-offset: 2px; border-radius: 6px; }
+        ::selection { background: #D56B4D33; color: #C25A3E; }
+        :focus-visible { outline: 2px solid #D56B4D; outline-offset: 2px; border-radius: 6px; }
         * { transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease; }
 
-        .nav-link { position: relative; padding: 6px 14px; border-radius: 6px; font-size: 14px; font-weight: 500; color: #D4C9B8; letter-spacing: -0.01em; transition: color 0.2s ease, background 0.2s ease; }
-        .nav-link:hover { color: #EDE8DE; background: rgba(193,99,59,0.1); }
-        .nav-link.active { color: #C1633B; font-weight: 600; }
-        .nav-link.active::after { content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); width: 14px; height: 2px; background: #C1633B; border-radius: 1px; }
+        .nav-link { position: relative; padding: 6px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; color: #E8E1D6; letter-spacing: -0.01em; }
+        .nav-link:hover { color: #D56B4D; background: rgba(213,107,77,0.1); }
+        .nav-link.active { color: #D56B4D; font-weight: 600; }
+        .nav-link.active::after { content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); width: 16px; height: 2.5px; background: #D56B4D; border-radius: 2px; }
 
         .card-hover { transition: transform 250ms ease, box-shadow 250ms ease; }
         .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,52,39,0.12); }
@@ -71,9 +71,9 @@
         .hamburger span:nth-child(1) { top: 0; }
         .hamburger span:nth-child(2) { top: 6px; }
         .hamburger span:nth-child(3) { top: 12px; }
-        .hamburger.open span:nth-child(1) { transform: rotate(45deg); top: 6px; background: #C1633B; }
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg); top: 6px; background: #D56B4D; }
         .hamburger.open span:nth-child(2) { opacity: 0; }
-        .hamburger.open span:nth-child(3) { transform: rotate(-45deg); top: 6px; background: #C1633B; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg); top: 6px; background: #D56B4D; }
 
         #scroll-top { opacity: 0; pointer-events: none; transform: translateY(12px); }
         #scroll-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
@@ -127,13 +127,13 @@
     </style>
 </head>
 <body class="font-sans text-ink bg-espresso-50 flex flex-col min-h-screen">
-    <nav class="bg-[#1A1510] sticky top-0 z-50 border-b border-[rgba(232,225,214,0.06)] shadow-md shadow-black/20 relative" role="navigation" aria-label="Main navigation">
-        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(193,99,59,0.5)] to-transparent" aria-hidden="true"></div>
+    <nav class="bg-[#1A1510] sticky top-0 z-50 border-b border-[rgba(232,225,214,0.08)] shadow-md shadow-black/20 relative" role="navigation" aria-label="Main navigation">
+        <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-coral-500/0 via-coral-500 to-coral-500/0" aria-hidden="true"></div>
         <div class="max-w-7xl mx-auto px-6 sm:px-8">
             <div class="flex items-center justify-between h-16 md:h-20">
                 <a href="/" class="flex items-center gap-3 flex-shrink-0" aria-label="Home">
-                    <span class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#C1633B] to-[#8B3A3A] flex items-center justify-center text-white text-[11px] font-bold tracking-wider shadow-sm shadow-black/20 ring-1 ring-white/10" aria-hidden="true">EG</span>
-                    <span class="font-bold text-[15px] tracking-tight text-[#EDE8DE]">Elon Group</span>
+                    <span class="w-9 h-9 rounded-lg bg-gradient-to-br from-coral-400 to-coral-500 flex items-center justify-center text-white text-[11px] font-bold tracking-wider shadow-sm shadow-coral-500/20 ring-1 ring-white/10" aria-hidden="true">EG</span>
+                    <span class="font-bold text-[15px] tracking-tight text-white/90">Elon Group</span>
                 </a>
 
                 <div id="desktop-nav" class="hidden md:flex items-center gap-6 lg:gap-8">
@@ -150,7 +150,7 @@
                     {% for href, label in nav_links %}
                     <a href="{{ href }}" class="nav-link {% if request.url.path == href %}active{% endif %}">{{ label }}</a>
                     {% endfor %}
-                    <a href="/login" class="ml-3 bg-[#C1633B] hover:bg-[#A8472F] text-white text-[13px] font-semibold px-5 py-2 rounded-lg transition-all duration-200 shadow-md">Login</a>
+                    <a href="/login" class="ml-3 bg-coral-500 hover:bg-coral-600 text-white text-[13px] font-semibold px-5 py-2 rounded-lg transition-all duration-200 shadow-md hover:shadow-glow">Login</a>
                 </div>
 
                 <button id="menu-btn" class="md:hidden p-1.5 rounded-lg hover:bg-[rgba(232,225,214,0.08)] transition-colors" aria-label="Toggle navigation menu" aria-expanded="false">
@@ -162,9 +162,9 @@
 
             <div id="mobile-menu" class="md:hidden hidden pb-4 pt-2 border-t border-white/10" role="menu">
                 {% for href, label in nav_links %}
-                <a href="{{ href }}" class="block px-3 py-2 rounded-lg text-sm text-[#B8AFA2] hover:text-[#D4C9B8] hover:bg-[rgba(193,99,59,0.1)] font-medium transition-all duration-200" role="menuitem">{{ label }}</a>
+                <a href="{{ href }}" class="block px-3 py-2 rounded-lg text-sm text-[#B8AFA2] hover:text-coral-400 hover:bg-[rgba(213,107,77,0.1)] font-medium transition-all duration-200" role="menuitem">{{ label }}</a>
                 {% endfor %}
-                <a href="/login" class="block mt-2 mx-3 bg-[#C1633B] text-white text-sm font-semibold px-4 py-2 rounded-lg text-center">Login</a>
+                <a href="/login" class="block mt-2 mx-3 bg-coral-500 text-white text-sm font-semibold px-4 py-2 rounded-lg text-center">Login</a>
             </div>
         </div>
     </nav>
@@ -175,7 +175,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-9 h-9 rounded-lg bg-[#C1633B] border-0 shadow-md flex items-center justify-center text-white hover:bg-[#A8472F] hover:-translate-y-0.5 transition-all duration-200 shadow-[0_4px_12px_rgba(26,22,20,0.2)]" aria-label="Scroll to top">
+    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-9 h-9 rounded-lg bg-coral-500 border-0 shadow-md flex items-center justify-center text-white hover:bg-coral-600 hover:-translate-y-0.5 transition-all duration-200 shadow-[0_4px_12px_rgba(213,107,77,0.35)]" aria-label="Scroll to top">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
     </button>
 
@@ -186,8 +186,8 @@
             <div class="grid md:grid-cols-12 gap-8 md:gap-6 pb-8">
                 <div class="md:col-span-4 reveal" style="transition-delay:0ms">
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#C1633B] to-[#8B3A3A] flex items-center justify-center text-white text-[11px] font-bold tracking-wider shadow-sm shadow-black/20 ring-1 ring-white/10">EG</span>
-                        <span class="font-bold text-[#EDE8DE] text-[15px] tracking-tight">Elon Group</span>
+                        <span class="w-9 h-9 rounded-lg bg-gradient-to-br from-coral-400 to-coral-500 flex items-center justify-center text-white text-[11px] font-bold tracking-wider shadow-sm shadow-coral-500/20 ring-1 ring-white/10">EG</span>
+                        <span class="font-bold text-white/90 text-[15px] tracking-tight">Elon Group</span>
                     </div>
                     <p class="text-[#B8AFA2] text-sm leading-normal max-w-[280px]">Ten friends. Four years. A lifetime of memories.</p>
                 </div>
@@ -222,8 +222,8 @@
                         <p class="text-[#C4B8A8] text-sm">Est. 2019 &middot; Graduated 2023</p>
                         <div class="flex items-center gap-2">
                             <span class="relative flex h-2.5 w-2.5">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C1633B] opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#C1633B]"></span>
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-coral-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-coral-500"></span>
                             </span>
                             <span class="text-[#C4B8A8] text-sm">Still going strong.</span>
                         </div>
@@ -234,16 +234,16 @@
             <div class="border-t border-[rgba(232,225,214,0.08)] py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p class="text-[#9E8C78] text-xs">&copy; 2026 Elon Group. All rights reserved.</p>
                 <div class="flex items-center gap-4">
-                    <a href="#" class="text-[#9E8C78] hover:text-[#C1633B] transition-colors duration-200" aria-label="Instagram">
+                    <a href="#" class="text-[#9E8C78] hover:text-coral-400 transition-colors duration-200" aria-label="Instagram">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                     </a>
-                    <a href="#" class="text-[#9E8C78] hover:text-[#C1633B] transition-colors duration-200" aria-label="X (Twitter)">
+                    <a href="#" class="text-[#9E8C78] hover:text-coral-400 transition-colors duration-200" aria-label="X (Twitter)">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                     </a>
-                    <a href="#" class="text-[#9E8C78] hover:text-[#C1633B] transition-colors duration-200" aria-label="Facebook">
+                    <a href="#" class="text-[#9E8C78] hover:text-coral-400 transition-colors duration-200" aria-label="Facebook">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                     </a>
-                    <a href="#" class="text-[#9E8C78] hover:text-[#C1633B] transition-colors duration-200" aria-label="YouTube">
+                    <a href="#" class="text-[#9E8C78] hover:text-coral-400 transition-colors duration-200" aria-label="YouTube">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
                     </a>
                 </div>
@@ -258,14 +258,14 @@
                 left: 0;
                 width: 0;
                 height: 1px;
-                background: #C1633B;
+                background: #D56B4D;
                 transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             }
             .footer-link:hover::after {
                 width: 100%;
             }
             .footer-link:focus-visible {
-                outline: 2px solid #C1633B;
+                outline: 2px solid #D56B4D;
                 outline-offset: 2px;
                 border-radius: 2px;
             }
