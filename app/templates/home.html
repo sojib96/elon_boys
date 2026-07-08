@@ -172,11 +172,12 @@
                 ('/squad', 'The Squad', 'Meet the ten of us.', palette[0].accent, photo2),
                 ('/timeline', 'Timeline', 'Year by year.', palette[1].accent, photo3),
                 ('/gallery', 'Gallery', 'Photos & memories.', palette[2].accent, group_photo),
+                ('/updates', 'Updates', 'Latest from the group.', palette[3].accent, group_photo),
             ] %}
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {% for href, title, desc, color, img in explore_links %}
-                <a href="{{ href }}" class="explore-tile group {% if loop.last %}sm:col-span-2{% endif %}">
+                <a href="{{ href }}" class="explore-tile group">
                     <img src="{{ img }}" alt="" class="tile-img absolute inset-0 w-full h-full object-cover" loading="lazy"
                          onerror="this.style.display='none'">
                     <div class="absolute inset-0" style="background: linear-gradient(160deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.6) 100%);"></div>
