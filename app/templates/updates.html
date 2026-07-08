@@ -121,30 +121,25 @@
     {'accent': '#8A7F76'},
 ] %}
 
-<div class="max-w-2xl mx-auto">
+<div class="max-w-6xl mx-auto mb-12 md:mb-16 px-4 sm:px-6">
 
     {# ── HEADER ── #}
-    <div class="-mt-8 md:-mt-10 mb-5 text-center">
-        <div class="dateline-label mb-2">The Archive</div>
+    <div class="-mt-4 md:-mt-6 mb-8 md:mb-10 text-center">
+        <div class="dateline-label mb-3">The Archive</div>
         <h1 class="headline text-[clamp(1.75rem,4.5vw,3rem)] text-[#2C2824]">
             Updates
         </h1>
-        <p class="text-espresso-400 text-sm mt-2 font-sans max-w-sm mx-auto">
+        <p class="text-espresso-400 text-sm mt-3 font-sans max-w-sm mx-auto">
             Life updates, news, and stories from the group.
         </p>
     </div>
 
     {# ── ORNAMENT DIVIDER ── #}
-    <div class="flex items-center justify-center gap-3 mb-10 select-none" aria-hidden="true">
+    <div class="flex items-center justify-center gap-3 mb-12 md:mb-14 select-none" aria-hidden="true">
         <span class="block h-px w-8" style="background: linear-gradient(90deg, transparent, #C4B8A8);"></span>
         <span class="text-espresso-300 text-[10px]">✦</span>
         <span class="block h-px w-8" style="background: linear-gradient(90deg, #C4B8A8, transparent);"></span>
     </div>
-
-</div>
-
-{# ── CARD GRID ── #}
-<div class="max-w-6xl mx-auto mb-16 md:mb-24 px-4 sm:px-6">
     <div class="card-grid">
         {% for post in updates %}
         {% set p = palette[loop.index0 % palette | length] %}
