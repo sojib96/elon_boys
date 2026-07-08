@@ -12,13 +12,6 @@
         line-height: 1.08;
     }
 
-    .home-body {
-        font-family: Georgia, 'Times New Roman', serif;
-        font-size: 15px;
-        line-height: 1.7;
-        color: #4A3F38;
-    }
-
     .home-stat {
         border-right: 1px solid #E8E0D6;
     }
@@ -54,13 +47,6 @@
         flex-shrink: 0;
     }
 
-    .home-dot {
-        display: inline-block;
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-    }
-
     .hero-photo {
         position: relative;
         overflow: hidden;
@@ -72,21 +58,6 @@
         transform: scale(1.02);
     }
 
-    .featured-frame {
-        border: 1px solid #D4C9B8;
-        overflow: hidden;
-    }
-    .featured-frame img {
-        transition: transform 0.6s ease;
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .featured-frame:hover img {
-        transform: scale(1.04);
-    }
-
     @media (prefers-reduced-motion: reduce) {
         .explore-tile, .tile-arrow, .explore-tile:hover .tile-arrow {
             transition: none;
@@ -96,7 +67,6 @@
         .explore-tile:hover { background-color: inherit; border-color: inherit; }
         .explore-tile .tile-bg, .explore-tile:hover .tile-bg { transform: none; }
         .hero-photo .hero-img, .hero-photo:hover .hero-img { transform: none; }
-        .featured-frame img, .featured-frame:hover img { transform: none; }
     }
 </style>
 
@@ -126,57 +96,65 @@
     </div>
 </div>
 
-{# ── STATS ── #}
-<div class="grid grid-cols-2 md:grid-cols-4 max-w-xl mx-auto mb-3 rounded-sm overflow-hidden" style="border: 1px solid #E8E0D6;">
-    <div class="home-stat px-5 py-6 text-center">
-        <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 28px; color: #C1633B;">10</span>
-        <span class="block text-[10px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Friends</span>
-    </div>
-    <div class="home-stat px-5 py-6 text-center">
-        <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 28px; color: #7A9A7A;">4</span>
-        <span class="block text-[10px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Years</span>
-    </div>
-    <div class="home-stat px-5 py-6 text-center">
-        <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 28px; color: #C4A35A;">12</span>
-        <span class="block text-[10px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Events</span>
-    </div>
-    <div class="home-stat px-5 py-6 text-center">
-        <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 28px; color: #8A7F76;">&infin;</span>
-        <span class="block text-[10px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Memories</span>
-    </div>
-</div>
-<p class="text-center text-[12px] text-[#8A7F76] font-sans italic tracking-wide mb-10">&mdash; Still texting the group chat every day. &mdash;</p>
+{# ── STATS + EXPLORE (side by side) ── #}
+<div class="grid md:grid-cols-5 gap-6 md:gap-8 mb-12">
 
-{# ── EXPLORE GRID ── #}
-<div class="mb-14">
-    <div class="text-center mb-8">
-        <h2 class="text-[13px] text-[#8B3A3A] font-sans uppercase tracking-[0.22em] font-medium">Explore</h2>
-        <div class="w-12 h-px mx-auto mt-3" style="background: #D4C9B8;"></div>
+    {# ── STATS ── #}
+    <div class="md:col-span-2">
+        <div class="grid grid-cols-2 rounded-sm overflow-hidden" style="border: 1px solid #E8E0D6;">
+            <div class="home-stat px-4 py-5 text-center">
+                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C1633B;">10</span>
+                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Friends</span>
+            </div>
+            <div class="home-stat px-4 py-5 text-center">
+                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #7A9A7A;">4</span>
+                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Years</span>
+            </div>
+            <div class="home-stat px-4 py-5 text-center">
+                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C4A35A;">12</span>
+                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Events</span>
+            </div>
+            <div class="home-stat px-4 py-5 text-center">
+                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #8A7F76;">&infin;</span>
+                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Memories</span>
+            </div>
+        </div>
+        <p class="text-center text-[11px] text-[#8A7F76] font-sans italic tracking-wide mt-3">&mdash; Still texting the group chat every day. &mdash;</p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    {# ── EXPLORE ── #}
+    <div class="md:col-span-3">
+        <div class="text-center mb-5">
+            <h2 class="text-[12px] text-[#8B3A3A] font-sans uppercase tracking-[0.22em] font-medium">Explore</h2>
+            <div class="w-10 h-px mx-auto mt-2" style="background: #D4C9B8;"></div>
+        </div>
+
         {% set explore_links = [
             ('/squad', 'The Squad', 'Meet the ten of us.', palette[0].accent, photo2),
             ('/timeline', 'Timeline', 'Year by year.', palette[1].accent, photo3),
             ('/gallery', 'Gallery', 'Photos & memories.', palette[2].accent, group_photo),
         ] %}
-        {% for href, title, desc, color, img in explore_links %}
-        <a href="{{ href }}" class="explore-tile group">
-            <img src="{{ img }}" alt="" class="tile-bg absolute inset-0 w-full h-full object-cover" loading="lazy"
-                 onerror="this.style.display='none'"
-                 style="opacity: 0.15;">
-            <div class="absolute inset-0 tile-bg" style="background: linear-gradient(135deg, {{ color }}04, transparent); opacity: 0.3;"></div>
-            <div class="relative z-10 p-5 sm:p-6 flex items-start justify-between gap-4" style="background: linear-gradient(135deg, rgba(250,248,244,0.88) 0%, rgba(250,248,244,0.82) 70%, rgba(250,248,244,0.92) 100%);">
-                <div class="min-w-0">
-                    <span class="block text-[11px] font-sans uppercase tracking-[0.18em] font-medium mb-1.5" style="color: {{ color }};">{{ '%02d' | format(loop.index) }}</span>
-                    <h3 class="text-[16px] leading-snug font-semibold text-[#1A1614] mb-1" style="font-family: 'Playfair Display', Georgia, serif;">{{ title }}</h3>
-                    <p class="text-[13px] leading-relaxed text-[#4A3F38]" style="font-family: Georgia, 'Times New Roman', serif;">{{ desc }}</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% for href, title, desc, color, img in explore_links %}
+            <a href="{{ href }}" class="explore-tile group {% if loop.last %}sm:col-span-2{% endif %}">
+                <img src="{{ img }}" alt="" class="tile-bg absolute inset-0 w-full h-full object-cover" loading="lazy"
+                     onerror="this.style.display='none'"
+                     style="opacity: 0.15;">
+                <div class="absolute inset-0 tile-bg" style="background: linear-gradient(135deg, {{ color }}04, transparent); opacity: 0.3;"></div>
+                <div class="relative z-10 p-4 sm:p-5 flex items-start justify-between gap-3" style="background: linear-gradient(135deg, rgba(250,248,244,0.88) 0%, rgba(250,248,244,0.82) 70%, rgba(250,248,244,0.92) 100%);">
+                    <div class="min-w-0">
+                        <span class="block text-[10px] font-sans uppercase tracking-[0.18em] font-medium mb-1" style="color: {{ color }};">{{ '%02d' | format(loop.index) }}</span>
+                        <h3 class="text-[15px] leading-snug font-semibold text-[#1A1614] mb-0.5" style="font-family: 'Playfair Display', Georgia, serif;">{{ title }}</h3>
+                        <p class="text-[12px] leading-relaxed text-[#4A3F38]" style="font-family: Georgia, 'Times New Roman', serif;">{{ desc }}</p>
+                    </div>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8B3A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tile-arrow mt-1 flex-shrink-0"><path d="M9 18l6-6-6-6"/></svg>
                 </div>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B3A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tile-arrow mt-1"><path d="M9 18l6-6-6-6"/></svg>
-            </div>
-        </a>
-        {% endfor %}
+            </a>
+            {% endfor %}
+        </div>
     </div>
+
 </div>
 
 {# ── PERSONAL NOTE ── #}
