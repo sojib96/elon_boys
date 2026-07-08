@@ -3,6 +3,8 @@
 
 {% block content %}
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap');
+
     .home-headline {
         font-family: 'Fraunces', Georgia, serif;
         font-style: italic;
@@ -21,30 +23,28 @@
 
     .explore-tile {
         border: 1px solid #E8E0D6;
-        transition: background-color 0.25s ease, border-color 0.25s ease;
+        transition: border-color 0.25s ease;
         text-decoration: none;
         display: block;
         position: relative;
         overflow: hidden;
     }
     .explore-tile:hover {
-        border-color: #D4C9B8;
+        border-color: #C4B8A8;
+    }
+    .explore-tile:hover .tile-img {
+        transform: scale(1.06);
     }
     .explore-tile:hover .tile-arrow {
         opacity: 1;
         transform: translateX(3px);
     }
-    .explore-tile .tile-bg {
-        transition: transform 0.4s ease, opacity 0.4s ease;
-    }
-    .explore-tile:hover .tile-bg {
-        transform: scale(1.05);
-        opacity: 0.5;
+    .tile-img {
+        transition: transform 0.5s ease;
     }
     .tile-arrow {
         transition: all 0.25s ease;
-        opacity: 0.3;
-        flex-shrink: 0;
+        opacity: 0.4;
     }
 
     .hero-photo {
@@ -58,15 +58,53 @@
         transform: scale(1.02);
     }
 
+    .vintage-frame {
+        border: 1px solid #D4C9B8;
+        box-shadow:
+            0 2px 12px rgba(26,22,20,0.06),
+            inset 0 0 0 1px rgba(255,255,255,0.5);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .vintage-frame img {
+        filter: sepia(0.12) contrast(0.92) brightness(1.02);
+        transition: filter 0.6s ease;
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    .vintage-frame:hover img {
+        filter: sepia(0) contrast(1) brightness(1);
+    }
+
+    .divider-ornament {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        user-select: none;
+    }
+    .divider-ornament .line {
+        display: block;
+        width: 40px;
+        height: 1px;
+        background: #C4B8A8;
+    }
+    .divider-ornament .dot {
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #C4B8A8;
+    }
+
     @media (prefers-reduced-motion: reduce) {
-        .explore-tile, .tile-arrow, .explore-tile:hover .tile-arrow {
-            transition: none;
-            transform: none;
-            opacity: 1;
-        }
-        .explore-tile:hover { background-color: inherit; border-color: inherit; }
-        .explore-tile .tile-bg, .explore-tile:hover .tile-bg { transform: none; }
+        .explore-tile { transition: none; }
+        .explore-tile:hover { border-color: inherit; }
+        .explore-tile:hover .tile-img, .tile-img { transform: none; }
+        .explore-tile:hover .tile-arrow { transform: none; opacity: 0.4; }
         .hero-photo .hero-img, .hero-photo:hover .hero-img { transform: none; }
+        .vintage-frame img, .vintage-frame:hover img { filter: sepia(0.12) contrast(0.92) brightness(1.02); }
     }
 </style>
 
@@ -81,7 +119,7 @@
 {% set photo2 = '/static/img/members/img-1099.jpeg' %}
 {% set photo3 = '/static/img/members/food.jpg' %}
 
-{# ── HERO ── #}
+{# ── HERO (unchanged) ── #}
 <div class="hero-photo rounded-sm overflow-hidden -mt-8 md:-mt-10 mb-8 relative" style="background: #1A1614;">
     <img src="{{ group_photo }}" alt="The group" class="hero-img absolute inset-0 w-full h-full object-cover" loading="lazy"
          onerror="this.style.display='none'">
@@ -96,70 +134,106 @@
     </div>
 </div>
 
-{# ── STATS + EXPLORE (side by side) ── #}
-<div class="grid md:grid-cols-5 gap-6 md:gap-8 mb-12">
+{# ── STATS + EXPLORE (overlaps hero bottom) ── #}
+<div class="-mt-12 md:-mt-14 mb-16">
+    <div class="grid md:grid-cols-5 gap-6 md:gap-8">
 
-    {# ── STATS ── #}
-    <div class="md:col-span-2">
-        <div class="grid grid-cols-2 rounded-sm overflow-hidden" style="border: 1px solid #E8E0D6;">
-            <div class="home-stat px-4 py-5 text-center">
-                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C1633B;">10</span>
-                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Friends</span>
-            </div>
-            <div class="home-stat px-4 py-5 text-center">
-                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #7A9A7A;">4</span>
-                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Years</span>
-            </div>
-            <div class="home-stat px-4 py-5 text-center">
-                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C4A35A;">12</span>
-                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Events</span>
-            </div>
-            <div class="home-stat px-4 py-5 text-center">
-                <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #8A7F76;">&infin;</span>
-                <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Memories</span>
-            </div>
-        </div>
-        <p class="text-center text-[11px] text-[#8A7F76] font-sans italic tracking-wide mt-3">&mdash; Still texting the group chat every day. &mdash;</p>
-    </div>
-
-    {# ── EXPLORE ── #}
-    <div class="md:col-span-3">
-        <div class="text-center mb-5">
-            <h2 class="text-[12px] text-[#8B3A3A] font-sans uppercase tracking-[0.22em] font-medium">Explore</h2>
-            <div class="w-10 h-px mx-auto mt-2" style="background: #D4C9B8;"></div>
-        </div>
-
-        {% set explore_links = [
-            ('/squad', 'The Squad', 'Meet the ten of us.', palette[0].accent, photo2),
-            ('/timeline', 'Timeline', 'Year by year.', palette[1].accent, photo3),
-            ('/gallery', 'Gallery', 'Photos & memories.', palette[2].accent, group_photo),
-        ] %}
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {% for href, title, desc, color, img in explore_links %}
-            <a href="{{ href }}" class="explore-tile group {% if loop.last %}sm:col-span-2{% endif %}">
-                <img src="{{ img }}" alt="" class="tile-bg absolute inset-0 w-full h-full object-cover" loading="lazy"
-                     onerror="this.style.display='none'"
-                     style="opacity: 0.15;">
-                <div class="absolute inset-0 tile-bg" style="background: linear-gradient(135deg, {{ color }}04, transparent); opacity: 0.3;"></div>
-                <div class="relative z-10 p-4 sm:p-5 flex items-start justify-between gap-3" style="background: linear-gradient(135deg, rgba(250,248,244,0.88) 0%, rgba(250,248,244,0.82) 70%, rgba(250,248,244,0.92) 100%);">
-                    <div class="min-w-0">
-                        <span class="block text-[10px] font-sans uppercase tracking-[0.18em] font-medium mb-1" style="color: {{ color }};">{{ '%02d' | format(loop.index) }}</span>
-                        <h3 class="text-[15px] leading-snug font-semibold text-[#1A1614] mb-0.5" style="font-family: 'Playfair Display', Georgia, serif;">{{ title }}</h3>
-                        <p class="text-[12px] leading-relaxed text-[#4A3F38]" style="font-family: Georgia, 'Times New Roman', serif;">{{ desc }}</p>
-                    </div>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8B3A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tile-arrow mt-1 flex-shrink-0"><path d="M9 18l6-6-6-6"/></svg>
+        {# ── STATS (sits on hero edge) ── #}
+        <div class="md:col-span-2">
+            <div class="grid grid-cols-2 rounded-sm overflow-hidden bg-[#FAF8F4]" style="border: 1px solid #E8E0D6; box-shadow: 0 2px 8px rgba(26,22,20,0.06);">
+                <div class="home-stat px-4 py-5 text-center">
+                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C1633B;">10</span>
+                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Friends</span>
                 </div>
-            </a>
-            {% endfor %}
+                <div class="home-stat px-4 py-5 text-center">
+                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #7A9A7A;">4</span>
+                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Years</span>
+                </div>
+                <div class="home-stat px-4 py-5 text-center">
+                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C4A35A;">12</span>
+                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Events</span>
+                </div>
+                <div class="home-stat px-4 py-5 text-center">
+                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #8A7F76;">&infin;</span>
+                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Memories</span>
+                </div>
+            </div>
+            <p class="text-center text-[11px] text-[#8A7F76] font-sans italic tracking-wide mt-3">&mdash; Still texting the group chat every day. &mdash;</p>
         </div>
-    </div>
 
+        {# ── EXPLORE ── #}
+        <div class="md:col-span-3">
+            <div class="text-center mb-5">
+                <h2 class="text-[12px] text-[#8B3A3A] font-sans uppercase tracking-[0.22em] font-medium">Explore</h2>
+                <div class="w-10 h-px mx-auto mt-2" style="background: #D4C9B8;"></div>
+            </div>
+
+            {% set explore_links = [
+                ('/squad', 'The Squad', 'Meet the ten of us.', palette[0].accent, photo2),
+                ('/timeline', 'Timeline', 'Year by year.', palette[1].accent, photo3),
+                ('/gallery', 'Gallery', 'Photos & memories.', palette[2].accent, group_photo),
+            ] %}
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {% for href, title, desc, color, img in explore_links %}
+                <a href="{{ href }}" class="explore-tile group {% if loop.last %}sm:col-span-2{% endif %}">
+                    <img src="{{ img }}" alt="" class="tile-img absolute inset-0 w-full h-full object-cover" loading="lazy"
+                         onerror="this.style.display='none'">
+                    <div class="absolute inset-0" style="background: linear-gradient(160deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.6) 100%);"></div>
+                    <div class="absolute inset-0" style="background: linear-gradient(135deg, {{ color }}08, transparent); opacity: 0.4;"></div>
+                    <div class="relative z-10 p-5 sm:p-6 flex items-start justify-between gap-3 min-h-[100px]">
+                        <div class="min-w-0">
+                            <span class="block text-[10px] font-sans uppercase tracking-[0.18em] font-medium mb-1 text-white/60">{{ '%02d' | format(loop.index) }}</span>
+                            <h3 class="text-[16px] leading-snug font-semibold text-white mb-0.5" style="font-family: 'Playfair Display', Georgia, serif;">{{ title }}</h3>
+                            <p class="text-[13px] leading-relaxed text-white/70" style="font-family: Georgia, 'Times New Roman', serif;">{{ desc }}</p>
+                        </div>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tile-arrow mt-1 flex-shrink-0"><path d="M9 18l6-6-6-6"/></svg>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
 </div>
 
-{# ── PERSONAL NOTE ── #}
-<div class="text-center pb-2">
-    <p class="text-[11px] text-[#8A7F76] font-sans font-medium tracking-wide">
+{# ── FEATURED MEMORY ── #}
+<div class="mb-16">
+    <div class="grid md:grid-cols-5 gap-6 md:gap-10 items-center">
+        <figure class="vintage-frame md:col-span-3">
+            <img src="{{ photo2 }}" alt="A memory from the archives" loading="lazy"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="hidden w-full aspect-[4/3] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
+        </figure>
+        <div class="md:col-span-2">
+            <span class="text-[10px] text-[#8B3A3A] font-sans uppercase tracking-[0.22em] font-medium">From the archives</span>
+            <h2 class="text-[22px] leading-snug font-semibold text-[#1A1614] mt-2 mb-3" style="font-family: 'Playfair Display', Georgia, serif;">
+                The night that started it all
+            </h2>
+            <p class="text-[14px] leading-relaxed text-[#4A3F38] mb-2" style="font-family: Georgia, 'Times New Roman', serif;">
+                Ten strangers, one lecture hall, and a shared confusion about which building we were supposed to be in. Someone cracked a joke. Someone else laughed a little too loud. By the end of the week, we had a group chat. By the end of the month, we had a family.
+            </p>
+            <p class="text-[14px] leading-relaxed text-[#4A3F38] mb-4" style="font-family: Georgia, 'Times New Roman', serif;">
+                Four years later, we walked across that same stage together &mdash; caps in the air, arms around each other, still laughing at the same inside jokes.
+            </p>
+            <a href="/timeline" class="inline-flex items-center gap-1.5 text-[11px] text-[#8B3A3A] font-sans uppercase tracking-[0.2em] font-medium hover:text-[#C1633B] transition-colors duration-200 no-underline group">
+                Read the full story
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:translate-x-0.5"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </div>
+</div>
+
+{# ── ORNAMENT DIVIDER ── #}
+<div class="divider-ornament mb-8">
+    <span class="line"></span>
+    <span class="dot"></span>
+    <span class="line"></span>
+</div>
+
+{# ── CLOSING NOTE ── #}
+<div class="text-center mb-10">
+    <p class="text-[16px] md:text-[18px] italic leading-relaxed text-[#4A3F38] max-w-md mx-auto" style="font-family: Georgia, 'Times New Roman', serif;">
         From our group chat to your screen &mdash; thanks for stopping by.
     </p>
 </div>
