@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} — Elon Group{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap');
+
+    /* ── Paper texture ── */
+    .paper-texture {
+        background-color: #F5F0E8;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    }
+
+    /* ── Issue label (dateline above headline) ── */
+    .issue-label {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #8B3A3A;
+        font-weight: 500;
+    }
+    .issue-rule {
+        width: 72px;
+        height: 1.5px;
+        background: #8B3A3A;
+        border: 0;
+        margin-top: 8px;
+        margin-bottom: 0;
+    }
+
+    /* ── Headline ── */
+    .mag-headline {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: 700;
+        font-size: clamp(2rem, 5vw, 3.25rem);
+        line-height: 1.08;
+        letter-spacing: -0.025em;
+        color: #1A1614;
+    }
+
+    .mag-headline-sub {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: 500;
+        font-style: italic;
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        color: #8B3A3A;
+        line-height: 1.3;
+    }
+
+    /* ── Double hairline divider (classic print) ── */
+    .divider-double {
+        border: 0;
+        height: 3px;
+        background: linear-gradient(to bottom, #D4C9B8 0px, #D4C9B8 1px, transparent 1px, transparent 2px, #D4C9B8 2px, #D4C9B8 3px);
+        opacity: 0.6;
+    }
+
+    /* ── Ornament divider (— · —) ── */
+    .divider-ornament {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: 0;
+        user-select: none;
+    }
+    .divider-ornament .line {
+        display: block;
+        width: 40px;
+        height: 1px;
+        background: #C4B8A8;
+    }
+    .divider-ornament .dot {
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #C4B8A8;
+    }
+
+    /* ── Drop cap ── */
+    .drop-cap::first-letter {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 4.2em;
+        font-weight: 700;
+        float: left;
+        line-height: 0.75;
+        margin-right: 0.12em;
+        margin-top: 0.08em;
+        color: #1A1614;
+    }
+
+    /* ── Body text ── */
+    .body-text {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 16px;
+        line-height: 1.85;
+        color: #2C2824;
+        word-spacing: 0.5px;
+    }
+    .body-text p {
+        margin-bottom: 1.2em;
+    }
+    @media (min-width: 768px) {
+        .body-text {
+            text-align: justify;
+        }
+    }
+
+    /* ── Vintage image frame ── */
+    .vintage-frame {
+        border: 1px solid #D4C9B8;
+        box-shadow:
+            0 2px 12px rgba(26,22,20,0.06),
+            inset 0 0 0 1px rgba(255,255,255,0.5);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .vintage-frame img {
+        filter: sepia(0.12) contrast(0.92) brightness(1.02);
+        transition: filter 0.6s ease;
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    .vintage-frame:hover img {
+        filter: sepia(0) contrast(1) brightness(1);
+    }
+
+    .vintage-frame figcaption {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 11px;
+        font-style: italic;
+        color: #8A7F76;
+        text-align: center;
+        padding: 10px 16px 8px;
+        background: #FAF7F2;
+        border-top: 1px solid #E8E0D6;
+    }
+
+    /* ── Spread layout ── */
+    @media (min-width: 1024px) {
+        .spread {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        .spread-image { position: sticky; top: 96px; }
+    }
+
+    /* ── Related posts (TOC index) ── */
+    .toc-row {
+        display: flex;
+        align-items: baseline;
+        gap: 0;
+        text-decoration: none;
+        padding: 14px 0;
+        border-bottom: 1px solid #E8E0D6;
+    }
+    .toc-row:last-child {
+        border-bottom: 0;
+    }
+    .toc-num {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 15px;
+        font-weight: 500;
+        color: #C4B8A8;
+        flex-shrink: 0;
+        width: 28px;
+        text-align: right;
+        margin-right: 10px;
+        font-feature-settings: 'tnum';
+    }
+    .toc-title {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1A1614;
+        flex-shrink: 0;
+        transition: color 0.2s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 55%;
+    }
+    .toc-row:hover .toc-title {
+        color: var(--toc-accent, #8B3A3A);
+    }
+    .toc-dots {
+        flex: 1;
+        min-width: 12px;
+        height: 0;
+        align-self: center;
+        border-bottom: 1px dotted #D4C9B8;
+        margin: 0 6px;
+    }
+    .toc-date {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 10px;
+        color: #8A7F76;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .vintage-frame img { filter: sepia(0.12) contrast(0.92) brightness(1.02); }
+        .toc-title { transition: none; }
+        .toc-row:hover .toc-title { color: inherit; }
+    }
+</style>
+
+{% set palette = [
+    {'accent': '#C1633B', 'bg': '#F9EDE8'},
+    {'accent': '#7A9A7A', 'bg': '#EDF3ED'},
+    {'accent': '#C4A35A', 'bg': '#F8F3E8'},
+    {'accent': '#8A7F76', 'bg': '#F0EDE8'},
+] %}
+
+<div class="paper-texture min-h-screen -mt-8 md:-mt-10 pb-16 md:pb-24 px-6 sm:px-8" style="margin-left: calc(-1 * (100vw - 100%) / 2); margin-right: calc(-1 * (100vw - 100%) / 2); padding-left: calc((100vw - 100%) / 2 + 1.5rem); padding-right: calc((100vw - 100%) / 2 + 1.5rem);">
+
+    <div class="max-w-4xl mx-auto">
+
+        {# ── BACK LINK ── #}
+        <a href="/updates" class="inline-flex items-center gap-1.5 text-[#8A7F76] hover:text-[#8B3A3A] text-xs font-sans font-medium uppercase tracking-wider transition-colors duration-200 no-underline mb-8 group">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:-translate-x-0.5"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            Back to updates
+        </a>
+
+
+        {# ── SPREAD: HERO IMAGE + HEADLINE ── #}
+        <div class="spread mb-12">
+
+            {# ── LEFT: Hero image ── #}
+            <figure class="vintage-frame spread-image mb-6 lg:mb-0">
+                <img src="https://picsum.photos/seed/update{{ post.id }}a/900/1100" alt="{{ post.title }}"
+                     loading="lazy"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="hidden w-full aspect-[3/4] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
+                <figcaption>From the archives &mdash; {{ post.posted_at }}</figcaption>
+            </figure>
+
+            {# ── RIGHT: Headline + intro ── #}
+            <div>
+                {# ── Issue label with short rule ── #}
+                <div class="issue-label">Issue &mdash; {{ '%02d' | format(post.id) }}</div>
+                <hr class="issue-rule">
+
+                <h1 class="mag-headline mt-6 mb-3">{{ post.title }}</h1>
+
+                <p class="mag-headline-sub mb-6">By {{ post.author }} &mdash; <span class="font-sans not-italic text-[#8A7F76] text-xs uppercase tracking-wider font-medium">3 min read</span></p>
+
+                {# ── Transition to body ── #}
+                <div class="divider-ornament my-8">
+                    <span class="line"></span>
+                    <span class="dot"></span>
+                    <span class="line"></span>
+                </div>
+
+                <p class="body-text drop-cap mb-0">{{ post.content }}</p>
+            </div>
+        </div>
+
+        {# ── Double hairline divider before full-width body ── #}
+        <hr class="divider-double my-10 max-w-3xl mx-auto">
+
+
+        {# ── FULL-WIDTH BODY ── #}
+        <div class="body-text max-w-3xl mx-auto">
+
+            <p>It's moments like these that remind us why this group matters. Four years of shared memories, and we're still making new ones. Here's to many more. Stay tuned for more updates — and don't be a stranger in the group chat.</p>
+
+            {# ── INLINE IMAGE ── #}
+            <figure class="vintage-frame my-10 max-w-2xl mx-auto">
+                <img src="https://picsum.photos/seed/update{{ post.id }}b/800/500" alt=""
+                     loading="lazy"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="hidden w-full aspect-[8/5] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
+                <figcaption>A moment captured, a memory preserved.</figcaption>
+            </figure>
+
+            <p>There's something about looking back at old photos that hits differently. Not the polished ones, but the ones where someone's mid-laugh or the lighting's terrible. Those are the ones that matter. The ones where you can hear the sound of the room, feel the warmth of the night, the echo of a friend's laugh.</p>
+
+            <p>This group started as ten strangers in a lecture hall. Four years later, we're spread across cities, time zones, and continents — but the group chat is still warm, still loud, still home.</p>
+
+            {# ── SECOND INLINE IMAGE ── #}
+            <figure class="vintage-frame my-10 max-w-xl mx-auto">
+                <img src="https://picsum.photos/seed/update{{ post.id }}c/700/500" alt=""
+                     loading="lazy"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="hidden w-full aspect-[7/5] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
+            </figure>
+
+            <p>Here's to the next chapter — whatever it brings, we'll bring it together.</p>
+        </div>
+
+        {# ── Ornament divider before footer section ── #}
+        <div class="divider-ornament my-14">
+            <span class="line"></span>
+            <span class="dot"></span>
+            <span class="line"></span>
+        </div>
+
+
+        {# ── BOTTOM: AUTHOR + RELATED ── #}
+        <div class="grid md:grid-cols-2 gap-10 max-w-3xl mx-auto">
+
+            {# ── AUTHOR: contributor byline ── #}
+            <div class="pt-5 border-t border-[#D4C9B8]">
+                <div class="flex items-start gap-4">
+                    <span class="w-10 h-10 flex-shrink-0 border border-[#D4C9B8] flex items-center justify-center text-sm text-[#8B3A3A] font-serif font-semibold" style="font-family: 'Playfair Display', Georgia, serif;">{{ post.author[0] }}{{ post.author.split()[-1][0] if ' ' in post.author else '' }}</span>
+                    <div class="min-w-0">
+                        <p class="text-[11px] text-[#8B3A3A] font-serif italic mb-0.5">Written by</p>
+                        <h3 class="text-base font-semibold text-[#1A1614]" style="font-family: 'Playfair Display', Georgia, serif;">{{ post.author }}</h3>
+                        <p class="text-[10px] text-[#8A7F76] font-serif italic uppercase tracking-wider mt-1">Member since 2019</p>
+                        <p class="text-[14px] text-[#2C2824] leading-relaxed mt-3" style="font-family: Georgia, 'Times New Roman', serif;">One of the ten. Always there for a bad joke, a late-night snack run, or a heartfelt talk.</p>
+                    </div>
+                </div>
+            </div>
+
+            {# ── RELATED: TOC index ── #}
+            {% if related %}
+            <div>
+                <h3 class="issue-label mb-5">More From This Issue</h3>
+                <div>
+                    {% for r in related %}
+                    {% set pr = palette[(r.id - 1) % 4] %}
+                    <a href="/updates/{{ r.id }}" class="toc-row" style="--toc-accent: {{ pr['accent'] }};">
+                        <span class="toc-num">{{ '%02d' | format(loop.index) }}</span>
+                        <span class="toc-title">{{ r.title }}</span>
+                        <span class="toc-dots" aria-hidden="true"></span>
+                        <span class="toc-date">{{ r.posted_at }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

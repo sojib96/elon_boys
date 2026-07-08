@@ -3,17 +3,6 @@
 
 {% block content %}
 <style>
-    .noise::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        z-index: 9998;
-        pointer-events: none;
-        opacity: 0.02;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-        background-repeat: repeat;
-        background-size: 256px 256px;
-    }
     .tilt-p { transform: rotate(0.6deg); }
     .tilt-n { transform: rotate(-0.9deg); }
     .card-up { transition: transform 0.3s ease, box-shadow 0.3s ease; }
@@ -25,53 +14,25 @@
     .cat-glow { transition: opacity 0.5s ease; }
     .group:hover .cat-glow { opacity: 1; }
 
-    .hero-text {
-        background: linear-gradient(135deg, #C1633B 0%, #C4A35A 60%, #7A9A7A 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+    .filter-chip {
+        cursor: default;
+        transition: color 0.25s ease;
     }
-    .hero-underline {
-        position: relative;
-        display: inline-block;
-    }
-    .hero-underline::after {
-        content: '';
-        position: absolute;
-        bottom: -8px;
-        left: 15%;
-        width: 70%;
-        height: 3px;
-        border-radius: 2px;
-        background: linear-gradient(90deg, #C1633B, #C4A35A 60%, transparent);
-        transform: scaleX(0);
-        transform-origin: left;
-    }
-    @media (prefers-reduced-motion: no-preference) {
-        .hero-enter {
-            animation: slideUpFade 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-        .hero-underline::after {
-            animation: expandLine 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
-        }
-    }
-    @keyframes slideUpFade {
-        from { opacity: 0; transform: translateY(24px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes expandLine {
-        from { transform: scaleX(0); }
-        to { transform: scaleX(1); }
+
+    .gallery-headline {
+        font-family: 'Fraunces', Georgia, serif;
+        font-style: italic;
+        font-weight: 600;
+        font-variation-settings: 'opsz' 72;
+        letter-spacing: -0.025em;
+        line-height: 1.15;
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .noise::before { display: none; }
         .card-up, .card-up:hover { transform: none; }
         .card-shadow, .card-shadow:hover { box-shadow: none !important; }
         .gallery-img, .group:hover .gallery-img { transform: none; }
         .cat-glow, .group:hover .cat-glow { opacity: 0; }
-        .hero-enter { opacity: 1; transform: none; }
-        .hero-underline::after { transform: scaleX(1); }
     }
 </style>
 
@@ -84,79 +45,66 @@
 
 {% set featured_ids = [1, 10, 11] %}
 
-<div class="noise max-w-7xl mx-auto px-4 sm:px-6">
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-    {# ─── HEADER ─── #}
-    <div class="pt-10 pb-4 mb-8">
-        <h1 class="hero-enter hero-text hero-underline font-serif text-[clamp(2rem,5vw,3.5rem)] font-extrabold tracking-[-0.02em] leading-[1.1] opacity-0">
+    {# ── HEADER: flush top, centered ── #}
+    <div class="-mt-8 md:-mt-10 mb-5 text-center">
+        <h1 class="gallery-headline text-[clamp(1.75rem,4.5vw,3rem)] text-[#2C2824]">
             The moments that made us us
         </h1>
     </div>
 
-    {# ─── MOBILE FILTERS ─── #}
-    <div class="md:hidden flex gap-4 overflow-x-auto pb-3 mb-8">
-        <span class="whitespace-nowrap text-[10px] uppercase tracking-[0.14em] font-semibold text-[#C1633B]">All</span>
+    {# ── FILTERS: second line, centered ── #}
+    <div class="flex flex-wrap justify-center gap-x-7 gap-y-1 mb-4">
         {% for cat in categories %}
-        {% set fc = cat_colors.get(cat, cat_colors['Random']) %}
-        <span class="whitespace-nowrap text-[10px] uppercase tracking-[0.1em]" style="color: {{ fc.accent }}80;">{{ cat }}</span>
+        {% set cc = cat_colors.get(cat, cat_colors['Random']) %}
+        <span class="filter-chip font-display text-[10px] uppercase tracking-[0.15em] font-semibold flex items-center gap-1.5" style="color: {{ cc.accent }};">
+            <span class="inline-block w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: {{ cc.accent }};"></span>
+            {{ cat }}
+        </span>
         {% endfor %}
     </div>
 
-    {# ─── MAIN: GRID + SIDEBAR ─── #}
-    <div class="flex gap-8 md:gap-12 lg:gap-16">
+    {# ── UNDERLINE: gradient across the category colors ── #}
+    <hr class="mb-6" style="border: 0; height: 1px; background: linear-gradient(90deg, #C1633B 0%, #7A9A7A 33%, #C4A35A 66%, #8A7F76 100%); opacity: 0.35;">
 
-        {# ─── GALLERY GRID ─── #}
-        <div class="flex-1 min-w-0">
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-                {% for item in gallery_items %}
-                {% set cc = cat_colors.get(item.category, cat_colors['Random']) %}
-                {% set is_featured = item.id in featured_ids %}
+    {# ── GALLERY GRID ── #}
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+        {% for item in gallery_items %}
+        {% set cc = cat_colors.get(item.category, cat_colors['Random']) %}
+        {% set is_featured = item.id in featured_ids %}
 
-                {% if is_featured %}
-                    {% set hover_class = "card-up" %}
-                    {% set tilt_class = "" %}
-                {% elif item.id % 3 == 0 %}
-                    {% set hover_class = "card-shadow" %}
-                    {% set tilt_class = "tilt-p" %}
-                {% elif item.id % 3 == 1 %}
-                    {% set hover_class = "card-shadow" %}
-                    {% set tilt_class = "tilt-n" %}
-                {% else %}
-                    {% set hover_class = "card-up" %}
-                    {% set tilt_class = "" %}
-                {% endif %}
+        {% if is_featured %}
+            {% set hover_class = "card-up" %}
+            {% set tilt_class = "" %}
+        {% elif item.id % 3 == 0 %}
+            {% set hover_class = "card-shadow" %}
+            {% set tilt_class = "tilt-p" %}
+        {% elif item.id % 3 == 1 %}
+            {% set hover_class = "card-shadow" %}
+            {% set tilt_class = "tilt-n" %}
+        {% else %}
+            {% set hover_class = "card-up" %}
+            {% set tilt_class = "" %}
+        {% endif %}
 
-                <div class="group relative rounded-lg overflow-hidden bg-white border border-[#E8E0D6] {{ hover_class }} {{ tilt_class }}
-                    {% if is_featured %}col-span-2{% endif %}"
-                    style="border-top: 3px solid {{ cc.accent }};">
-                    <div class="{% if is_featured %}aspect-[4/3]{% else %}aspect-square{% endif %} flex items-center justify-center overflow-hidden" style="background: {{ cc.bg }};">
-                        <span class="gallery-img block text-3xl sm:text-4xl opacity-30 group-hover:opacity-40">📷</span>
+        <div class="group relative rounded-lg overflow-hidden bg-white border border-[#E8E0D6] {{ hover_class }} {{ tilt_class }}
+            {% if is_featured %}col-span-2{% endif %}"
+            style="border-top: 3px solid {{ cc.accent }};">
+                    <div class="{% if is_featured %}aspect-[4/3]{% else %}aspect-square{% endif %} overflow-hidden bg-cover bg-center{% if item.photo_url %} gallery-img{% endif %}"
+                         style="background-color: {{ cc.bg }};{% if item.photo_url %} background-image: url('{{ item.photo_url }}');{% endif %}">
+                        {% if not item.photo_url %}
+                        <span class="flex items-center justify-center w-full h-full text-3xl sm:text-4xl opacity-30 select-none">📷</span>
+                        {% endif %}
                     </div>
-                    <div class="cat-glow absolute inset-0 opacity-0 pointer-events-none" style="background: linear-gradient(135deg, {{ cc.accent }} 0%, transparent 60%);"></div>
-                    <div class="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-[#1A1614]/50 to-transparent pointer-events-none translate-y-3 group-hover:translate-y-0 transition-transform duration-300"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-3 sm:p-4 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                        <p class="font-serif font-semibold text-sm leading-tight text-white">{{ item.title }}</p>
-                        <p class="text-white/65 text-[10px] mt-0.5 uppercase tracking-[0.08em] font-medium">{{ item.category }}</p>
-                    </div>
-                </div>
-                {% endfor %}
+            <div class="cat-glow absolute inset-0 opacity-0 pointer-events-none" style="background: linear-gradient(135deg, {{ cc.accent }} 0%, transparent 60%);"></div>
+            <div class="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-[#1A1614]/50 to-transparent pointer-events-none translate-y-3 group-hover:translate-y-0 transition-transform duration-300"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-3 sm:p-4 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <p class="font-serif font-semibold text-sm leading-tight text-white">{{ item.title }}</p>
+                <p class="text-white/65 text-[10px] mt-0.5 uppercase tracking-[0.08em] font-medium">{{ item.category }}</p>
             </div>
         </div>
-
-        {# ─── SIDEBAR FILTERS ─── #}
-        <aside class="hidden md:block w-32 lg:w-40 flex-shrink-0 sticky top-24 self-start pt-1">
-            <nav class="flex flex-col items-end gap-0.5">
-                <span class="block w-full text-right pl-3 pr-0 py-2 text-[11px] uppercase tracking-[0.14em] font-semibold text-[#C1633B] bg-[#C1633B]/8 border-l-[3px] border-[#C1633B]">All</span>
-                {% for cat in categories %}
-                {% set fc = cat_colors.get(cat, cat_colors['Random']) %}
-                <span class="block w-full text-right pl-3 pr-0 py-2 text-[11px] uppercase tracking-[0.1em] border-l-[3px] border-transparent transition-all duration-200"
-                      style="color: {{ fc.accent }}80;"
-                      onmouseover="this.style.color='{{ fc.accent }}'; this.style.borderLeftColor='{{ fc.accent }}'"
-                      onmouseout="this.style.color='{{ fc.accent }}80'; this.style.borderLeftColor='transparent'">{{ cat }}</span>
-                {% endfor %}
-            </nav>
-        </aside>
-
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
