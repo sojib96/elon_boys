@@ -28,19 +28,25 @@
 
     .explore-tile {
         border: 1px solid #E8E0D6;
-        background-color: #FAF8F4;
-        padding: 28px 24px;
         transition: background-color 0.25s ease, border-color 0.25s ease;
         text-decoration: none;
         display: block;
+        position: relative;
+        overflow: hidden;
     }
     .explore-tile:hover {
-        background-color: #F5F0E8;
         border-color: #D4C9B8;
     }
     .explore-tile:hover .tile-arrow {
         opacity: 1;
         transform: translateX(3px);
+    }
+    .explore-tile .tile-bg {
+        transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    .explore-tile:hover .tile-bg {
+        transform: scale(1.05);
+        opacity: 0.5;
     }
     .tile-arrow {
         transition: all 0.25s ease;
@@ -55,6 +61,32 @@
         border-radius: 50%;
     }
 
+    .hero-photo {
+        position: relative;
+        overflow: hidden;
+    }
+    .hero-photo .hero-img {
+        transition: transform 0.6s ease;
+    }
+    .hero-photo:hover .hero-img {
+        transform: scale(1.02);
+    }
+
+    .featured-frame {
+        border: 1px solid #D4C9B8;
+        overflow: hidden;
+    }
+    .featured-frame img {
+        transition: transform 0.6s ease;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .featured-frame:hover img {
+        transform: scale(1.04);
+    }
+
     @media (prefers-reduced-motion: reduce) {
         .explore-tile, .tile-arrow, .explore-tile:hover .tile-arrow {
             transition: none;
@@ -62,6 +94,9 @@
             opacity: 1;
         }
         .explore-tile:hover { background-color: inherit; border-color: inherit; }
+        .explore-tile .tile-bg, .explore-tile:hover .tile-bg { transform: none; }
+        .hero-photo .hero-img, .hero-photo:hover .hero-img { transform: none; }
+        .featured-frame img, .featured-frame:hover img { transform: none; }
     }
 </style>
 
@@ -72,25 +107,27 @@
     {'accent': '#8A7F76', 'label': 'taupe'},
 ] %}
 
-{# ── OPENING SPREAD ── #}
-<div class="-mt-8 md:-mt-10 mb-6 text-center">
-    <h1 class="home-headline text-[clamp(2rem,5.5vw,4rem)] text-[#1A1614] max-w-2xl mx-auto">
-        Ten friends. Four years. A lifetime of memories.
-    </h1>
-    <p class="home-body max-w-lg mx-auto mt-4 text-center">
-        We walked into the same lecture hall as strangers in 2019. We walked out as family in 2023. This is where our story lives on.
-    </p>
-</div>
+{% set group_photo = '/static/img/members/cover.jpg' %}
+{% set photo2 = '/static/img/members/img-1099.jpeg' %}
+{% set photo3 = '/static/img/members/food.jpg' %}
 
-{# ── ORNAMENT DIVIDER ── #}
-<div class="flex items-center justify-center gap-3 mb-12 select-none" aria-hidden="true">
-    <span class="block h-px w-8" style="background: linear-gradient(90deg, transparent, #C4B8A8);"></span>
-    <span class="text-espresso-300 text-[10px]">✦</span>
-    <span class="block h-px w-8" style="background: linear-gradient(90deg, #C4B8A8, transparent);"></span>
+{# ── HERO ── #}
+<div class="hero-photo rounded-sm overflow-hidden -mt-8 md:-mt-10 mb-8 relative" style="background: #1A1614;">
+    <img src="{{ group_photo }}" alt="The group" class="hero-img absolute inset-0 w-full h-full object-cover" loading="lazy"
+         onerror="this.style.display='none'">
+    <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(26,22,20,0.7) 0%, rgba(26,22,20,0.35) 60%, rgba(26,22,20,0.5) 100%);"></div>
+    <div class="relative py-20 md:py-28 px-6 text-center">
+        <h1 class="home-headline text-[clamp(2rem,5.5vw,4rem)] text-[#EDE8DE] max-w-xl mx-auto leading-tight">
+            Ten friends. Four years. A lifetime of memories.
+        </h1>
+        <p class="text-[#C4B8A8] text-sm sm:text-base mt-4 max-w-md mx-auto font-sans leading-relaxed tracking-wide">
+            We walked into the same lecture hall as strangers in 2019. We walked out as family in 2023. This is where our story lives on.
+        </p>
+    </div>
 </div>
 
 {# ── STATS ── #}
-<div class="grid grid-cols-2 md:grid-cols-4 max-w-xl mx-auto mb-12 rounded-sm overflow-hidden" style="border: 1px solid #E8E0D6;">
+<div class="grid grid-cols-2 md:grid-cols-4 max-w-xl mx-auto mb-3 rounded-sm overflow-hidden" style="border: 1px solid #E8E0D6;">
     <div class="home-stat px-5 py-6 text-center">
         <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 28px; color: #C1633B;">10</span>
         <span class="block text-[10px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Friends</span>
@@ -108,9 +145,54 @@
         <span class="block text-[10px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Memories</span>
     </div>
 </div>
+<p class="text-center text-[12px] text-[#8A7F76] font-sans italic tracking-wide mb-10">&mdash; Still texting the group chat every day. &mdash;</p>
+
+{# ── TOP QUOTE ── #}
+<div class="max-w-xl mx-auto text-center mb-10">
+    <p class="text-[15px] text-[#4A3F38] italic leading-relaxed" style="font-family: Georgia, 'Times New Roman', serif;">
+        &ldquo;We didn&rsquo;t realise we were making memories &mdash; we were just having fun.&rdquo;
+    </p>
+    <div class="flex items-center justify-center gap-2 mt-3">
+        <span class="block h-px w-6" style="background: linear-gradient(90deg, transparent, #D4C9B8);"></span>
+        <span class="text-[10px] text-[#C4B8A8] font-sans">2019 &mdash; 2023</span>
+        <span class="block h-px w-6" style="background: linear-gradient(90deg, #D4C9B8, transparent);"></span>
+    </div>
+</div>
 
 {# ── ORNAMENT DIVIDER ── #}
-<div class="flex items-center justify-center gap-3 mb-12 select-none" aria-hidden="true">
+<div class="flex items-center justify-center gap-3 mb-10 select-none" aria-hidden="true">
+    <span class="block h-px w-8" style="background: linear-gradient(90deg, transparent, #C4B8A8);"></span>
+    <span class="text-espresso-300 text-[10px]">✦</span>
+    <span class="block h-px w-8" style="background: linear-gradient(90deg, #C4B8A8, transparent);"></span>
+</div>
+
+{# ── FEATURED MEMORY ── #}
+<div class="grid md:grid-cols-2 gap-6 md:gap-8 mb-12 items-start">
+    <figure class="featured-frame">
+        <img src="{{ photo2 }}" alt="A moment from the archives" loading="lazy"
+             onerror="this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.style.minHeight='280px';this.parentElement.style.background='#F0EBE2';this.parentElement.style.display='flex';this.style.display='none'">
+        <div class="hidden w-full items-center justify-center text-[#9E8C78] font-display text-[10px] uppercase tracking-widest bg-[#F0EBE2]" style="min-height:280px;">Photo from the archives</div>
+    </figure>
+    <div>
+        <span class="text-[10px] text-[#8B3A3A] font-sans uppercase tracking-[0.22em] font-medium">From the archives</span>
+        <h2 class="text-[21px] leading-snug font-semibold text-[#1A1614] mt-1 mb-3" style="font-family: 'Playfair Display', Georgia, serif;">
+            The night that started it all
+        </h2>
+        <p class="home-body">
+            Ten strangers, one lecture hall, and a shared confusion about which building we were supposed to be in. Someone cracked a joke. Someone else laughed a little too loud. By the end of the week, we had a group chat. By the end of the month, we had a family.
+        </p>
+        <p class="home-body mt-3">
+            Four years later, we walked across that same stage together &mdash; caps in the air, arms around each other, still laughing at the same inside jokes.
+        </p>
+        <a href="/our-story" class="inline-flex items-center gap-1.5 mt-4 text-[13px] text-[#8B3A3A] font-sans font-medium hover:text-[#C1633B] transition-colors duration-200 no-underline">
+            Read the full story
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+    </div>
+</div>
+
+{# ── ORNAMENT DIVIDER ── #}
+<div class="flex items-center justify-center gap-3 mb-10 select-none" aria-hidden="true">
     <span class="block h-px w-8" style="background: linear-gradient(90deg, transparent, #C4B8A8);"></span>
     <span class="text-espresso-300 text-[10px]">✦</span>
     <span class="block h-px w-8" style="background: linear-gradient(90deg, #C4B8A8, transparent);"></span>
@@ -125,14 +207,18 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {% set explore_links = [
-            ('/our-story', 'Our Story', 'How it all began — from the first lecture to the last goodbye.', palette[0].accent),
-            ('/squad', 'The Squad', 'Meet the ten of us, each with a story worth telling.', palette[1].accent),
-            ('/timeline', 'Timeline', 'Four years, captured year by year, moment by moment.', palette[2].accent),
-            ('/gallery', 'Gallery', 'Photos and memories from a decade of friendship.', palette[3].accent),
+            ('/our-story', 'Our Story', 'How it all began.', palette[0].accent, group_photo),
+            ('/squad', 'The Squad', 'Meet the ten of us.', palette[1].accent, photo2),
+            ('/timeline', 'Timeline', 'Year by year.', palette[2].accent, photo3),
+            ('/gallery', 'Gallery', 'Photos & memories.', palette[3].accent, group_photo),
         ] %}
-        {% for href, title, desc, color in explore_links %}
+        {% for href, title, desc, color, img in explore_links %}
         <a href="{{ href }}" class="explore-tile group">
-            <div class="flex items-start justify-between gap-4">
+            <img src="{{ img }}" alt="" class="tile-bg absolute inset-0 w-full h-full object-cover" loading="lazy"
+                 onerror="this.style.display='none'"
+                 style="opacity: 0.15;">
+            <div class="absolute inset-0 tile-bg" style="background: linear-gradient(135deg, {{ color }}04, transparent); opacity: 0.3;"></div>
+            <div class="relative z-10 p-5 sm:p-6 flex items-start justify-between gap-4" style="background: linear-gradient(135deg, rgba(250,248,244,0.88) 0%, rgba(250,248,244,0.82) 70%, rgba(250,248,244,0.92) 100%);">
                 <div class="min-w-0">
                     <span class="block text-[11px] font-sans uppercase tracking-[0.18em] font-medium mb-1.5" style="color: {{ color }};">{{ '%02d' | format(loop.index) }}</span>
                     <h3 class="text-[16px] leading-snug font-semibold text-[#1A1614] mb-1" style="font-family: 'Playfair Display', Georgia, serif;">{{ title }}</h3>
@@ -146,7 +232,7 @@
 </div>
 
 {# ── ORNAMENT DIVIDER ── #}
-<div class="flex items-center justify-center gap-3 mb-12 select-none" aria-hidden="true">
+<div class="flex items-center justify-center gap-3 mb-10 select-none" aria-hidden="true">
     <span class="block h-px w-8" style="background: linear-gradient(90deg, transparent, #C4B8A8);"></span>
     <span class="text-espresso-300 text-[10px]">✦</span>
     <span class="block h-px w-8" style="background: linear-gradient(90deg, #C4B8A8, transparent);"></span>
@@ -165,5 +251,12 @@
         <span class="home-dot" style="background: #8A7F76;"></span>
         <span class="block h-px w-8" style="background: linear-gradient(90deg, #D4C9B8, transparent);"></span>
     </div>
+</div>
+
+{# ── PERSONAL NOTE ── #}
+<div class="text-center pb-2">
+    <p class="text-[11px] text-[#8A7F76] font-sans font-medium tracking-wide">
+        From our group chat to your screen &mdash; thanks for stopping by.
+    </p>
 </div>
 {% endblock %}
