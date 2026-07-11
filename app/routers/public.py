@@ -1,9 +1,12 @@
 import os
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import HTMLResponse
+from sqlmodel import Session
 
+from app.database import get_session
 from app.jinja import BASE_DIR, templates
+from app.services import updates as updates_svc
 
 router = APIRouter()
 
@@ -45,17 +48,6 @@ GALLERY_ITEMS = [
     {"id": 16, "category": "Campus Life", "title": "Snow Day Fights", "uploaded_by": "Aisha"},
     {"id": 17, "category": "Events", "title": "Secret Santa 2022", "uploaded_by": "David"},
     {"id": 18, "category": "Trips", "title": "Lake House Weekend", "uploaded_by": "Yuki"},
-]
-
-UPDATES = [
-    {"id": 1, "title": "Five Years Since Graduation", "content": "Can you believe it's been five years? We're planning a reunion this summer. Details coming soon — save the date for August 15th!", "author": "Alex Chen", "posted_at": "2026-06-15"},
-    {"id": 2, "title": "Welcome to the Website!", "content": "We finally have a permanent home for all our memories. This is where we'll keep our photos, stories, and updates. Welcome back, everyone.", "author": "The Group", "posted_at": "2026-06-01"},
-    {"id": 3, "title": "New Addition to the Squad", "content": "Big news — Maya and her partner just welcomed a baby girl! Little Sofia already has the whole group wrapped around her finger. Mazel tov!", "author": "Priya Sharma", "posted_at": "2026-05-20"},
-    {"id": 4, "title": "Tomás Dropped a New Track", "content": "Our very own music producer just released a new single. It's called 'Nostalgia' and yes, there's a sample of our graduation night in there. Go stream it!", "author": "Leo Kim", "posted_at": "2026-04-10"},
-    {"id": 5, "title": "Remembering the House", "content": "James found a video from our old house share. It's 3 minutes of chaos, burnt toast, and someone falling off a chair. It's perfect.", "author": "Sara Johansson", "posted_at": "2026-03-05"},
-    {"id": 6, "title": "Beach Day Flashback", "content": "Remember when we spent an entire Saturday building a sandcastle that looked more like a sand-blob? Best Worst Castle 2023, right there.", "author": "Yuki Tanaka", "posted_at": "2026-02-18"},
-    {"id": 7, "title": "The Great Pancake Disaster", "content": "Someone (Leo) thought it was a good idea to flip pancakes without a spatula. The ceiling still has a stain. We framed it as modern art.", "author": "David Park", "posted_at": "2026-01-22"},
-    {"id": 8, "title": "Midnight Rooftop Conversations", "content": "Some of the best talks happened on that creaky rooftop. Life, love, dreams, and whether pineapple belongs on pizza. The jury's still out.", "author": "Aisha Mohammed", "posted_at": "2025-12-14"},
 ]
 
 EVENTS_LIST = [
@@ -131,19 +123,23 @@ async def gallery(request: Request):
 
 
 @router.get("/updates", response_class=HTMLResponse)
-async def updates(request: Request):
-    return templates.TemplateResponse("updates.html", {"request": request, "updates": UPDATES})
+async def updates(request: Request, session: Session = Depends(get_session)):
+    posts = updates_svc.list_updates(session)
+    return templates.TemplateResponse("updates.html", {"request": request, "updates": posts})
 
 
 @router.get("/updates/{update_id:int}", response_class=HTMLResponse)
-async def update_detail(request: Request, update_id: int):
-    post = next((u for u in UPDATES if u["id"] == update_id), None)
+async def update_detail(request: Request, update_id: int, session: Session = Depends(get_session)):
+    post = updates_svc.get_update(session, update_id)
     if not post:
-        from starlette.exceptions import HTTPException as StarletteHTTPException
-        raise StarletteHTTPException(status_code=404)
-    related = [u for u in UPDATES if u["id"] != update_id][:2]
+        raise HTTPException(status_code=404)
+    related = updates_svc.get_related(session, exclude_id=update_id)
+    member = getattr(request.state, "current_member", None)
+    hero_intro, content_blocks = updates_svc.build_content_blocks(post)
+
     return templates.TemplateResponse("update_detail.html", {
-        "request": request, "post": post, "related": related
+        "request": request, "post": post, "related": related, "member": member,
+        "hero_intro": hero_intro, "content_blocks": content_blocks,
     })
 
 

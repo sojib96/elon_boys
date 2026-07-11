@@ -129,7 +129,12 @@
                     {% for href, label in nav_links %}
                     <a href="{{ href }}" class="masthead-link {% if request.url.path == href %}active{% endif %}">{{ label }}</a>
                     {% endfor %}
+                    {% if request.state.current_member %}
+                    <a href="/behind-the-curtain" class="masthead-link {% if request.url.path == '/behind-the-curtain' %}active{% endif %}">Behind the Curtain</a>
+                    <a href="/logout" class="masthead-link masthead-login">Logout</a>
+                    {% else %}
                     <a href="/login" class="masthead-link masthead-login">Login</a>
+                    {% endif %}
                 </div>
 
                 <button id="menu-btn" class="md:hidden p-1 -mr-1 rounded hover:bg-[rgba(193,99,59,0.08)] transition-colors" aria-label="Toggle navigation menu" aria-expanded="false">
@@ -143,7 +148,12 @@
                 {% for href, label in nav_links %}
                 <a href="{{ href }}" class="block px-2 py-2 text-sm text-[#4A3F38] hover:text-[#C1633B] font-medium transition-colors duration-200" role="menuitem">{{ label }}</a>
                 {% endfor %}
+                {% if request.state.current_member %}
+                <a href="/behind-the-curtain" class="block px-2 py-2 text-sm text-[#4A3F38] hover:text-[#C1633B] font-medium transition-colors duration-200" role="menuitem">Behind the Curtain</a>
+                <a href="/logout" class="block mt-2 px-2 py-2 text-sm text-[#C1633B] font-semibold">Logout</a>
+                {% else %}
                 <a href="/login" class="block mt-2 px-2 py-2 text-sm text-[#C1633B] font-semibold">Login</a>
+                {% endif %}
             </div>
         </div>
     </nav>

@@ -110,6 +110,32 @@
         transform: scale(0.98);
     }
 
+    .error-banner {
+        background: #FEF2F2;
+        border: 1px solid #FECACA;
+        color: #991B1B;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 12px;
+        padding: 10px 14px;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+    .forgot-link {
+        display: block;
+        text-align: center;
+        margin-top: 14px;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 11px;
+        color: #8A7F76;
+        text-decoration: none;
+        letter-spacing: 0.05em;
+    }
+    .forgot-link:hover {
+        color: #8B3A3A;
+    }
+
     @media (prefers-reduced-motion: reduce) {
         .field-input { transition: none; }
         .btn-signin { transition: none; }
@@ -128,20 +154,21 @@
 
         <div class="form-card">
             <hr class="form-card-top" aria-hidden="true">
-            <form>
+            {% if error %}
+            <div class="error-banner">{{ error }}</div>
+            {% endif %}
+            <form method="post" action="/login">
                 <div class="mb-6">
                     <label class="field-label" for="username">Username</label>
-                    <input type="text" id="username" class="field-input" placeholder="Enter your username">
+                    <input type="text" id="username" name="username" class="field-input" placeholder="Enter your username" required>
                 </div>
                 <div class="mb-8">
                     <label class="field-label" for="password">Password</label>
-                    <input type="password" id="password" class="field-input" placeholder="Enter your password">
+                    <input type="password" id="password" name="password" class="field-input" placeholder="Enter your password" required>
                 </div>
                 <button type="submit" class="btn-signin">Sign In</button>
             </form>
-            <p class="text-[#C4B8A8] text-[12px] italic text-center mt-6" style="font-family: Georgia, 'Times New Roman', serif;">
-                Authentication coming in a future sprint.
-            </p>
+            <a href="/forgot-password" class="forgot-link">Forgot your password?</a>
         </div>
     </div>
 </div>

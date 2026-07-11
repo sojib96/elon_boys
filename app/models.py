@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 
 class Member(SQLModel, table=True):
@@ -14,6 +14,18 @@ class Member(SQLModel, table=True):
     current_status: Optional[str] = None
     username: str = Field(unique=True)
     hashed_password: str
+    tag: Optional[str] = None
+    email: Optional[str] = None
+
+
+class GlobalQuestion(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    question: str
+    option_a: str
+    option_b: str
+    option_c: str
+    option_d: str
+    correct_answer: str  # "a", "b", "c", or "d"
 
 
 class TimelineEvent(SQLModel, table=True):
@@ -36,8 +48,21 @@ class UpdatePost(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str
     content: str
+    excerpt: Optional[str] = None
+    # author is a plain string for now; will become a FK to Member once auth is wired up
     author: str
     posted_at: datetime = Field(default_factory=datetime.utcnow)
+    images: list["UpdateImage"] = Relationship(back_populates="update")
+
+
+class UpdateImage(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    update_id: int = Field(foreign_key="updatepost.id")
+    file_url: str
+    alt_text: Optional[str] = None
+    order_index: int = Field(default=0)
+    uploaded_at: datetime = Field(default_factory=datetime.utcnow)
+    update: Optional[UpdatePost] = Relationship(back_populates="images")
 
 
 class Event(SQLModel, table=True):

@@ -230,17 +230,32 @@
             Back to updates
         </a>
 
+        {% if member %}
+        <div class="flex gap-2 mb-6">
+            <a href="/updates/{{ post.id }}/edit" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-gray-500 hover:text-white hover:bg-gray-600 border border-gray-300 rounded-md transition-colors">Edit</a>
+            <form method="POST" action="/updates/{{ post.id }}/delete" onsubmit="return confirm('Are you sure you want to delete this post? This cannot be undone.')">
+                <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-red-400 hover:text-white hover:bg-red-600 border border-red-200 rounded-md transition-colors">Delete</button>
+            </form>
+        </div>
+        {% endif %}
+
 
         {# ── SPREAD: HERO IMAGE + HEADLINE ── #}
         <div class="spread mb-12">
 
             {# ── LEFT: Hero image ── #}
             <figure class="vintage-frame spread-image mb-6 lg:mb-0">
-                <img src="https://picsum.photos/seed/update{{ post.id }}a/900/1100" alt="{{ post.title }}"
+                {% if post.images | length > 0 %}
+                <img src="{{ post.images[0].file_url }}" alt="{{ post.images[0].alt_text or post.title }}"
                      loading="lazy"
                      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                {% else %}
+                <img src="/static/img/fallback-cover.jpg" alt="{{ post.title }}"
+                     loading="lazy"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                {% endif %}
                 <div class="hidden w-full aspect-[3/4] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
-                <figcaption>From the archives &mdash; {{ post.posted_at }}</figcaption>
+                <figcaption>From the archives &mdash; {{ post.posted_at.strftime('%Y-%m-%d') }}</figcaption>
             </figure>
 
             {# ── RIGHT: Headline + intro ── #}
@@ -251,50 +266,34 @@
 
                 <h1 class="mag-headline mt-6 mb-3">{{ post.title }}</h1>
 
-                <p class="mag-headline-sub mb-6">By {{ post.author }} &mdash; <span class="font-sans not-italic text-[#8A7F76] text-xs uppercase tracking-wider font-medium">3 min read</span></p>
+                <p class="mag-headline-sub mb-6">By {{ post.author }}</p>
 
-                {# ── Transition to body ── #}
+                {% if hero_intro %}
+                <p class="font-serif text-[#5A5148] text-base leading-relaxed italic">{{ hero_intro }}</p>
+                {% endif %}
+                                {# ── Transition to body ── #}
                 <div class="divider-ornament my-8">
                     <span class="line"></span>
                     <span class="dot"></span>
                     <span class="line"></span>
                 </div>
-
-                <p class="body-text drop-cap mb-0">{{ post.content }}</p>
             </div>
         </div>
 
-        {# ── Double hairline divider before full-width body ── #}
-        <hr class="divider-double my-10 max-w-3xl mx-auto">
-
-
-        {# ── FULL-WIDTH BODY ── #}
+        {# ── FULL-WIDTH BODY: interleaved paragraphs + images ── #}
         <div class="body-text max-w-3xl mx-auto">
-
-            <p>It's moments like these that remind us why this group matters. Four years of shared memories, and we're still making new ones. Here's to many more. Stay tuned for more updates — and don't be a stranger in the group chat.</p>
-
-            {# ── INLINE IMAGE ── #}
-            <figure class="vintage-frame my-10 max-w-2xl mx-auto">
-                <img src="https://picsum.photos/seed/update{{ post.id }}b/800/500" alt=""
-                     loading="lazy"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="hidden w-full aspect-[8/5] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
-                <figcaption>A moment captured, a memory preserved.</figcaption>
-            </figure>
-
-            <p>There's something about looking back at old photos that hits differently. Not the polished ones, but the ones where someone's mid-laugh or the lighting's terrible. Those are the ones that matter. The ones where you can hear the sound of the room, feel the warmth of the night, the echo of a friend's laugh.</p>
-
-            <p>This group started as ten strangers in a lecture hall. Four years later, we're spread across cities, time zones, and continents — but the group chat is still warm, still loud, still home.</p>
-
-            {# ── SECOND INLINE IMAGE ── #}
-            <figure class="vintage-frame my-10 max-w-xl mx-auto">
-                <img src="https://picsum.photos/seed/update{{ post.id }}c/700/500" alt=""
-                     loading="lazy"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="hidden w-full aspect-[7/5] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
-            </figure>
-
-            <p>Here's to the next chapter — whatever it brings, we'll bring it together.</p>
+            {% for block in content_blocks %}
+                {% if block.type == "text" %}
+                    <p>{{ block.content }}</p>
+                {% elif block.type == "image" %}
+                <figure class="vintage-frame my-10 max-w-2xl mx-auto">
+                    <img src="{{ block.image.file_url }}" alt="{{ block.image.alt_text or '' }}"
+                         loading="lazy"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="hidden w-full aspect-[8/5] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
+                </figure>
+                {% endif %}
+            {% endfor %}
         </div>
 
         {# ── Ornament divider before footer section ── #}
@@ -332,7 +331,7 @@
                         <span class="toc-num">{{ '%02d' | format(loop.index) }}</span>
                         <span class="toc-title">{{ r.title }}</span>
                         <span class="toc-dots" aria-hidden="true"></span>
-                        <span class="toc-date">{{ r.posted_at }}</span>
+                        <span class="toc-date">{{ r.posted_at.strftime('%Y-%m-%d') }}</span>
                     </a>
                     {% endfor %}
                 </div>

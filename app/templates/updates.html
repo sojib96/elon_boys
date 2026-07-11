@@ -130,9 +130,9 @@
         {% set p = palette[loop.index0 % palette | length] %}
         {% set featured = loop.first and updates|length > 2 %}
         <a href="/updates/{{ post.id }}" class="card {% if featured %}md:col-span-2 lg:col-span-2{% endif %}" style="--accent: {{ p.accent }};">
-            <span class="card-date" style="color: {{ p.accent }};">{{ post.posted_at }}</span>
+            <span class="card-date" style="color: {{ p.accent }};">{{ post.posted_at.strftime('%Y-%m-%d') }}</span>
             <h2 class="card-title">{{ post.title }}</h2>
-            <p class="card-excerpt">{{ post.content }}</p>
+            <p class="card-excerpt">{{ post.excerpt if post.excerpt else post.content[:150] ~ '...' }}</p>
             <hr class="card-rule">
             <span class="card-author">{{ post.author }}</span>
         </a>

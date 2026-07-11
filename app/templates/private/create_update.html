@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}{% if post %}Edit Update{% else %}Create Update{% endif %} — Elon Boys{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <a href="/behind-the-curtain" class="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-wider font-semibold text-gray-400 hover:text-coral-600 transition-colors mb-8">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Back
+    </a>
+
+    <div class="text-center mb-10 reveal">
+        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">{% if post %}Editing{% else %}New Post{% endif %}</span>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">{% if post %}Edit Update{% else %}Create Update{% endif %}</h1>
+        <p class="text-gray-500 text-sm mt-2">{% if post %}Update an existing post.{% else %}Publish a new update visible to everyone.{% endif %}</p>
+    </div>
+
+    <form method="POST" action="{% if post %}/updates/{{ post.id }}/edit{% else %}/updates/new{% endif %}" enctype="multipart/form-data" class="space-y-6 reveal">
+
+        <div class="bg-white rounded-xl shadow-card border border-gray-100 p-6">
+            <label class="block text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-2" for="title">Title</label>
+            <input
+                type="text" id="title" name="title"
+                value="{{ form.title | default('') }}"
+                class="w-full border-b-2 border-gray-200 focus:border-coral-500 outline-none py-2 text-gray-800 text-sm transition-colors"
+                placeholder="Give your post a headline"
+            >
+            {% if errors.title %}
+            <p class="text-red-500 text-xs mt-1">{{ errors.title }}</p>
+            {% endif %}
+        </div>
+
+        <div class="bg-white rounded-xl shadow-card border border-gray-100 p-6">
+            <label class="block text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-2" for="author">Author</label>
+            <select
+                id="author" name="author"
+                class="w-full border-b-2 border-gray-200 focus:border-coral-500 outline-none py-2 text-gray-800 text-sm transition-colors bg-transparent"
+            >
+                <option value="" disabled {% if not form.author %}selected{% endif %}>Select a member</option>
+                {% for name in authors %}
+                <option value="{{ name }}" {% if form.author == name %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+            {% if errors.author %}
+            <p class="text-red-500 text-xs mt-1">{{ errors.author }}</p>
+            {% endif %}
+        </div>
+
+        <div class="bg-white rounded-xl shadow-card border border-gray-100 p-6">
+            <label class="block text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-2" for="excerpt">Excerpt <span class="text-gray-300 normal-case tracking-normal font-normal">(optional)</span></label>
+            <input
+                type="text" id="excerpt" name="excerpt"
+                value="{{ form.excerpt | default('') }}"
+                class="w-full border-b-2 border-gray-200 focus:border-coral-500 outline-none py-2 text-gray-800 text-sm transition-colors"
+                placeholder="One-liner summary of the post"
+            >
+        </div>
+
+        <div class="bg-white rounded-xl shadow-card border border-gray-100 p-6">
+            <label class="block text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-2" for="content">Content</label>
+            <textarea
+                id="content" name="content"
+                rows="8"
+                class="w-full border-b-2 border-gray-200 focus:border-coral-500 outline-none py-2 text-gray-800 text-sm transition-colors resize-y"
+                placeholder="Write your post here..."
+            >{{ form.content | default('') }}</textarea>
+            {% if errors.content %}
+            <p class="text-red-500 text-xs mt-1">{{ errors.content }}</p>
+            {% endif %}
+        </div>
+
+        {% if existing_images is defined and existing_images %}
+        <div class="bg-white rounded-xl shadow-card border border-gray-100 p-6">
+            <label class="block text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-3">Current Images</label>
+            <div class="space-y-3">
+                {% for img in existing_images %}
+                <div class="flex items-center gap-3 p-2 rounded-lg border border-gray-100 hover:border-red-200 transition-colors">
+                    <img src="{{ img.file_url }}" alt="" class="w-16 h-16 object-cover rounded-md border border-gray-200 flex-shrink-0">
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" name="delete_image_ids" value="{{ img.id }}" id="del_img_{{ img.id }}" class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer">
+                        <label for="del_img_{{ img.id }}" class="text-xs text-red-500 cursor-pointer select-none">Delete this image</label>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="bg-white rounded-xl shadow-card border-2 border-dashed border-gray-200 p-6 hover:border-coral-300 transition-colors">
+            <label class="block text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-3" for="files">{% if post %}Add More Images{% else %}Images{% endif %} <span class="text-gray-300 normal-case tracking-normal font-normal">(optional)</span></label>
+            <input
+                type="file" id="files" name="files" multiple accept="image/*"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-coral-50 file:text-coral-600 hover:file:bg-coral-100 file:cursor-pointer"
+            >
+            <p class="text-gray-400 text-xs mt-2">Select up to 10 images. Accepted formats: JPG, PNG, GIF.</p>
+            {% if errors.files %}
+            {% for msg in errors.files %}
+            <p class="text-red-500 text-xs mt-1">{{ msg }}</p>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="flex justify-end gap-3 pt-2">
+            <a href="{% if post %}/updates/{{ post.id }}{% else %}/updates{% endif %}" class="px-5 py-2.5 text-[11px] uppercase tracking-wider font-semibold text-gray-400 hover:text-gray-600 transition-colors">Cancel</a>
+            <button type="submit" class="px-6 py-2.5 bg-coral-600 hover:bg-coral-700 text-white text-[11px] uppercase tracking-wider font-semibold rounded-lg shadow-md hover:-translate-y-0.5 transition-all duration-200">{% if post %}Save Changes{% else %}Publish Update{% endif %}</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

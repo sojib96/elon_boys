@@ -7,5 +7,13 @@ venv/
 *.db
 static/uploads/*
 !static/uploads/.gitkeep
+app/static/uploads/updates/*
 *.log
 data/
+SEEDED_CREDENTIALS.txt
+.pytest_cache/
+.playwright-mcp/
+screenshots/
+*.png
+test_forgot_flow.py
+tests/playwright_verification.py

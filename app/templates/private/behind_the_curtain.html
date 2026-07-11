@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Behind the Curtain — Elon Boys{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="text-center mb-12 reveal">
+        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Private</span>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Behind the Curtain</h1>
+        <p class="text-gray-500 text-sm mt-2">Welcome back, {{ member.name }}. Here's everything in one place.</p>
+    </div>
+
+    <div class="space-y-4 stagger">
+        <a href="/uploads" class="block bg-white rounded-xl shadow-card border border-gray-100 p-6 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 group">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-lg bg-coral-50 flex items-center justify-center flex-shrink-0">
+                    <span class="text-lg">&#128228;</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-sm font-semibold text-gray-900">Uploads</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Raw photos, videos, and files shared within the group.</p>
+                </div>
+                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+        </a>
+
+        <a href="/notes" class="block bg-white rounded-xl shadow-card border border-gray-100 p-6 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 group">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-lg bg-coral-50 flex items-center justify-center flex-shrink-0">
+                    <span class="text-lg">&#128221;</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-sm font-semibold text-gray-900">Notes</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Internal messages and coordination for the group.</p>
+                </div>
+                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+        </a>
+
+        <a href="/updates/new" class="block bg-white rounded-xl shadow-card border border-gray-100 p-6 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 group">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-lg bg-coral-50 flex items-center justify-center flex-shrink-0">
+                    <span class="text-lg">&#9998;</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-sm font-semibold text-gray-900">Create Update</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Publish a new update visible to everyone on the site.</p>
+                </div>
+                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}
