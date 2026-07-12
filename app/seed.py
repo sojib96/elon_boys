@@ -108,6 +108,9 @@ GUESTBOOK_SEEDS = [
     {"name": "Mike R.", "message": "I was your RA in Year 1. You guys were a handful, but you turned out amazing. So proud!"},
     {"name": "Emily T.", "message": "Love the timeline feature — brought back so many memories of our uni days together."},
     {"name": "David's Mom", "message": "You all grew up so well. Thank you for being such good friends to my son."},
+    {"name": "Anonymous", "message": "I came here for the photos, stayed for the chaos. 10/10 would Elon again."},
+    {"name": "That One Guy", "message": "Whoever designed this site deserves a raise. Or therapy. Probably both."},
+    {"name": "Your Local Hater", "message": "This group chat was better when it was just a group chat. Nice site though."},
 ]
 
 
