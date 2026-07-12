@@ -3,40 +3,57 @@
 
 {% block content %}
 <div class="max-w-3xl mx-auto">
-    <div class="text-center mb-14 reveal">
-        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Messages</span>
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Guestbook</h1>
-        <p class="text-gray-500 text-sm mt-2">Leave a message for the group.</p>
+
+    {# ── Header ── #}
+    <div class="text-center mb-10">
+        <p class="font-sans text-[10px] tracking-[0.22em] uppercase text-[#8B3A3A] font-medium">Messages</p>
+        <h1 class="font-serif font-bold text-[#1A1614] leading-tight text-[clamp(1.3rem,2.5vw,1.75rem)] mt-1">Guestbook</h1>
+        <p class="text-[13px] text-[#5A5148] mt-2 font-sans">Leave a message for the squad.</p>
     </div>
 
-    <div class="reveal mb-12">
-        <div class="bg-white rounded-xl shadow-card border-2 border-dashed border-gray-200 p-8 text-center hover:border-coral-300 transition-colors">
-            <div class="w-12 h-12 rounded-xl bg-coral-50 flex items-center justify-center mx-auto mb-3">
-                <span class="text-xl">&#128221;</span>
+    {# ── Success message ── #}
+    {% if submitted %}
+    <div class="max-w-md mx-auto mb-8 bg-[#FAF8F4] border border-[#D4C9B8] rounded-sm px-5 py-3 text-center">
+        <p class="text-[13px] text-[#1A1614] font-sans font-medium">Thanks &mdash; your message has been posted!</p>
+    </div>
+    {% endif %}
+
+    {# ── Form ── #}
+    <div class="max-w-md mx-auto mb-12 bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm px-6 py-6">
+        <h2 class="text-[14px] font-sans font-semibold text-[#1A1614] mb-1">Sign the Guestbook</h2>
+        <p class="text-[12px] text-[#8A7F76] font-sans mb-4">Drop a note &mdash; tell a story, share a laugh, or just say hi.</p>
+        <form method="post" action="/guestbook">
+            <div class="mb-3">
+                <label for="name" class="text-[10px] font-sans font-semibold uppercase tracking-[0.12em] text-[#8A7F76] block mb-1">Your Name</label>
+                <input type="text" id="name" name="name" required
+                       class="w-full px-3 py-2 text-[13px] font-sans text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8]"
+                       placeholder="e.g. Sarah M.">
             </div>
-            <h3 class="font-semibold text-gray-700 text-[15px] mb-1">Sign the Guestbook</h3>
-            <p class="text-gray-400 text-sm mb-4">Form coming soon.</p>
-            <span class="text-xs text-gray-400 italic bg-gray-50 px-4 py-2 rounded-lg border border-gray-100">Guestbook form will be added in a future sprint.</span>
-        </div>
+            <div class="mb-4">
+                <label for="message" class="text-[10px] font-sans font-semibold uppercase tracking-[0.12em] text-[#8A7F76] block mb-1">Your Message</label>
+                <textarea id="message" name="message" rows="3" required
+                          class="w-full px-3 py-2 text-[13px] font-serif text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8] resize-none"
+                          placeholder="Write something nice&hellip;"></textarea>
+            </div>
+            <button type="submit"
+                    class="w-full py-2.5 text-[10px] font-sans font-semibold uppercase tracking-[0.16em] text-white bg-[#8B3A3A] rounded-sm hover:bg-[#A8472F] transition-colors cursor-pointer border-0">
+                Post Message
+            </button>
+        </form>
     </div>
 
-    <div class="space-y-4 stagger">
+    {# ── Entries ── #}
+    <div class="space-y-4">
         {% for entry in entries %}
-        {% set is_teal = loop.index0 % 2 == 0 %}
-        <div class="bg-white rounded-xl shadow-card border border-gray-100 transition-all duration-300 overflow-hidden hover:shadow-card-hover hover:-translate-y-0.5">
-            <div class="h-1 {% if is_teal %}bg-teal-500{% else %}bg-coral-500{% endif %}"></div>
-            <div class="p-5">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full {% if is_teal %}bg-teal-50{% else %}bg-coral-50{% endif %} flex items-center justify-center text-sm font-bold text-gray-600">{{ entry.name[:1] }}</div>
-                        <span class="font-semibold text-gray-800 text-sm">{{ entry.name }}</span>
-                    </div>
-                    <span class="text-gray-400 text-[11px] bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100">{{ entry.posted_at }}</span>
-                </div>
-                <p class="text-gray-600 text-sm leading-relaxed pl-11">{{ entry.message }}</p>
+        <div class="bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm px-5 py-4">
+            <p class="text-[14px] font-serif italic text-[#5A5148] leading-relaxed">&ldquo;{{ entry.message }}&rdquo;</p>
+            <div class="flex items-center justify-between mt-3">
+                <span class="text-[12px] font-sans font-semibold text-[#1A1614]">{{ entry.name }}</span>
+                <span class="text-[10px] font-sans text-[#8A7F76]">{{ entry.posted_at.strftime('%b %d, %Y') if entry.posted_at else '' }}</span>
             </div>
         </div>
         {% endfor %}
     </div>
+
 </div>
 {% endblock %}

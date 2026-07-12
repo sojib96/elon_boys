@@ -5,7 +5,7 @@ from pathlib import Path
 from sqlmodel import Session, select
 
 from app.auth import hash_password
-from app.models import GlobalQuestion, Member
+from app.models import GlobalQuestion, GuestbookEntry, Member
 from app.routers.public import MEMBERS
 
 CREDENTIALS_FILE = Path(__file__).resolve().parent.parent / "SEEDED_CREDENTIALS.txt"
@@ -100,3 +100,22 @@ def seed_questions(session: Session) -> None:
     if added:
         session.commit()
     print(f"Seeded {added} new security question(s).")
+
+
+GUESTBOOK_SEEDS = [
+    {"name": "Sarah M.", "message": "This website is such a beautiful idea! The memories you guys have are priceless."},
+    {"name": "Prof. Anderson", "message": "So wonderful to see this group still thriving after all these years. You were always my favourite class!"},
+    {"name": "Mike R.", "message": "I was your RA in Year 1. You guys were a handful, but you turned out amazing. So proud!"},
+    {"name": "Emily T.", "message": "Love the timeline feature — brought back so many memories of our uni days together."},
+    {"name": "David's Mom", "message": "You all grew up so well. Thank you for being such good friends to my son."},
+]
+
+
+def seed_guestbook(session: Session) -> None:
+    existing = session.exec(select(GuestbookEntry).limit(1)).first()
+    if existing is not None:
+        return
+    for g in GUESTBOOK_SEEDS:
+        session.add(GuestbookEntry(**g))
+    session.commit()
+    print(f"Seeded {len(GUESTBOOK_SEEDS)} guestbook entries.")

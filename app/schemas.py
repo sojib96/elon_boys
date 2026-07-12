@@ -18,3 +18,8 @@ class UpdateEdit(BaseModel):
     author: str
     new_image_urls: list[str] = []
     delete_image_ids: list[int] = []
+
+
+class GuestbookCreate(BaseModel):
+    name: str
+    message: str

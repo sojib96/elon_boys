@@ -120,10 +120,12 @@
 
                 <div id="desktop-nav" class="hidden md:flex items-center gap-0">
                     {% set nav_links = [
+                        ('/', 'Home'),
                         ('/squad', 'Squad'),
                         ('/timeline', 'Timeline'),
                         ('/gallery', 'Gallery'),
                         ('/updates', 'Updates'),
+                        ('/guestbook', 'Guestbook'),
                         ('/contact', 'Contact'),
                     ] %}
                     {% for href, label in nav_links %}
@@ -182,6 +184,7 @@
                         <a href="/timeline" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Timeline</a>
                         <a href="/gallery" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Gallery</a>
                         <a href="/updates" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Updates</a>
+                        <a href="/guestbook" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Guestbook</a>
                         <a href="/contact" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Contact</a>
                     </div>
                 </div>

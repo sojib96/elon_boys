@@ -11,7 +11,7 @@ from app.auth import NotAuthenticatedException, get_current_member_optional
 from app.database import create_db_and_tables, engine, get_session
 from app.jinja import BASE_DIR, templates
 from app.routers import public, private, guestbook
-from app.seed import seed_members, seed_questions
+from app.seed import seed_guestbook, seed_members, seed_questions
 from app.services.gallery import seed_gallery_if_empty
 from app.services.updates import seed_if_empty
 
@@ -54,6 +54,7 @@ def on_startup():
         seed_if_empty(session)
         seed_members(session)
         seed_questions(session)
+        seed_guestbook(session)
     finally:
         session.close()
 
