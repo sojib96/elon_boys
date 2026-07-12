@@ -465,11 +465,17 @@
         <h2 class="section-heading">Recent Shoutout</h2>
     </div>
     {% if latest_guestbook %}
-    <div class="guestbook-card max-w-md mx-auto">
-        <p class="guestbook-message">&ldquo;{{ latest_guestbook.message }}&rdquo;</p>
-        <p class="guestbook-name mt-3">{{ latest_guestbook.name }}</p>
-        <p class="text-[10px] text-[#8A7F76] font-sans uppercase tracking-[0.08em] mt-1">{{ latest_guestbook.posted_at.strftime('%b %d, %Y') if latest_guestbook.posted_at else '' }}</p>
-        <div class="mt-4">
+    <div class="guestbook-card max-w-md mx-auto divide-y divide-[#E8E0D6]">
+        {% for entry in latest_guestbook %}
+        <div {% if not loop.first %}class="pt-4"{% endif %}>
+            <p class="guestbook-message">&ldquo;{{ entry.message }}&rdquo;</p>
+            <div class="flex items-center justify-between mt-2">
+                <span class="text-[12px] font-sans font-semibold text-[#1A1614]">{{ entry.name }}</span>
+                <span class="text-[10px] text-[#8A7F76] font-sans">{{ entry.posted_at.strftime('%b %d, %Y') if entry.posted_at else '' }}</span>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="pt-4">
             <a href="/guestbook" class="guestbook-link">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 Leave a message

@@ -82,8 +82,8 @@ async def home(request: Request, session: Session = Depends(get_session)):
     latest_guestbook = session.exec(
         select(GuestbookEntry)
         .order_by(GuestbookEntry.posted_at.desc())
-        .limit(1)
-    ).first()
+        .limit(3)
+    ).all()
 
     return templates.TemplateResponse("home.html", {
         "request": request,
