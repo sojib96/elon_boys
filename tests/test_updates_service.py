@@ -227,8 +227,10 @@ class TestUpdateUpdate:
             delete_image_ids=[img1.id],
         )
         updated = update_update(session, post.id, data)
-        assert len(updated.images) == 1
-        assert updated.images[0].file_url == "/img/2.jpg"
+        active_images = [img for img in updated.images if not img.is_deleted]
+        assert len(active_images) == 1
+        assert active_images[0].file_url == "/img/2.jpg"
+        assert any(img.id == img1.id and img.is_deleted for img in updated.images)
 
     def test_deletes_old_and_adds_new_images(self, setup_db):
         session = setup_db
@@ -246,9 +248,11 @@ class TestUpdateUpdate:
             delete_image_ids=[img1.id],
         )
         updated = update_update(session, post.id, data)
-        assert len(updated.images) == 1
-        assert updated.images[0].file_url == "/img/new.jpg"
-        assert updated.images[0].order_index == 0
+        active = [img for img in updated.images if not img.is_deleted]
+        assert len(active) == 1
+        assert active[0].file_url == "/img/new.jpg"
+        assert active[0].order_index == 0
+        assert any(img.id == img1.id and img.is_deleted for img in updated.images)
 
     def test_does_not_delete_images_belonging_to_other_posts(self, setup_db):
         session = setup_db

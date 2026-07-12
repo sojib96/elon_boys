@@ -12,6 +12,7 @@ from app.database import create_db_and_tables, engine, get_session
 from app.jinja import BASE_DIR, templates
 from app.routers import public, private, guestbook
 from app.seed import seed_members, seed_questions
+from app.services.gallery import seed_gallery_if_empty
 from app.services.updates import seed_if_empty
 
 SECRET_KEY = os.getenv("SECRET_KEY", "")
@@ -49,6 +50,7 @@ def on_startup():
     create_db_and_tables()
     session = next(get_session())
     try:
+        seed_gallery_if_empty(session)
         seed_if_empty(session)
         seed_members(session)
         seed_questions(session)

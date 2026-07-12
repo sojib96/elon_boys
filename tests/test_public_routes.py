@@ -182,9 +182,9 @@ class TestPublicRoutes:
         assert resp.status_code == 200
         assert "Gallery" in resp.text
 
-    def test_gallery_twelve_items(self, client):
+    def test_gallery_has_items(self, client):
         resp = client.get("/gallery")
-        assert resp.text.count("aspect-square") == 12
+        assert resp.text.count("gallery-card") >= 18
 
     def test_gallery_categories(self, client):
         resp = client.get("/gallery")

@@ -15,14 +15,16 @@ from app.auth import (
 from app.database import engine, get_session
 from app.email_utils import send_email
 from app.jinja import BASE_DIR, templates
-from app.models import GlobalQuestion, Member
+from app.models import GalleryItem, GlobalQuestion, Member
 from app.routers.public import MEMBERS
 from app.schemas import UpdateCreate, UpdateEdit
+from app.services import gallery as gallery_svc
 from app.services import updates as updates_svc
 
 router = APIRouter()
 
 UPLOADS_DIR = BASE_DIR / "static" / "uploads" / "updates"
+GALLERY_UPLOADS_DIR = BASE_DIR / "static" / "uploads" / "gallery"
 
 MEMBER_NAMES = [m["name"] for m in MEMBERS]
 
@@ -239,7 +241,6 @@ async def create_update_submit(
     title: str = Form(...),
     content: str = Form(...),
     excerpt: str = Form(""),
-    author: str = Form(...),
     files: list[UploadFile] = File(default=[]),
     session: Session = Depends(get_session),
     _auth: Member = Depends(get_current_member),
@@ -249,8 +250,6 @@ async def create_update_submit(
         errors["title"] = "Title is required."
     if not content.strip():
         errors["content"] = "Content is required."
-    if not author.strip():
-        errors["author"] = "Author is required."
 
     image_urls = []
     saved_files = []
@@ -278,7 +277,7 @@ async def create_update_submit(
                 "request": request,
                 "authors": MEMBER_NAMES,
                 "errors": errors,
-                "form": {"title": title, "content": content, "excerpt": excerpt, "author": author},
+                "form": {"title": title, "content": content, "excerpt": excerpt},
                 "member": _auth,
             },
             status_code=422,
@@ -288,7 +287,7 @@ async def create_update_submit(
         title=title.strip(),
         content=content.strip(),
         excerpt=excerpt.strip() or None,
-        author=author.strip(),
+        author=_auth.name,
         image_urls=image_urls,
     )
     post = updates_svc.create_update(session, data)
@@ -305,7 +304,9 @@ async def edit_update_form(
     post = updates_svc.get_update(session, update_id)
     if not post:
         raise HTTPException(status_code=404)
-    existing_images = [{"id": img.id, "file_url": img.file_url} for img in post.images]
+    if post.author != _auth.name:
+        raise HTTPException(status_code=403)
+    existing_images = [{"id": img.id, "file_url": img.file_url} for img in post.images if not img.is_deleted]
     return templates.TemplateResponse(
         "private/create_update.html",
         {
@@ -332,7 +333,6 @@ async def edit_update_submit(
     title: str = Form(...),
     content: str = Form(...),
     excerpt: str = Form(""),
-    author: str = Form(...),
     delete_image_ids: list[int] = Form([]),
     files: list[UploadFile] = File(default=[]),
     session: Session = Depends(get_session),
@@ -341,14 +341,14 @@ async def edit_update_submit(
     post = updates_svc.get_update(session, update_id)
     if not post:
         raise HTTPException(status_code=404)
+    if post.author != _auth.name:
+        raise HTTPException(status_code=403)
 
     errors = {}
     if not title.strip():
         errors["title"] = "Title is required."
     if not content.strip():
         errors["content"] = "Content is required."
-    if not author.strip():
-        errors["author"] = "Author is required."
 
     new_image_urls = []
     saved_files = []
@@ -377,7 +377,7 @@ async def edit_update_submit(
                 "request": request,
                 "authors": MEMBER_NAMES,
                 "errors": errors,
-                "form": {"title": title, "content": content, "excerpt": excerpt, "author": author},
+                "form": {"title": title, "content": content, "excerpt": excerpt},
                 "existing_images": existing_images,
                 "post": post,
                 "member": _auth,
@@ -389,7 +389,7 @@ async def edit_update_submit(
         title=title.strip(),
         content=content.strip(),
         excerpt=excerpt.strip() or None,
-        author=author.strip(),
+        author=_auth.name,
         new_image_urls=new_image_urls,
         delete_image_ids=delete_image_ids,
     )
@@ -404,10 +404,181 @@ async def delete_update(
     session: Session = Depends(get_session),
     _auth: Member = Depends(get_current_member),
 ):
+    post = session.get(UpdatePost, update_id)
+    if not post:
+        raise HTTPException(status_code=404)
+    if post.author != _auth.name:
+        raise HTTPException(status_code=403)
     deleted = updates_svc.delete_update(session, update_id)
     if not deleted:
         raise HTTPException(status_code=404)
     return RedirectResponse(url="/updates", status_code=302)
+
+
+@router.get("/gallery/upload", response_class=HTMLResponse)
+async def gallery_upload_form(
+    request: Request,
+    _auth: Member = Depends(get_current_member),
+    session: Session = Depends(get_session),
+):
+    existing = session.exec(select(GalleryItem.category).distinct()).all()
+    all_categories = sorted(set(["Events", "Trips", "Campus Life", "Random"] + list(existing)))
+    return templates.TemplateResponse(
+        "private/upload_gallery.html",
+        {"request": request, "member": _auth, "errors": {}, "form": {}, "categories": all_categories},
+    )
+
+
+@router.post("/gallery/upload", response_class=HTMLResponse)
+async def gallery_upload_submit(
+    request: Request,
+    title: str = Form(...),
+    category: str = Form(...),
+    files: list[UploadFile] = File(default=[]),
+    session: Session = Depends(get_session),
+    _auth: Member = Depends(get_current_member),
+):
+    errors = {}
+    if not title.strip():
+        errors["title"] = "Title is required."
+    if not category.strip():
+        errors["category"] = "Category is required."
+    if not files or not any(f.filename for f in files):
+        errors["files"] = "At least one image is required."
+
+    if errors:
+        return templates.TemplateResponse(
+            "private/upload_gallery.html",
+            {
+                "request": request,
+                "member": _auth,
+                "errors": errors,
+                "form": {"title": title, "category": category},
+            },
+            status_code=422,
+        )
+
+    valid_exts = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+    GALLERY_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    for f in files:
+        if not f.filename:
+            continue
+        ext = Path(f.filename).suffix.lower() if f.filename else ".jpg"
+        if ext not in valid_exts:
+            continue
+        safe_name = f"{uuid.uuid4().hex}{ext}"
+        dest = GALLERY_UPLOADS_DIR / safe_name
+        content_bytes = await f.read()
+        dest.write_bytes(content_bytes)
+        file_url = f"/static/uploads/gallery/{safe_name}"
+        gallery_svc.create_gallery_item(session, title=title.strip(), category=category, file_url=file_url, uploaded_by=_auth.name)
+
+    return RedirectResponse(url="/gallery", status_code=302)
+
+
+@router.post("/gallery/{item_id:int}/delete")
+async def gallery_delete(
+    request: Request,
+    item_id: int,
+    session: Session = Depends(get_session),
+    _auth: Member = Depends(get_current_member),
+):
+    item = session.get(GalleryItem, item_id)
+    if not item:
+        raise HTTPException(status_code=404)
+    if item.uploaded_by != _auth.name:
+        raise HTTPException(status_code=403)
+    deleted = gallery_svc.delete_gallery_item(session, item_id)
+    if not deleted:
+        raise HTTPException(status_code=404)
+    return RedirectResponse(url="/gallery", status_code=302)
+
+
+@router.get("/trash", response_class=HTMLResponse)
+async def trash_page(request: Request, session: Session = Depends(get_session), _auth: Member = Depends(get_current_member)):
+    deleted_gallery = gallery_svc.list_deleted_gallery(session, _auth.name)
+    deleted_updates = updates_svc.list_deleted_updates(session, _auth.name)
+    return templates.TemplateResponse(
+        "private/trash.html",
+        {
+            "request": request,
+            "member": _auth,
+            "deleted_gallery": deleted_gallery,
+            "deleted_updates": deleted_updates,
+        },
+    )
+
+
+@router.post("/gallery/{item_id:int}/restore")
+async def gallery_restore(
+    request: Request,
+    item_id: int,
+    session: Session = Depends(get_session),
+    _auth: Member = Depends(get_current_member),
+):
+    item = session.get(GalleryItem, item_id)
+    if not item:
+        raise HTTPException(status_code=404)
+    if item.uploaded_by != _auth.name:
+        raise HTTPException(status_code=403)
+    restored = gallery_svc.restore_gallery_item(session, item_id)
+    if not restored:
+        raise HTTPException(status_code=404)
+    return RedirectResponse(url="/trash", status_code=302)
+
+
+@router.post("/gallery/{item_id:int}/permanent-delete")
+async def gallery_permanent_delete(
+    request: Request,
+    item_id: int,
+    session: Session = Depends(get_session),
+    _auth: Member = Depends(get_current_member),
+):
+    item = session.get(GalleryItem, item_id)
+    if not item:
+        raise HTTPException(status_code=404)
+    if item.uploaded_by != _auth.name:
+        raise HTTPException(status_code=403)
+    deleted = gallery_svc.permanent_delete_gallery_item(session, item_id)
+    if not deleted:
+        raise HTTPException(status_code=404)
+    return RedirectResponse(url="/trash", status_code=302)
+
+
+@router.post("/updates/{update_id:int}/restore")
+async def update_restore(
+    request: Request,
+    update_id: int,
+    session: Session = Depends(get_session),
+    _auth: Member = Depends(get_current_member),
+):
+    post = session.get(UpdatePost, update_id)
+    if not post:
+        raise HTTPException(status_code=404)
+    if post.author != _auth.name:
+        raise HTTPException(status_code=403)
+    restored = updates_svc.restore_update(session, update_id)
+    if not restored:
+        raise HTTPException(status_code=404)
+    return RedirectResponse(url="/trash", status_code=302)
+
+
+@router.post("/updates/{update_id:int}/permanent-delete")
+async def update_permanent_delete(
+    request: Request,
+    update_id: int,
+    session: Session = Depends(get_session),
+    _auth: Member = Depends(get_current_member),
+):
+    post = session.get(UpdatePost, update_id)
+    if not post:
+        raise HTTPException(status_code=404)
+    if post.author != _auth.name:
+        raise HTTPException(status_code=403)
+    deleted = updates_svc.permanent_delete_update(session, update_id)
+    if not deleted:
+        raise HTTPException(status_code=404)
+    return RedirectResponse(url="/trash", status_code=302)
 
 
 @router.get("/behind-the-curtain", response_class=HTMLResponse)

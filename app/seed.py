@@ -17,7 +17,7 @@ def _slugify(name: str) -> str:
     return slug
 
 
-def seed_members(session: Session) -> None:
+def seed_members(session: Session, write_credentials: bool = True) -> None:
     existing = session.exec(select(Member).limit(1)).first()
     if existing is not None:
         return
@@ -62,14 +62,13 @@ def seed_members(session: Session) -> None:
     console_output = header + "\n".join(credentials) + footer
     print("\n" + console_output + "\n")
 
-    CREDENTIALS_FILE.write_text(console_output, encoding="utf-8")
-    print(f"Credentials also written to: {CREDENTIALS_FILE}\n")
+    if write_credentials:
+        CREDENTIALS_FILE.write_text(console_output, encoding="utf-8")
+        print(f"Credentials also written to: {CREDENTIALS_FILE}\n")
 
 
 def seed_questions(session: Session) -> None:
-    existing = session.exec(select(GlobalQuestion).limit(1)).first()
-    if existing is not None:
-        return
+    existing = {q.question for q in session.exec(select(GlobalQuestion)).all()}
 
     questions = [
         GlobalQuestion(
@@ -80,8 +79,20 @@ def seed_questions(session: Session) -> None:
             option_d="11",
             correct_answer="d",
         ),
+        GlobalQuestion(
+            question="what is the bra size of apurba datta?",
+            option_a="34",
+            option_b="36",
+            option_c="42",
+            option_d="Don't know but his boobs is bigger then his crush for sure",
+            correct_answer="d",
+        ),
     ]
+    added = 0
     for q in questions:
-        session.add(q)
-    session.commit()
-    print(f"Seeded {len(questions)} security question(s).")
+        if q.question not in existing:
+            session.add(q)
+            added += 1
+    if added:
+        session.commit()
+    print(f"Seeded {added} new security question(s).")

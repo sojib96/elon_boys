@@ -15,8 +15,14 @@
     .group:hover .cat-glow { opacity: 1; }
 
     .filter-chip {
-        cursor: default;
+        cursor: pointer;
         transition: color 0.25s ease;
+    }
+    .filter-chip.active {
+        opacity: 1;
+    }
+    .filter-chip.active .dot {
+        box-shadow: 0 0 0 2px white, 0 0 0 4px currentColor;
     }
 
     .gallery-headline {
@@ -41,6 +47,7 @@
     'Trips': {'accent': '#7A9A7A', 'bg': '#EDF3ED'},
     'Campus Life': {'accent': '#C4A35A', 'bg': '#F8F3E8'},
     'Random': {'accent': '#8A7F76', 'bg': '#F0EDE8'},
+    'Updates': {'accent': '#6B8FC4', 'bg': '#EBF0F8'},
 } %}
 
 {% set featured_ids = [1, 10, 11] %}
@@ -55,11 +62,15 @@
     </div>
 
     {# ── FILTERS: second line, centered ── #}
-    <div class="flex flex-wrap justify-center gap-x-7 gap-y-1 mb-4">
+    <div class="flex flex-wrap justify-center gap-x-7 gap-y-1 mb-4" id="category-filters">
+        <span class="filter-chip font-display text-[10px] uppercase tracking-[0.15em] font-semibold flex items-center gap-1.5 active" data-filter="all" style="color: #6B5E53;">
+            <span class="inline-block w-1.5 h-1.5 rounded-full flex-shrink-0 dot" style="background: #6B5E53;"></span>
+            All
+        </span>
         {% for cat in categories %}
         {% set cc = cat_colors.get(cat, cat_colors['Random']) %}
-        <span class="filter-chip font-display text-[10px] uppercase tracking-[0.15em] font-semibold flex items-center gap-1.5" style="color: {{ cc.accent }};">
-            <span class="inline-block w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: {{ cc.accent }};"></span>
+        <span class="filter-chip font-display text-[10px] uppercase tracking-[0.15em] font-semibold flex items-center gap-1.5" data-filter="{{ cat }}" style="color: {{ cc.accent }};">
+            <span class="inline-block w-1.5 h-1.5 rounded-full flex-shrink-0 dot" style="background: {{ cc.accent }};"></span>
             {{ cat }}
         </span>
         {% endfor %}
@@ -68,8 +79,20 @@
     {# ── UNDERLINE: gradient across the category colors ── #}
     <hr class="mb-6" style="border: 0; height: 1px; background: linear-gradient(90deg, #C1633B 0%, #7A9A7A 33%, #C4A35A 66%, #8A7F76 100%); opacity: 0.35;">
 
+    {# ── SORT + COUNTER ── #}
+    <div class="flex items-center justify-between mb-4">
+        <p class="text-[10px] uppercase tracking-[0.15em] font-semibold text-[#8A7F76]">
+            <span id="visible-count">{{ gallery_items | length }}</span> <span id="total-count-label">memories</span>
+        </p>
+        <select id="sort-select" class="text-[10px] uppercase tracking-[0.15em] font-semibold text-[#8A7F76] bg-transparent border-none outline-none cursor-pointer">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="alpha">A–Z</option>
+        </select>
+    </div>
+
     {# ── GALLERY GRID ── #}
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+    <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
         {% for item in gallery_items %}
         {% set cc = cat_colors.get(item.category, cat_colors['Random']) %}
         {% set is_featured = item.id in featured_ids %}
@@ -88,12 +111,17 @@
             {% set tilt_class = "" %}
         {% endif %}
 
-        <div class="group relative rounded-lg overflow-hidden bg-white border border-[#E8E0D6] {{ hover_class }} {{ tilt_class }}
+        <div class="gallery-card group relative rounded-lg overflow-hidden bg-white border border-[#E8E0D6] {{ hover_class }} {{ tilt_class }}
             {% if is_featured %}col-span-2{% endif %}"
+            data-category="{{ item.category }}"
+            data-title="{{ item.title }}"
+            data-url="{{ item.file_url }}"
+            data-id="{{ item.id }}"
+            data-uploaded-by="{{ item.uploaded_by }}"
             style="border-top: 3px solid {{ cc.accent }};">
-                    <div class="{% if is_featured %}aspect-[4/3]{% else %}aspect-square{% endif %} overflow-hidden bg-cover bg-center{% if item.photo_url %} gallery-img{% endif %}"
-                         style="background-color: {{ cc.bg }};{% if item.photo_url %} background-image: url('{{ item.photo_url }}');{% endif %}">
-                        {% if not item.photo_url %}
+                    <div class="gallery-card-img {% if is_featured %}aspect-[4/3]{% else %}aspect-square{% endif %} overflow-hidden bg-cover bg-center{% if item.file_url %} gallery-img{% endif %}"
+                         style="background-color: {{ cc.bg }};{% if item.file_url %} background-image: url('{{ item.file_url }}');{% endif %}">
+                        {% if not item.file_url %}
                         <span class="flex items-center justify-center w-full h-full text-3xl sm:text-4xl opacity-30 select-none">📷</span>
                         {% endif %}
                     </div>
@@ -103,8 +131,211 @@
                 <p class="font-serif font-semibold text-sm leading-tight text-white">{{ item.title }}</p>
                 <p class="text-white/65 text-[10px] mt-0.5 uppercase tracking-[0.08em] font-medium">{{ item.category }}</p>
             </div>
+            {% if member and member.name == item.uploaded_by %}
+            <button class="gallery-delete-btn absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 hover:bg-red-500 text-gray-500 hover:text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-sm z-10" data-id="{{ item.id }}" title="Delete this image" type="button">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+            </button>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
+
+    {# ── LOAD MORE ── #}
+    <div id="load-more-container" class="text-center mt-8 hidden">
+        <button id="load-more-btn" class="px-6 py-2.5 bg-white border border-[#E8E0D6] text-[11px] uppercase tracking-wider font-semibold text-[#4A3F38] rounded-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+            Load More
+        </button>
+    </div>
 </div>
+
+<script>
+(function() {
+    var ITEMS_PER_PAGE = 12;
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.gallery-card'));
+    var grid = document.getElementById('gallery-grid');
+    var loadMoreBtn = document.getElementById('load-more-btn');
+    var loadMoreContainer = document.getElementById('load-more-container');
+    var sortSelect = document.getElementById('sort-select');
+    var visibleCount = document.getElementById('visible-count');
+    var chips = Array.prototype.slice.call(document.querySelectorAll('.filter-chip'));
+    var activeFilter = 'all';
+
+    function getCardIndex(card) { return cards.indexOf(card); }
+
+    function getVisibleCards() {
+        return cards.filter(function(c) { return !c.classList.contains('hidden'); });
+    }
+
+    function showCards() {
+        var visible = getVisibleCards();
+        var showing = Math.min(visible.length, ITEMS_PER_PAGE);
+        if (visible.length <= ITEMS_PER_PAGE) {
+            loadMoreContainer.classList.add('hidden');
+        } else {
+            loadMoreContainer.classList.remove('hidden');
+        }
+        visible.forEach(function(c, i) { c.classList.toggle('hidden', i >= showing); });
+        loadMoreContainer.classList.toggle('hidden', showing >= visible.length);
+        visibleCount.textContent = Math.min(showing, visible.length);
+    }
+
+    function applyFilter() {
+        cards.forEach(function(c) {
+            if (activeFilter === 'all' || c.getAttribute('data-category') === activeFilter) {
+                c.classList.remove('filtered-out');
+                c.classList.remove('hidden');
+            } else {
+                c.classList.add('filtered-out');
+                c.classList.add('hidden');
+            }
+        });
+        applySort();
+    }
+
+    function applySort() {
+        var sortBy = sortSelect.value;
+        var visible = cards.filter(function(c) { return !c.classList.contains('filtered-out'); });
+        visible.sort(function(a, b) {
+            if (sortBy === 'alpha') {
+                return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title'));
+            }
+            var da = a.getAttribute('data-id'), db = b.getAttribute('data-id');
+            if (sortBy === 'oldest') return da - db;
+            return db - da;
+        });
+        visible.forEach(function(c) { grid.appendChild(c); });
+        showCards();
+    }
+
+    chips.forEach(function(chip) {
+        chip.addEventListener('click', function() {
+            chips.forEach(function(c) { c.classList.remove('active'); });
+            chip.classList.add('active');
+            activeFilter = chip.getAttribute('data-filter');
+            applyFilter();
+        });
+    });
+
+    sortSelect.addEventListener('change', applySort);
+
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+            var visible = cards.filter(function(c) { return !c.classList.contains('filtered-out'); });
+            var showing = visible.filter(function(c) { return !c.classList.contains('hidden'); }).length;
+            var toShow = Math.min(showing + ITEMS_PER_PAGE, visible.length);
+            visible.forEach(function(c, i) { c.classList.toggle('hidden', i >= toShow); });
+            loadMoreContainer.classList.toggle('hidden', toShow >= visible.length);
+            visibleCount.textContent = toShow;
+        });
+    }
+
+    applyFilter();
+
+    {% if member %}
+    var deleteForms = {};
+    document.querySelectorAll('.gallery-delete-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var id = btn.getAttribute('data-id');
+            if (confirm('Delete this photo from the gallery?')) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/gallery/' + id + '/delete';
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    });
+    {% endif %}
+
+    {# lightbox for all users #}
+    var lightbox = null;
+    var lightboxImg = null;
+    var lightboxClose = null;
+    var lightboxPrev = null;
+    var lightboxNext = null;
+    var currentLightboxIdx = -1;
+
+    function openLightbox(idx) {
+        var visible = getVisibleCards();
+        if (idx < 0 || idx >= visible.length) return;
+        currentLightboxIdx = idx;
+        var card = visible[idx];
+        var url = card.getAttribute('data-url');
+        if (!url) return;
+        if (!lightbox) {
+            lightbox = document.createElement('div');
+            lightbox.id = 'gallery-lightbox';
+            lightbox.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s ease;';
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) closeLightbox();
+            });
+
+            lightboxClose = document.createElement('button');
+            lightboxClose.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>';
+            lightboxClose.style.cssText = 'position:absolute;top:16px;right:16px;z-index:10;background:rgba(0,0,0,0.4);border:none;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;';
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightbox.appendChild(lightboxClose);
+
+            lightboxPrev = document.createElement('button');
+            lightboxPrev.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>';
+            lightboxPrev.style.cssText = 'position:absolute;left:16px;top:50%;transform:translateY(-50%);z-index:10;background:rgba(0,0,0,0.4);border:none;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;';
+            lightboxPrev.addEventListener('mouseenter', function(){this.style.background='rgba(0,0,0,0.7)';});
+            lightboxPrev.addEventListener('mouseleave', function(){this.style.background='rgba(0,0,0,0.4)';});
+            lightboxPrev.addEventListener('click', function(e) { e.stopPropagation(); openLightbox(currentLightboxIdx - 1); });
+            lightbox.appendChild(lightboxPrev);
+
+            lightboxNext = document.createElement('button');
+            lightboxNext.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>';
+            lightboxNext.style.cssText = 'position:absolute;right:16px;top:50%;transform:translateY(-50%);z-index:10;background:rgba(0,0,0,0.4);border:none;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;';
+            lightboxNext.addEventListener('mouseenter', function(){this.style.background='rgba(0,0,0,0.7)';});
+            lightboxNext.addEventListener('mouseleave', function(){this.style.background='rgba(0,0,0,0.4)';});
+            lightboxNext.addEventListener('click', function(e) { e.stopPropagation(); openLightbox(currentLightboxIdx + 1); });
+            lightbox.appendChild(lightboxNext);
+
+            lightboxImg = document.createElement('img');
+            lightboxImg.style.cssText = 'max-width:90vw;max-height:90vh;object-fit:contain;border-radius:4px;box-shadow:0 8px 40px rgba(0,0,0,0.5);';
+            lightbox.appendChild(lightboxImg);
+
+            document.body.appendChild(lightbox);
+            lightbox.offsetHeight;
+            lightbox.style.opacity = '1';
+
+            document.addEventListener('keydown', function(e) {
+                if (!lightbox || lightbox.style.display === 'none') return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') openLightbox(currentLightboxIdx - 1);
+                if (e.key === 'ArrowRight') openLightbox(currentLightboxIdx + 1);
+            });
+        } else {
+            lightbox.style.display = 'flex';
+            lightbox.offsetHeight;
+            lightbox.style.opacity = '1';
+        }
+        var visibleLen = visible.length;
+        lightboxPrev.style.display = visibleLen > 1 ? 'flex' : 'none';
+        lightboxNext.style.display = visibleLen > 1 ? 'flex' : 'none';
+        lightboxImg.src = url;
+    }
+
+    function closeLightbox() {
+        if (lightbox) {
+            lightbox.style.opacity = '0';
+            setTimeout(function() { lightbox.style.display = 'none'; }, 300);
+        }
+    }
+
+    cards.forEach(function(card) {
+        var img = card.querySelector('.gallery-card-img');
+        if (img) {
+            img.addEventListener('click', function(e) {
+                var visible = getVisibleCards();
+                var idx = visible.indexOf(card);
+                if (idx !== -1) openLightbox(idx);
+            });
+            img.style.cursor = 'pointer';
+        }
+    });
+})();
+</script>
 {% endblock %}

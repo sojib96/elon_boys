@@ -38,10 +38,13 @@ class TimelineEvent(SQLModel, table=True):
 
 class GalleryItem(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+    title: str
     category: str
     file_url: str
     uploaded_by: str
     uploaded_at: datetime = Field(default_factory=datetime.utcnow)
+    source_update_id: Optional[int] = Field(default=None, foreign_key="updatepost.id")
+    is_deleted: bool = Field(default=False)
 
 
 class UpdatePost(SQLModel, table=True):
@@ -52,6 +55,7 @@ class UpdatePost(SQLModel, table=True):
     # author is a plain string for now; will become a FK to Member once auth is wired up
     author: str
     posted_at: datetime = Field(default_factory=datetime.utcnow)
+    is_deleted: bool = Field(default=False)
     images: list["UpdateImage"] = Relationship(back_populates="update")
 
 
@@ -62,6 +66,7 @@ class UpdateImage(SQLModel, table=True):
     alt_text: Optional[str] = None
     order_index: int = Field(default=0)
     uploaded_at: datetime = Field(default_factory=datetime.utcnow)
+    is_deleted: bool = Field(default=False)
     update: Optional[UpdatePost] = Relationship(back_populates="images")
 
 

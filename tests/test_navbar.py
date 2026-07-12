@@ -16,7 +16,7 @@ TEST_PASSWORD = "testpass123"
 def setup_app_db():
     SQLModel.metadata.create_all(engine)
     with Session(engine) as session:
-        seed_members(session)
+        seed_members(session, write_credentials=False)
         member = session.exec(select(Member).where(Member.username == "alex.chen")).first()
         member.hashed_password = hash_password(TEST_PASSWORD)
         session.add(member)

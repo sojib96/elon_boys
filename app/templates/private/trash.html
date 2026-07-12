@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Trash — Elon Boys{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <a href="/behind-the-curtain" class="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-wider font-semibold text-gray-400 hover:text-coral-600 transition-colors mb-8">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Back
+    </a>
+    <div class="text-center mb-12 reveal">
+        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Trash</span>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Trash</h1>
+        <p class="text-gray-500 text-sm mt-2">Recently deleted items. Restore them or delete them forever.</p>
+    </div>
+
+    {% if not deleted_gallery and not deleted_updates %}
+    <div class="text-center py-16 reveal">
+        <div class="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
+            <span class="text-2xl">&#128200;</span>
+        </div>
+        <p class="text-gray-500 text-sm font-medium">Your trash is empty.</p>
+        <p class="text-gray-400 text-xs mt-1">Deleted items will appear here.</p>
+    </div>
+    {% endif %}
+
+    {% if deleted_gallery %}
+    <div class="mb-10 reveal">
+        <h2 class="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-coral-500 inline-block"></span>
+            Deleted Gallery Photos
+            <span class="text-[10px] text-gray-400 font-normal">({{ deleted_gallery | length }})</span>
+        </h2>
+        <div class="space-y-3 stagger">
+            {% for item in deleted_gallery %}
+            <div class="bg-white rounded-xl shadow-card border border-gray-100 p-4 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-lg bg-cover bg-center flex-shrink-0 border border-gray-200"{% if item.file_url %} style="background-image: url('{{ item.file_url }}');"{% endif %}></div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-semibold text-gray-800 truncate">{{ item.title }}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">{{ item.category }} &sdot; {{ item.uploaded_at.strftime('%b %d, %Y') if item.uploaded_at else '' }}</p>
+                </div>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <form method="POST" action="/gallery/{{ item.id }}/restore">
+                        <button type="submit" class="px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-green-600 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">Restore</button>
+                    </form>
+                    <form method="POST" action="/gallery/{{ item.id }}/permanent-delete" onsubmit="return confirm('Permanently delete this photo? This cannot be undone.');">
+                        <button type="submit" class="px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-red-500 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">Delete Forever</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if deleted_updates %}
+    <div class="mb-10 reveal">
+        <h2 class="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-coral-500 inline-block"></span>
+            Deleted Updates
+            <span class="text-[10px] text-gray-400 font-normal">({{ deleted_updates | length }})</span>
+        </h2>
+        <div class="space-y-3 stagger">
+            {% for post in deleted_updates %}
+            <div class="bg-white rounded-xl shadow-card border border-gray-100 p-4 flex items-center gap-4">
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-semibold text-gray-800 truncate">{{ post.title }}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">{{ post.author }} &sdot; {{ post.posted_at.strftime('%b %d, %Y') if post.posted_at else '' }}</p>
+                </div>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <form method="POST" action="/updates/{{ post.id }}/restore">
+                        <button type="submit" class="px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-green-600 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">Restore</button>
+                    </form>
+                    <form method="POST" action="/updates/{{ post.id }}/permanent-delete" onsubmit="return confirm('Permanently delete this update and all its images? This cannot be undone.');">
+                        <button type="submit" class="px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-red-500 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">Delete Forever</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

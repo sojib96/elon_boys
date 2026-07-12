@@ -44,13 +44,13 @@ class TestPasswordHashing:
 class TestSeedMembers:
     def test_creates_all_10_members(self, setup_db):
         session = setup_db
-        seed_members(session)
+        seed_members(session, write_credentials=False)
         members = session.exec(select(Member)).all()
         assert len(members) == 10
 
     def test_member_usernames_are_slugified(self, setup_db):
         session = setup_db
-        seed_members(session)
+        seed_members(session, write_credentials=False)
         members = session.exec(select(Member)).all()
         for m in members:
             assert m.username is not None
@@ -58,7 +58,7 @@ class TestSeedMembers:
 
     def test_members_have_hashed_passwords(self, setup_db):
         session = setup_db
-        seed_members(session)
+        seed_members(session, write_credentials=False)
         members = session.exec(select(Member)).all()
         for m in members:
             assert m.hashed_password is not None
@@ -66,8 +66,8 @@ class TestSeedMembers:
 
     def test_seed_is_idempotent(self, setup_db):
         session = setup_db
-        seed_members(session)
-        seed_members(session)
+        seed_members(session, write_credentials=False)
+        seed_members(session, write_credentials=False)
         members = session.exec(select(Member)).all()
         assert len(members) == 10
 
@@ -75,14 +75,14 @@ class TestSeedMembers:
         session = setup_db
         # We can't recover plaintext from seed, but we can verify the
         # stored hash works with verify_password
-        seed_members(session)
+        seed_members(session, write_credentials=False)
         members = session.exec(select(Member)).all()
         for m in members:
             assert verify_password("anything", m.hashed_password) is False
 
     def test_member_names_match_public_list(self, setup_db):
         session = setup_db
-        seed_members(session)
+        seed_members(session, write_credentials=False)
         members = session.exec(select(Member)).all()
         member_names = sorted([m.name for m in members])
         expected = sorted([m["name"] for m in MEMBERS])
@@ -90,7 +90,7 @@ class TestSeedMembers:
 
     def test_seeded_members_have_nickname(self, setup_db):
         session = setup_db
-        seed_members(session)
+        seed_members(session, write_credentials=False)
         members = session.exec(select(Member)).all()
         for m in members:
             assert m.nickname is not None
@@ -159,14 +159,14 @@ class TestGlobalQuestionModel:
         session = setup_db
         seed_questions(session)
         questions = session.exec(select(GlobalQuestion)).all()
-        assert len(questions) == 1
+        assert len(questions) == 2
 
     def test_seed_questions_is_idempotent(self, setup_db):
         session = setup_db
         seed_questions(session)
         seed_questions(session)
         questions = session.exec(select(GlobalQuestion)).all()
-        assert len(questions) == 1
+        assert len(questions) == 2
 
     def test_seeded_question_has_four_options(self, setup_db):
         session = setup_db

@@ -1,11 +1,11 @@
-import os
-
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import HTMLResponse
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from app.database import get_session
-from app.jinja import BASE_DIR, templates
+from app.jinja import templates
+from app.models import GalleryItem
+from app.services import gallery as gallery_svc
 from app.services import updates as updates_svc
 
 router = APIRouter()
@@ -29,26 +29,7 @@ TIMELINE_EVENTS = [
     {"id": 16, "year": 4, "title": "The Afterparty", "description": "We stayed up until sunrise, went through every photo on every phone, and cried more than we'd like to admit.", "photo_urls": None},
 ]
 
-GALLERY_ITEMS = [
-    {"id": 1, "category": "Events", "title": "Farewell Party 2024", "uploaded_by": "Alex"},
-    {"id": 2, "category": "Trips", "title": "Beach Road Trip", "uploaded_by": "Maya"},
-    {"id": 3, "category": "Campus Life", "title": "Library Shenanigans", "uploaded_by": "James"},
-    {"id": 4, "category": "Events", "title": "Birthday Surprise", "uploaded_by": "Priya"},
-    {"id": 5, "category": "Trips", "title": "Mountain Hike", "uploaded_by": "Leo"},
-    {"id": 6, "category": "Random", "title": "Late Night Pizza", "uploaded_by": "Sara"},
-    {"id": 7, "category": "Campus Life", "title": "Exam Week Madness", "uploaded_by": "David"},
-    {"id": 8, "category": "Events", "title": "Festival Stall", "uploaded_by": "Aisha"},
-    {"id": 9, "category": "Trips", "title": "Weekend Camping", "uploaded_by": "Tomás"},
-    {"id": 10, "category": "Random", "title": "Group Selfie Collection", "uploaded_by": "Yuki"},
-    {"id": 11, "category": "Events", "title": "Graduation Ceremony", "uploaded_by": "Alex"},
-    {"id": 12, "category": "Campus Life", "title": "Dorm Room Chronicles", "uploaded_by": "Maya"},
-    {"id": 13, "category": "Events", "title": "Halloween Costume Party", "uploaded_by": "Tomás"},
-    {"id": 14, "category": "Trips", "title": "Sunrise Hike", "uploaded_by": "Leo"},
-    {"id": 15, "category": "Random", "title": "Kitchen Dance Party", "uploaded_by": "Sara"},
-    {"id": 16, "category": "Campus Life", "title": "Snow Day Fights", "uploaded_by": "Aisha"},
-    {"id": 17, "category": "Events", "title": "Secret Santa 2022", "uploaded_by": "David"},
-    {"id": 18, "category": "Trips", "title": "Lake House Weekend", "uploaded_by": "Yuki"},
-]
+
 
 EVENTS_LIST = [
     {"id": 1, "title": "Summer Reunion 2026", "date": "2026-08-15", "description": "Our first official reunion at the old campus. Dinner, drinks, and a walk down memory lane. Partners welcome!", "is_upcoming": True},
@@ -103,23 +84,20 @@ async def timeline(request: Request):
 
 
 @router.get("/gallery", response_class=HTMLResponse)
-async def gallery(request: Request):
-    uploads_dir = BASE_DIR / "static" / "uploads"
-    valid_exts = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
-    skip = {"IMG_20200902_125947.jpg"}
-    uploads = sorted(
-        f.name for f in uploads_dir.iterdir()
-        if f.suffix.lower() in valid_exts and not f.name.startswith(".") and f.name not in skip
-    )
-
-    items = []
-    for i, item in enumerate(GALLERY_ITEMS):
-        item = dict(item)
-        item["photo_url"] = f"/static/uploads/{uploads[i % len(uploads)]}" if uploads else None
-        items.append(item)
-
-    categories = sorted(set(item["category"] for item in items))
-    return templates.TemplateResponse("gallery.html", {"request": request, "gallery_items": items, "categories": categories})
+async def gallery(
+    request: Request,
+    session: Session = Depends(get_session),
+):
+    items, _total = gallery_svc.list_gallery(session)
+    all_categories = session.exec(select(GalleryItem.category).distinct()).all()
+    categories = sorted(set(all_categories))
+    member = getattr(request.state, "current_member", None)
+    return templates.TemplateResponse("gallery.html", {
+        "request": request,
+        "gallery_items": items,
+        "categories": categories,
+        "member": member,
+    })
 
 
 @router.get("/updates", response_class=HTMLResponse)

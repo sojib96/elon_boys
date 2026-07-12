@@ -1,17 +1,24 @@
 from datetime import datetime
 import math
+from pathlib import Path
 
-from sqlalchemy import delete
 from sqlalchemy.orm import selectinload
 from sqlmodel import Session, col, select
 
-from app.models import UpdateImage, UpdatePost
+from app.jinja import BASE_DIR
+from app.models import GalleryItem, UpdateImage, UpdatePost
 from app.schemas import UpdateCreate, UpdateEdit
+from app.services.gallery import (
+    create_gallery_item,
+    delete_gallery_by_update,
+    restore_gallery_by_update,
+)
 
 
 def list_updates(session: Session) -> list[UpdatePost]:
     stmt = (
         select(UpdatePost)
+        .where(col(UpdatePost.is_deleted) == False)
         .options(selectinload(UpdatePost.images))
         .order_by(col(UpdatePost.posted_at).desc())
     )
@@ -22,6 +29,7 @@ def get_update(session: Session, update_id: int) -> UpdatePost | None:
     stmt = (
         select(UpdatePost)
         .where(UpdatePost.id == update_id)
+        .where(col(UpdatePost.is_deleted) == False)
         .options(selectinload(UpdatePost.images))
     )
     return session.exec(stmt).first()
@@ -31,6 +39,7 @@ def get_related(session: Session, exclude_id: int, limit: int = 2) -> list[Updat
     stmt = (
         select(UpdatePost)
         .where(col(UpdatePost.id) != exclude_id)
+        .where(col(UpdatePost.is_deleted) == False)
         .options(selectinload(UpdatePost.images))
         .order_by(col(UpdatePost.posted_at).desc())
         .limit(limit)
@@ -38,7 +47,22 @@ def get_related(session: Session, exclude_id: int, limit: int = 2) -> list[Updat
     return list(session.exec(stmt).all())
 
 
+def list_deleted_updates(session: Session, author: str) -> list[UpdatePost]:
+    stmt = (
+        select(UpdatePost)
+        .where(col(UpdatePost.is_deleted) == True)
+        .where(col(UpdatePost.author) == author)
+        .options(selectinload(UpdatePost.images))
+        .order_by(col(UpdatePost.posted_at).desc())
+    )
+    return list(session.exec(stmt).all())
+
+
 HERO_WORD_LIMIT = 60
+
+
+def _active_images(post: UpdatePost) -> list[UpdateImage]:
+    return [img for img in post.images if not img.is_deleted]
 
 
 def _stagger(paragraphs: list[str], images: list[UpdateImage]) -> list[dict]:
@@ -80,7 +104,7 @@ def build_content_blocks(
     post: UpdatePost,
 ) -> tuple[str | None, list[dict]]:
     paragraphs = [p for p in post.content.split("\n") if p.strip()]
-    remaining_images = list(post.images[1:])
+    remaining_images = _active_images(post)[1:]
 
     if not paragraphs:
         return None, _stagger([], remaining_images)
@@ -110,6 +134,14 @@ def create_update(session: Session, data: UpdateCreate) -> UpdatePost:
     session.flush()
     for idx, url in enumerate(data.image_urls):
         session.add(UpdateImage(update_id=post.id, file_url=url, order_index=idx))
+        create_gallery_item(
+            session,
+            title=f"{data.title} — Photo {idx + 1}",
+            category="Updates",
+            file_url=url,
+            uploaded_by=data.author,
+            source_update_id=post.id,
+        )
     session.commit()
     session.refresh(post)
     return post
@@ -124,35 +156,104 @@ def update_update(session: Session, update_id: int, data: UpdateEdit) -> UpdateP
     post.excerpt = data.excerpt
     post.author = data.author
     if data.delete_image_ids:
-        session.execute(
-            delete(UpdateImage).where(
+        deleted_images = session.exec(
+            select(UpdateImage).where(
                 col(UpdateImage.id).in_(data.delete_image_ids),
                 UpdateImage.update_id == update_id,
             )
-        )
+        ).all()
+        deleted_urls = {img.file_url for img in deleted_images}
+        for img in deleted_images:
+            img.is_deleted = True
+            session.add(img)
+        gallery_to_delete = session.exec(
+            select(GalleryItem).where(
+                col(GalleryItem.source_update_id) == update_id,
+                col(GalleryItem.file_url).in_(deleted_urls),
+            )
+        ).all()
+        for g in gallery_to_delete:
+            g.is_deleted = True
+            session.add(g)
     session.flush()
     max_order = 0
     existing = session.exec(
         select(UpdateImage)
         .where(UpdateImage.update_id == update_id)
+        .where(col(UpdateImage.is_deleted) == False)
         .order_by(col(UpdateImage.order_index).desc())
     ).all()
     if existing:
         max_order = existing[0].order_index + 1
     for idx, url in enumerate(data.new_image_urls):
         session.add(UpdateImage(update_id=post.id, file_url=url, order_index=max_order + idx))
+        create_gallery_item(
+            session,
+            title=f"{data.title} — Photo {max_order + idx + 1}",
+            category="Updates",
+            file_url=url,
+            uploaded_by=data.author,
+            source_update_id=update_id,
+        )
     session.commit()
     session.refresh(post)
     return post
 
 
 def delete_update(session: Session, update_id: int) -> bool:
-    post = get_update(session, update_id)
+    post = session.get(UpdatePost, update_id)
     if not post:
         return False
-    session.execute(
-        delete(UpdateImage).where(UpdateImage.update_id == update_id)
-    )
+    post.is_deleted = True
+    session.add(post)
+    images = session.exec(
+        select(UpdateImage).where(UpdateImage.update_id == update_id)
+    ).all()
+    for img in images:
+        img.is_deleted = True
+        session.add(img)
+    delete_gallery_by_update(session, update_id)
+    session.commit()
+    return True
+
+
+def restore_update(session: Session, update_id: int) -> bool:
+    post = session.get(UpdatePost, update_id)
+    if not post:
+        return False
+    post.is_deleted = False
+    session.add(post)
+    images = session.exec(
+        select(UpdateImage).where(UpdateImage.update_id == update_id)
+    ).all()
+    for img in images:
+        img.is_deleted = False
+        session.add(img)
+    restore_gallery_by_update(session, update_id)
+    session.commit()
+    return True
+
+
+def permanent_delete_update(session: Session, update_id: int) -> bool:
+    post = session.get(UpdatePost, update_id)
+    if not post:
+        return False
+    images = session.exec(
+        select(UpdateImage).where(UpdateImage.update_id == update_id)
+    ).all()
+    for img in images:
+        file_path = BASE_DIR / img.file_url.lstrip("/")
+        if file_path.exists() and file_path.is_file():
+            file_path.unlink()
+        session.delete(img)
+    gallery_items = session.exec(
+        select(GalleryItem).where(col(GalleryItem.source_update_id) == update_id)
+    ).all()
+    for g in gallery_items:
+        file_path = BASE_DIR / g.file_url.lstrip("/")
+        if file_path.exists() and file_path.is_file():
+            file_path.unlink()
+        session.delete(g)
     session.delete(post)
     session.commit()
     return True
@@ -241,4 +342,12 @@ def seed_if_empty(session: Session) -> None:
         session.add(post)
         session.flush()
         session.add(UpdateImage(update_id=post.id, file_url=s["image"], order_index=0))
+        create_gallery_item(
+            session,
+            title=f"{s['title']} — Photo 1",
+            category="Updates",
+            file_url=s["image"],
+            uploaded_by=s["author"],
+            source_update_id=post.id,
+        )
     session.commit()

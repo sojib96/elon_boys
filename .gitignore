@@ -8,6 +8,7 @@ venv/
 static/uploads/*
 !static/uploads/.gitkeep
 app/static/uploads/updates/*
+app/static/uploads/gallery/*
 *.log
 data/
 SEEDED_CREDENTIALS.txt

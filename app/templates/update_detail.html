@@ -245,8 +245,9 @@
 
             {# ── LEFT: Hero image ── #}
             <figure class="vintage-frame spread-image mb-6 lg:mb-0">
-                {% if post.images | length > 0 %}
-                <img src="{{ post.images[0].file_url }}" alt="{{ post.images[0].alt_text or post.title }}"
+                {% set active_images = post.images | selectattr('is_deleted', 'equalto', false) | list %}
+                {% if active_images | length > 0 %}
+                <img src="{{ active_images[0].file_url }}" alt="{{ active_images[0].alt_text or post.title }}"
                      loading="lazy"
                      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                 {% else %}
