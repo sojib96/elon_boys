@@ -219,6 +219,19 @@
         height: 100%;
         object-fit: cover;
         display: block;
+        filter: grayscale(0.4) saturate(0.7);
+        transition: filter 0.4s ease;
+    }
+    .strip-item:hover img {
+        filter: grayscale(0) saturate(1);
+    }
+
+    .gallery-grid-img {
+        filter: grayscale(0.4) saturate(0.7);
+        transition: filter 0.4s ease;
+    }
+    .gallery-grid-img:hover {
+        filter: grayscale(0) saturate(1);
     }
     .strip-item .fallback {
         width: 100%;
@@ -238,44 +251,64 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 12px;
+        gap: 18px;
     }
     .avatar-link {
         text-decoration: none;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
-        transition: all 0.25s ease;
+        gap: 8px;
+        transition: transform 0.25s ease;
     }
     .avatar-link:hover {
-        transform: translateY(-3px);
+        transform: translateY(-4px);
     }
     .avatar-circle {
-        width: 56px;
-        height: 56px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
         object-fit: cover;
         border: 2px solid #E8E0D6;
-        transition: border-color 0.25s ease;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease;
         display: flex;
         align-items: center;
         justify-content: center;
         background: #D4C9B8;
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 18px;
+        font-size: 28px;
         font-weight: 700;
         color: #fff;
     }
     .avatar-link:hover .avatar-circle {
         border-color: #C1633B;
+        box-shadow: 0 0 0 3px rgba(193,99,59,0.15);
     }
     .avatar-name {
-        font-size: 10px;
-        color: #8A7F76;
+        font-size: 11px;
+        color: #4A3F38;
         font-family: 'Inter', system-ui, sans-serif;
-        font-weight: 500;
+        font-weight: 600;
         letter-spacing: 0.04em;
+        transition: color 0.25s ease;
+    }
+    .avatar-link:hover .avatar-name {
+        color: #C1633B;
+    }
+    .avatar-tag {
+        font-size: 8px;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: #8B3A3A;
+        opacity: 0;
+        transform: translateY(-4px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        pointer-events: none;
+    }
+    .avatar-link:hover .avatar-tag {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     /* ── Guestbook ── */
@@ -355,6 +388,9 @@
         .strip-item:hover { transform: none; box-shadow: none; }
         .avatar-link { transition: none; }
         .avatar-link:hover { transform: none; }
+        .avatar-link:hover .avatar-name { color: inherit; }
+        .avatar-tag { opacity: 1; transform: none; transition: none; }
+        .gallery-grid-img { filter: none; }
     }
 </style>
 {% endblock %}
@@ -403,10 +439,9 @@
 </div>
 
 {# ── 2. SQUAD + GUESTBOOK ── #}
-<div class="mt-16">
-    <div class="text-center mb-8">
+<div class="mt-12">
+    <div class="text-center mb-6">
         <p class="section-label">The Squad</p>
-        <hr class="section-rule">
         <h2 class="section-heading">Meet the Crew</h2>
     </div>
     <div class="avatar-row max-w-2xl mx-auto">
@@ -420,23 +455,20 @@
             <div class="avatar-circle">{{ m.name[:1] }}{{ m.name.split()[-1][:1] }}</div>
             {% endif %}
             <span class="avatar-name">{{ m.nickname or m.name.split()[0] }}</span>
+            <span class="avatar-tag">{{ m.tag }}</span>
         </a>
         {% endfor %}
     </div>
 
-    <div class="text-center mt-12 mb-6">
+    <div class="text-center mt-10 mb-6">
         <p class="section-label">Guestbook</p>
-        <hr class="section-rule">
         <h2 class="section-heading">Recent Shoutout</h2>
     </div>
+    {% if latest_guestbook %}
     <div class="guestbook-card max-w-md mx-auto">
-        {% if latest_guestbook %}
         <p class="guestbook-message">&ldquo;{{ latest_guestbook.message }}&rdquo;</p>
         <p class="guestbook-name mt-3">{{ latest_guestbook.name }}</p>
         <p class="text-[10px] text-[#8A7F76] font-sans uppercase tracking-[0.08em] mt-1">{{ latest_guestbook.posted_at.strftime('%b %d, %Y') if latest_guestbook.posted_at else '' }}</p>
-        {% else %}
-        <p class="guestbook-message">Be the first to sign our guestbook!</p>
-        {% endif %}
         <div class="mt-4">
             <a href="/guestbook" class="guestbook-link">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -444,87 +476,120 @@
             </a>
         </div>
     </div>
-</div>
-
-{# ── DIVIDER ── #}
-<div class="divider-ornament my-14">
-    <span class="line"></span>
-    <span class="dot"></span>
-    <span class="line"></span>
-</div>
-
-{# ── 3. LATEST UPDATES ── #}
-{% if latest_updates %}
-<div class="text-center mb-8">
-    <p class="section-label">Latest</p>
-    <hr class="section-rule">
-    <h2 class="section-heading">Updates</h2>
-</div>
-<div class="grid md:grid-cols-3 gap-5 mt-8 max-w-5xl mx-auto">
-    {% for post in latest_updates %}
-    <a href="/updates/{{ post.id }}" class="update-card">
-        <p class="update-card-meta mb-2">{{ post.posted_at.strftime('%b %d, %Y') if post.posted_at else '' }}</p>
-        <h3 class="update-card-title mb-2">{{ post.title }}</h3>
-        {% if post.excerpt %}
-        <p class="update-card-excerpt">{{ post.excerpt }}</p>
-        {% endif %}
-        <p class="update-card-meta mt-3">{{ post.author }}</p>
-    </a>
-    {% endfor %}
-</div>
-<div class="text-center mt-6">
-    <a href="/updates" class="inline-flex items-center gap-1.5 text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-[#8A7F76] hover:text-[#1A1614] transition-colors no-underline">
-        View all updates
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-    </a>
-</div>
-{% endif %}
-
-{# ── DIVIDER ── #}
-<div class="divider-ornament my-14">
-    <span class="line"></span>
-    <span class="dot"></span>
-    <span class="line"></span>
-</div>
-
-{# ── 4. GALLERY MINI STRIP ── #}
-{% if gallery_strip %}
-<div class="text-center mb-6">
-    <p class="section-label">Gallery</p>
-    <hr class="section-rule">
-    <h2 class="section-heading">Recent Photos</h2>
-</div>
-<div class="strip-scroll max-w-5xl mx-auto">
-    {% for item in gallery_strip %}
-    <div class="strip-item" onclick="openLightbox('{{ item.file_url }}')">
-        <img src="{{ item.file_url }}" alt="{{ item.title }}" loading="lazy"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="fallback" style="display:none;">{{ item.title[:1] }}</div>
+    {% else %}
+    <div class="text-center">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#FAF8F4] border border-[#E8E0D6] mb-4">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B3A3A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <p class="text-[14px] text-[#5A5148] font-sans mb-1">The guestbook is open &mdash; drop a note for the squad.</p>
+        <p class="text-[12px] text-[#8A7F76] font-sans mb-4">Tell a story, share a laugh, or just say hi.</p>
+        <div>
+            <a href="/guestbook" class="guestbook-link text-[11px]">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Leave a message
+            </a>
+        </div>
     </div>
-    {% endfor %}
+    {% endif %}
 </div>
-<div class="text-center mt-5">
-    <a href="/gallery" class="inline-flex items-center gap-1.5 text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-[#8A7F76] hover:text-[#1A1614] transition-colors no-underline">
-        View full gallery
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-    </a>
-</div>
-{% endif %}
 
 {# ── DIVIDER ── #}
-<div class="divider-ornament my-14">
+<div class="divider-ornament my-10">
     <span class="line"></span>
     <span class="dot"></span>
     <span class="line"></span>
 </div>
 
-{# ── 5. CLOSING NOTE ── #}
-<div class="text-center max-w-lg mx-auto mb-10">
+{# ── 3. UPDATES + GALLERY ── #}
+<div class="grid md:grid-cols-2 gap-8 mt-12">
+    {% if latest_updates %}
+    <div class="flex flex-col h-full">
+        <div class="text-center md:text-left mb-6">
+            <p class="section-label">Latest</p>
+            <h2 class="section-heading">Updates</h2>
+        </div>
+        <div class="flex flex-col justify-between gap-4 flex-1">
+            {% for post in latest_updates %}
+            <a href="/updates/{{ post.id }}" class="update-card">
+                <p class="update-card-meta mb-2">{{ post.posted_at.strftime('%b %d, %Y') if post.posted_at else '' }}</p>
+                <h3 class="update-card-title mb-2">{{ post.title }}</h3>
+                {% if post.excerpt %}
+                <p class="update-card-excerpt">{{ post.excerpt }}</p>
+                {% endif %}
+                <p class="update-card-meta mt-3">{{ post.author }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if gallery_strip %}
+    <div class="flex flex-col h-full">
+        <div class="text-center md:text-left mb-6">
+            <p class="section-label">Gallery</p>
+            <h2 class="section-heading">Recent Photos</h2>
+        </div>
+        <div class="flex flex-col gap-2 flex-1">
+            <div class="flex gap-2 flex-1 min-h-0">
+                {% for item in gallery_strip[:2] %}
+                <div class="flex-1 rounded-sm overflow-hidden border border-[#D4C9B8] cursor-pointer" onclick="openLightbox('{{ item.file_url }}')">
+                    <img src="{{ item.file_url }}" alt="{{ item.title }}" loading="lazy" class="gallery-grid-img w-full h-full object-cover"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="fallback" style="display:none;">{{ item.title[:1] }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="flex gap-2 flex-1 min-h-0">
+                {% for item in gallery_strip[2:4] %}
+                <div class="flex-1 rounded-sm overflow-hidden border border-[#D4C9B8] cursor-pointer" onclick="openLightbox('{{ item.file_url }}')">
+                    <img src="{{ item.file_url }}" alt="{{ item.title }}" loading="lazy" class="gallery-grid-img w-full h-full object-cover"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="fallback" style="display:none;">{{ item.title[:1] }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="grid md:grid-cols-2 gap-8 mt-6 text-center md:text-left">
+    <div>
+        <a href="/updates" class="inline-flex items-center gap-1.5 text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-[#8A7F76] hover:text-[#1A1614] transition-colors no-underline">
+            View all updates
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+    </div>
+    <div>
+        <a href="/gallery" class="inline-flex items-center gap-1.5 text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-[#8A7F76] hover:text-[#1A1614] transition-colors no-underline">
+            View full gallery
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+    </div>
+</div>
+
+{# ── DIVIDER ── #}
+<div class="divider-ornament my-10">
+    <span class="line"></span>
+    <span class="dot"></span>
+    <span class="line"></span>
+</div>
+
+{# ── 4. CLOSING NOTE ── #}
+<div class="text-center max-w-lg mx-auto mb-8">
     <p class="closing-note">From our group chat to your screen &mdash; thanks for stopping by.</p>
 </div>
 
 {# ── LIGHTBOX ── #}
-<div id="homeLightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;cursor:pointer;">
+<div id="homeLightbox" onclick="if(event.target===this)closeLightbox()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;">
+    <button onclick="closeLightbox()" style="position:absolute;top:16px;right:16px;z-index:10;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></svg>
+    </button>
+    <button id="lightboxPrev" onclick="prevGalleryImg()" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);z-index:10;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;display:none;align-items:center;justify-content:center;cursor:pointer;" aria-label="Previous">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button id="lightboxNext" onclick="nextGalleryImg()" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);z-index:10;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;display:none;align-items:center;justify-content:center;cursor:pointer;" aria-label="Next">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
     <img id="homeLightboxImg" src="" alt="" style="max-width:90vw;max-height:90vh;object-fit:contain;cursor:default;">
 </div>
 
@@ -532,6 +597,12 @@
 var currentSlide = 0;
 var totalSlides = {{ slider_images | length }};
 var autoSlide;
+
+var galleryImages = [];
+{% for item in gallery_strip %}
+galleryImages.push({{ item.file_url | tojson }});
+{% endfor %}
+var currentGalleryIdx = 0;
 
 function showSlide(idx) {
     var slides = document.querySelectorAll('.slide');
@@ -568,16 +639,51 @@ function resetAuto() {
 function openLightbox(url) {
     document.getElementById('homeLightbox').style.display = 'flex';
     document.getElementById('homeLightboxImg').src = url;
+    var prevBtn = document.getElementById('lightboxPrev');
+    var nextBtn = document.getElementById('lightboxNext');
+    if (galleryImages.length > 1) {
+        var idx = galleryImages.indexOf(url);
+        currentGalleryIdx = idx >= 0 ? idx : 0;
+        prevBtn.style.display = 'flex';
+        nextBtn.style.display = 'flex';
+    } else {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+    }
 }
 
 function closeLightbox() {
     document.getElementById('homeLightbox').style.display = 'none';
 }
 
+function nextGalleryImg() {
+    if (galleryImages.length < 2) return;
+    currentGalleryIdx = (currentGalleryIdx + 1) % galleryImages.length;
+    document.getElementById('homeLightboxImg').src = galleryImages[currentGalleryIdx];
+}
+
+function prevGalleryImg() {
+    if (galleryImages.length < 2) return;
+    currentGalleryIdx = (currentGalleryIdx - 1 + galleryImages.length) % galleryImages.length;
+    document.getElementById('homeLightboxImg').src = galleryImages[currentGalleryIdx];
+}
+
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') nextSlide();
-    if (e.key === 'ArrowLeft') prevSlide();
+    if (e.key === 'ArrowRight') {
+        if (document.getElementById('homeLightbox').style.display === 'flex') {
+            nextGalleryImg();
+        } else {
+            nextSlide();
+        }
+    }
+    if (e.key === 'ArrowLeft') {
+        if (document.getElementById('homeLightbox').style.display === 'flex') {
+            prevGalleryImg();
+        } else {
+            prevSlide();
+        }
+    }
 });
 
 if (totalSlides > 1) {
