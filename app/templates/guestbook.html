@@ -77,4 +77,10 @@
     {% endif %}
 
 </div>
+
+<script>
+if (window.location.search.includes('submitted=1')) {
+    window.history.replaceState({}, document.title, '/guestbook');
+}
+</script>
 {% endblock %}
