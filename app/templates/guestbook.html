@@ -2,72 +2,69 @@
 {% block title %}Guestbook — Elon Boys{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto">
+<div class="max-w-4xl mx-auto">
 
     {# ── Header ── #}
-    <div class="text-center mb-8">
-        <p class="font-sans text-[10px] tracking-[0.22em] uppercase text-[#8B3A3A] font-medium">The Guestbook</p>
-        <h1 class="font-serif font-bold text-[#1A1614] leading-tight text-[clamp(1.3rem,2.5vw,1.75rem)] mt-1">Leave Your Mark</h1>
-        <p class="text-[12px] text-[#8A7F76] mt-2 font-sans max-w-lg mx-auto">Warning: read at your own risk. Contains high levels of nostalgia, questionable humour, and inside jokes that will not be explained to you.</p>
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-2">
+        <div>
+            <p class="font-sans text-[10px] tracking-[0.22em] uppercase text-[#8B3A3A] font-medium">The Guestbook</p>
+            <h1 class="font-serif font-bold text-[#1A1614] leading-tight text-[clamp(1.3rem,2.5vw,1.75rem)] mt-1">Leave Your Mark</h1>
+            <p class="text-[12px] text-[#8A7F76] mt-1 font-sans max-w-md">Warning: contains high levels of nostalgia and inside jokes that will not be explained to you.</p>
+        </div>
+        <div class="text-[11px] font-sans text-[#5A5148] shrink-0">
+            <span class="font-semibold text-[#8B3A3A]">{{ entries|length }}</span> entries
+            <span class="mx-1.5 text-[#D4C9B8]">/</span>
+            <span class="italic text-[#8A7F76]">chaos: {{ entries|length * 11 }}%</span>
+        </div>
     </div>
 
-    {# ── Stats bar ── #}
-    <div class="max-w-md mx-auto mb-8 bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm px-5 py-3 text-center">
-        <p class="text-[11px] font-sans text-[#5A5148]">
-            <span class="font-semibold text-[#8B3A3A]">{{ entries|length }}</span>
-            {% if entries|length == 1 %}soul has{% else %}souls have{% endif %} surrendered to nostalgia so far
-            &nbsp;&middot;&nbsp;
-            <span class="italic text-[#8A7F76]">chaos index: {{ entries|length * 11 }}%</span>
-        </p>
+    {# ── Form card ── #}
+    <div class="mb-10 bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm">
+        {% if submitted %}
+        <div class="px-5 py-3 border-b border-[#E8E0D6] bg-[#EDE8DE]">
+            <p class="text-[13px] text-[#1A1614] font-sans font-medium">Thanks &mdash; your message has been posted!</p>
+            <p class="text-[10px] text-[#8A7F76] font-sans mt-0.5">(We read it. We may or may not respond. Probably not.)</p>
+        </div>
+        {% endif %}
+        <div class="px-5 py-4">
+            <form method="post" action="/guestbook" class="flex flex-col md:flex-row gap-3">
+                <div class="md:w-1/4">
+                    <input type="text" id="name" name="name" required
+                           class="w-full px-3 py-2 text-[13px] font-sans text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8]"
+                           placeholder="Your name (or alias)">
+                </div>
+                <div class="md:flex-1">
+                    <textarea id="message" name="message" rows="1" required
+                              class="w-full px-3 py-2 text-[13px] font-serif text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8] resize-none"
+                              placeholder="Write something... or do not. We are not your therapist."></textarea>
+                </div>
+                <button type="submit"
+                        class="px-5 py-2 text-[10px] font-sans font-semibold uppercase tracking-[0.16em] text-white bg-[#8B3A3A] rounded-sm hover:bg-[#A8472F] transition-colors cursor-pointer border-0 whitespace-nowrap">
+                    Post &rarr;
+                </button>
+            </form>
+        </div>
     </div>
 
-    {# ── Success message ── #}
-    {% if submitted %}
-    <div class="max-w-md mx-auto mb-6 bg-[#EDE8DE] border border-[#D4C9B8] rounded-sm px-5 py-3 text-center">
-        <p class="text-[13px] text-[#1A1614] font-sans font-medium">Thanks &mdash; your message has been posted!</p>
-        <p class="text-[10px] text-[#8A7F76] font-sans mt-1">(We read it. We may or may not respond. Probably not.)</p>
-    </div>
-    {% endif %}
-
-    {# ── Form ── #}
-    <div class="max-w-md mx-auto mb-12 bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm px-6 py-6">
-        <h2 class="text-[14px] font-sans font-semibold text-[#1A1614] mb-1">Join the Circus</h2>
-        <p class="text-[11px] text-[#8A7F76] font-sans mb-4">Tell a story, share a laugh, or just say something nice. We are not picky.</p>
-        <form method="post" action="/guestbook">
-            <div class="mb-3">
-                <label for="name" class="text-[10px] font-sans font-semibold uppercase tracking-[0.12em] text-[#8A7F76] block mb-1">Your Name</label>
-                <input type="text" id="name" name="name" required
-                       class="w-full px-3 py-2 text-[13px] font-sans text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8]"
-                       placeholder="Real name, alias, or whatever your mom calls you">
-            </div>
-            <div class="mb-4">
-                <label for="message" class="text-[10px] font-sans font-semibold uppercase tracking-[0.12em] text-[#8A7F76] block mb-1">Your Message</label>
-                <textarea id="message" name="message" rows="3" required
-                          class="w-full px-3 py-2 text-[13px] font-serif text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8] resize-none"
-                          placeholder="Pour your heart out. Or do not. We are not your therapist."></textarea>
-            </div>
-            <button type="submit"
-                    class="w-full py-2.5 text-[10px] font-sans font-semibold uppercase tracking-[0.16em] text-white bg-[#8B3A3A] rounded-sm hover:bg-[#A8472F] transition-colors cursor-pointer border-0">
-                Post Message &rarr;
-            </button>
-        </form>
-    </div>
-
-    {# ── Entries ── #}
+    {# ── Entries grid ── #}
     {% if entries %}
-    <div class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {% for entry in entries %}
-        <div class="bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm px-5 py-4 {% if loop.index0 % 2 == 0 %}border-l-2 border-l-[#8B3A3A]{% else %}border-r-2 border-r-[#8B3A3A] text-right{% endif %}">
-            <p class="text-[14px] font-serif italic text-[#5A5148] leading-relaxed">&ldquo;{{ entry.message }}&rdquo;</p>
-            <div class="flex items-center {% if loop.index0 % 2 == 0 %}justify-between{% else %}justify-between flex-row-reverse{% endif %} mt-3">
-                <span class="text-[12px] font-sans font-semibold text-[#1A1614]">{{ entry.name }}</span>
-                <span class="text-[10px] font-sans text-[#8A7F76]">{{ entry.posted_at.strftime('%b %d, %Y') if entry.posted_at else '' }}</span>
+        <div class="bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm px-4 py-3 flex gap-3 items-start">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#8B3A3A] mt-1.5 shrink-0"></span>
+            <div class="min-w-0">
+                <p class="text-[13px] font-serif italic text-[#5A5148] leading-relaxed">&ldquo;{{ entry.message }}&rdquo;</p>
+                <div class="flex items-center gap-2 mt-2">
+                    <span class="text-[11px] font-sans font-semibold text-[#1A1614]">{{ entry.name }}</span>
+                    <span class="text-[9px] text-[#C4B8A8]">&middot;</span>
+                    <span class="text-[9px] font-sans text-[#8A7F76]">{{ entry.posted_at.strftime('%b %d, %Y') if entry.posted_at else '' }}</span>
+                </div>
             </div>
         </div>
         {% endfor %}
     </div>
     {% else %}
-    <div class="text-center py-12">
+    <div class="text-center py-16">
         <div class="w-12 h-12 rounded-full bg-[#FAF8F4] border border-[#E8E0D6] flex items-center justify-center mx-auto mb-4">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8A7F76" stroke-width="1.8" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg>
         </div>
