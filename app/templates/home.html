@@ -247,21 +247,22 @@
     }
 
     /* ── Member avatars ── */
-    .avatar-card {
+    .avatar-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 18px;
+    }
+    .avatar-link {
         text-decoration: none;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 8px;
-        padding: 20px 12px;
-        background: #FAF8F4;
-        border: 1px solid #E8E0D6;
-        border-radius: 2px;
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        transition: transform 0.25s ease;
     }
-    .avatar-card:hover {
-        transform: scale(1.04);
-        box-shadow: 0 8px 24px rgba(26, 22, 20, 0.08);
+    .avatar-link:hover {
+        transform: translateY(-4px);
     }
     .avatar-circle {
         width: 100px;
@@ -279,7 +280,7 @@
         font-weight: 700;
         color: #fff;
     }
-    .avatar-card:hover .avatar-circle {
+    .avatar-link:hover .avatar-circle {
         border-color: #C1633B;
         box-shadow: 0 0 0 3px rgba(193,99,59,0.15);
     }
@@ -289,8 +290,9 @@
         font-family: 'Inter', system-ui, sans-serif;
         font-weight: 600;
         letter-spacing: 0.04em;
+        transition: color 0.25s ease;
     }
-    .avatar-card:hover .avatar-name {
+    .avatar-link:hover .avatar-name {
         color: #C1633B;
     }
     .avatar-tag {
@@ -299,7 +301,14 @@
         font-weight: 600;
         letter-spacing: 0.2em;
         color: #8B3A3A;
+        opacity: 0;
+        transform: translateY(-4px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
         pointer-events: none;
+    }
+    .avatar-link:hover .avatar-tag {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     /* ── Guestbook ── */
@@ -360,10 +369,10 @@
         .update-card:hover { transform: none; box-shadow: 0 1px 3px rgba(26,22,20,0.04); }
         .strip-item { transition: none; }
         .strip-item:hover { transform: none; box-shadow: none; }
-        .avatar-card { transition: none; }
-        .avatar-card:hover { transform: none; box-shadow: none; }
-        .avatar-card:hover .avatar-name { color: inherit; }
-        .avatar-card:hover .avatar-circle { border-color: #E8E0D6; box-shadow: none; }
+        .avatar-link { transition: none; }
+        .avatar-link:hover { transform: none; }
+        .avatar-link:hover .avatar-name { color: inherit; }
+        .avatar-tag { opacity: 1; transform: none; transition: none; }
         .gallery-grid-img { filter: none; }
     }
 </style>
@@ -418,9 +427,9 @@
         <p class="section-label">The Squad</p>
         <h2 class="section-heading">Meet the Crew</h2>
     </div>
-    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+    <div class="avatar-row max-w-2xl mx-auto">
         {% for m in members %}
-        <a href="/squad/{{ m.id }}" class="avatar-card">
+        <a href="/squad/{{ m.id }}" class="avatar-link">
             {% if m.image1 %}
             <img src="{{ m.image1 }}" alt="{{ m.name }}" class="avatar-circle" loading="lazy"
                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -429,7 +438,7 @@
             <div class="avatar-circle">{{ m.name[:1] }}{{ m.name.split()[-1][:1] }}</div>
             {% endif %}
             <span class="avatar-name">{{ m.nickname or m.name.split()[0] }}</span>
-            {% if m.tag %}<span class="avatar-tag">{{ m.tag }}</span>{% endif %}
+            <span class="avatar-tag">{{ m.tag }}</span>
         </a>
         {% endfor %}
     </div>

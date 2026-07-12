@@ -1,0 +1,215 @@
+- generic [active] [ref=f41e1]:
+  - navigation "Main navigation" [ref=f41e2]:
+    - generic [ref=f41e4]:
+      - link "Elon Boys" [ref=f41e5] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f41e6]:
+        - link "Home" [ref=f41e7] [cursor=pointer]:
+          - /url: /
+        - link "Squad" [ref=f41e8] [cursor=pointer]:
+          - /url: /squad
+        - link "Timeline" [ref=f41e9] [cursor=pointer]:
+          - /url: /timeline
+        - link "Gallery" [ref=f41e10] [cursor=pointer]:
+          - /url: /gallery
+        - link "Updates" [ref=f41e11] [cursor=pointer]:
+          - /url: /updates
+        - link "Guestbook" [ref=f41e12] [cursor=pointer]:
+          - /url: /guestbook
+        - link "Contact" [ref=f41e13] [cursor=pointer]:
+          - /url: /contact
+        - link "Behind the Curtain" [ref=f41e14] [cursor=pointer]:
+          - /url: /behind-the-curtain
+        - link "Logout" [ref=f41e15] [cursor=pointer]:
+          - /url: /logout
+  - main [ref=f41e16]:
+    - generic [ref=f41e17]:
+      - generic [ref=f41e19]:
+        - img "Midnight Rooftop Conversations — Photo 1" [ref=f41e20]
+        - generic [ref=f41e22]:
+          - heading "Ten friends. Four years. A lifetime of memories." [level=1] [ref=f41e23]
+          - paragraph [ref=f41e24]: We walked into the same lecture hall as strangers in 2019. We walked out as family in 2023.
+      - button "Previous slide" [ref=f41e25] [cursor=pointer]
+      - button "Next slide" [ref=f41e28] [cursor=pointer]
+      - generic [ref=f41e31]:
+        - button "Go to slide 1" [ref=f41e32] [cursor=pointer]
+        - button "Go to slide 2" [ref=f41e33] [cursor=pointer]
+        - button "Go to slide 3" [ref=f41e34] [cursor=pointer]
+        - button "Go to slide 4" [ref=f41e35] [cursor=pointer]
+        - button "Go to slide 5" [ref=f41e36] [cursor=pointer]
+        - button "Go to slide 6" [ref=f41e37] [cursor=pointer]
+        - button "Go to slide 7" [ref=f41e38] [cursor=pointer]
+        - button "Go to slide 8" [ref=f41e39] [cursor=pointer]
+        - button "Go to slide 9" [ref=f41e40] [cursor=pointer]
+        - button "Go to slide 10" [ref=f41e41] [cursor=pointer]
+    - generic [ref=f41e42]:
+      - generic [ref=f41e43]:
+        - paragraph [ref=f41e44]: The Squad
+        - heading "Meet the Crew" [level=2] [ref=f41e45]
+      - generic [ref=f41e46]:
+        - link "Alex Chen Ace THE BUILDER" [ref=f41e47] [cursor=pointer]:
+          - /url: /squad/1
+          - img "Alex Chen" [ref=f41e48]
+          - generic [ref=f41e49]: Ace
+          - generic: THE BUILDER
+        - link "Maya Rodriguez Mae THE HEALER" [ref=f41e50] [cursor=pointer]:
+          - /url: /squad/2
+          - img "Maya Rodriguez" [ref=f41e51]
+          - generic [ref=f41e52]: Mae
+          - generic: THE HEALER
+        - link "James Okafor Jay THE FOUNDER" [ref=f41e53] [cursor=pointer]:
+          - /url: /squad/3
+          - img "James Okafor" [ref=f41e54]
+          - generic [ref=f41e55]: Jay
+          - generic: THE FOUNDER
+        - link "Priya Sharma Pri THE ROCKET" [ref=f41e56] [cursor=pointer]:
+          - /url: /squad/4
+          - img "Priya Sharma" [ref=f41e57]
+          - generic [ref=f41e58]: Pri
+          - generic: THE ROCKET
+        - link "Leo Kim LK THE AESTHETE" [ref=f41e59] [cursor=pointer]:
+          - /url: /squad/5
+          - img "Leo Kim" [ref=f41e60]
+          - generic [ref=f41e61]: LK
+          - generic: THE AESTHETE
+        - link "Sara Johansson Saz THE WORDSMITH" [ref=f41e62] [cursor=pointer]:
+          - /url: /squad/6
+          - img "Sara Johansson" [ref=f41e63]
+          - generic [ref=f41e64]: Saz
+          - generic: THE WORDSMITH
+        - link "David Park DP THE HISTORIAN" [ref=f41e65] [cursor=pointer]:
+          - /url: /squad/7
+          - img "David Park" [ref=f41e66]
+          - generic [ref=f41e67]: DP
+          - generic: THE HISTORIAN
+        - link "Aisha Mohammed Aish THE ENIGMA" [ref=f41e68] [cursor=pointer]:
+          - /url: /squad/8
+          - img "Aisha Mohammed" [ref=f41e69]
+          - generic [ref=f41e70]: Aish
+          - generic: THE ENIGMA
+        - link "Tomás Silva T THE PRODUCER" [ref=f41e71] [cursor=pointer]:
+          - /url: /squad/9
+          - img "Tomás Silva" [ref=f41e72]
+          - generic [ref=f41e73]: T
+          - generic: THE PRODUCER
+        - link "Yuki Tanaka Yuk THE ARCHITECT" [ref=f41e74] [cursor=pointer]:
+          - /url: /squad/10
+          - img "Yuki Tanaka" [ref=f41e75]
+          - generic [ref=f41e76]: Yuk
+          - generic: THE ARCHITECT
+      - generic [ref=f41e77]:
+        - paragraph [ref=f41e78]: Guestbook
+        - heading "Recent Shoutout" [level=2] [ref=f41e79]
+      - generic [ref=f41e80]:
+        - generic [ref=f41e81]:
+          - generic [ref=f41e82]:
+            - generic [ref=f41e83]: Test User
+            - generic [ref=f41e84]: Jul 12, 2026
+          - paragraph [ref=f41e85]: “Testing the new guestbook feature!”
+        - generic [ref=f41e86]:
+          - generic [ref=f41e87]:
+            - generic [ref=f41e88]: David's Mom
+            - generic [ref=f41e89]: Jul 12, 2026
+          - paragraph [ref=f41e90]: “You all grew up so well. Thank you for being such good friends to my son.”
+        - generic [ref=f41e91]:
+          - generic [ref=f41e92]:
+            - generic [ref=f41e93]: Emily T.
+            - generic [ref=f41e94]: Jul 12, 2026
+          - paragraph [ref=f41e95]: “Love the timeline feature — brought back so many memories of our uni days together.”
+        - link "Leave a message" [ref=f41e97] [cursor=pointer]:
+          - /url: /guestbook
+    - generic [ref=f41e98]:
+      - generic [ref=f41e99]:
+        - generic [ref=f41e100]:
+          - paragraph [ref=f41e101]: Latest
+          - heading "Updates" [level=2] [ref=f41e102]
+        - generic [ref=f41e103]:
+          - link [ref=f41e104] [cursor=pointer]:
+            - /url: /updates/1
+            - paragraph [ref=f41e105]: Jun 15, 2026
+            - heading "Five Years Since Graduation" [level=3] [ref=f41e106]
+            - paragraph [ref=f41e107]: Reunion plans are underway for August 15th.
+            - paragraph [ref=f41e108]: Alex Chen
+          - link [ref=f41e109] [cursor=pointer]:
+            - /url: /updates/2
+            - paragraph [ref=f41e110]: Jun 01, 2026
+            - heading "Welcome to the Website!" [level=3] [ref=f41e111]
+            - paragraph [ref=f41e112]: Our permanent home for photos, stories, and updates.
+            - paragraph [ref=f41e113]: The Group
+          - link [ref=f41e114] [cursor=pointer]:
+            - /url: /updates/3
+            - paragraph [ref=f41e115]: May 20, 2026
+            - heading "New Addition to the Squad" [level=3] [ref=f41e116]
+            - paragraph [ref=f41e117]: Maya welcomed a baby girl named Sofia!
+            - paragraph [ref=f41e118]: Priya Sharma
+          - link [ref=f41e119] [cursor=pointer]:
+            - /url: /updates/4
+            - paragraph [ref=f41e120]: Apr 10, 2026
+            - heading "Tomás Dropped a New Track" [level=3] [ref=f41e121]
+            - paragraph [ref=f41e122]: Tomás released a new single called 'Nostalgia'.
+            - paragraph [ref=f41e123]: Leo Kim
+      - generic [ref=f41e124]:
+        - generic [ref=f41e125]:
+          - paragraph [ref=f41e126]: Gallery
+          - heading "Recent Photos" [level=2] [ref=f41e127]
+        - generic [ref=f41e128]:
+          - generic [ref=f41e129]:
+            - img "Midnight Rooftop Conversations — Photo 1" [ref=f41e131] [cursor=pointer]
+            - img "The Great Pancake Disaster — Photo 1" [ref=f41e133] [cursor=pointer]
+          - generic [ref=f41e134]:
+            - img "Beach Day Flashback — Photo 1" [ref=f41e136] [cursor=pointer]
+            - img "Remembering the House — Photo 1" [ref=f41e138] [cursor=pointer]
+    - generic [ref=f41e139]:
+      - link "View all updates" [ref=f41e141] [cursor=pointer]:
+        - /url: /updates
+      - link "View full gallery" [ref=f41e145] [cursor=pointer]:
+        - /url: /gallery
+    - paragraph [ref=f41e149]: From our group chat to your screen — thanks for stopping by.
+  - button "Scroll to top"
+  - contentinfo [ref=f41e150]:
+    - generic [ref=f41e151]:
+      - generic [ref=f41e152]:
+        - generic [ref=f41e153]:
+          - text: Elon Boys
+          - paragraph [ref=f41e154]: Ten friends. Four years. A lifetime of memories.
+        - generic [ref=f41e155]:
+          - generic [ref=f41e156]: Pages
+          - generic [ref=f41e157]:
+            - link "Squad" [ref=f41e158] [cursor=pointer]:
+              - /url: /squad
+            - link "Timeline" [ref=f41e159] [cursor=pointer]:
+              - /url: /timeline
+            - link "Gallery" [ref=f41e160] [cursor=pointer]:
+              - /url: /gallery
+            - link "Updates" [ref=f41e161] [cursor=pointer]:
+              - /url: /updates
+            - link "Guestbook" [ref=f41e162] [cursor=pointer]:
+              - /url: /guestbook
+            - link "Contact" [ref=f41e163] [cursor=pointer]:
+              - /url: /contact
+        - generic [ref=f41e164]:
+          - generic [ref=f41e165]: Connect
+          - generic [ref=f41e166]:
+            - link "Instagram" [ref=f41e167] [cursor=pointer]:
+              - /url: "#"
+            - link "X (Twitter)" [ref=f41e168] [cursor=pointer]:
+              - /url: "#"
+            - link "Facebook" [ref=f41e169] [cursor=pointer]:
+              - /url: "#"
+            - link "YouTube" [ref=f41e170] [cursor=pointer]:
+              - /url: "#"
+        - generic [ref=f41e171]:
+          - generic [ref=f41e172]: Founded
+          - paragraph [ref=f41e173]: Est. 2019 · Graduated 2023
+          - paragraph [ref=f41e174]: Still going strong.
+      - generic [ref=f41e175]:
+        - paragraph [ref=f41e176]: © 2026 Elon Boys. All rights reserved.
+        - generic [ref=f41e177]:
+          - link "Instagram" [ref=f41e178] [cursor=pointer]:
+            - /url: "#"
+          - link "X (Twitter)" [ref=f41e182] [cursor=pointer]:
+            - /url: "#"
+          - link "Facebook" [ref=f41e185] [cursor=pointer]:
+            - /url: "#"
+          - link "YouTube" [ref=f41e188] [cursor=pointer]:
+            - /url: "#"
