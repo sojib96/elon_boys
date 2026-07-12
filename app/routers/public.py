@@ -4,7 +4,7 @@ from sqlmodel import Session, select
 
 from app.database import get_session
 from app.jinja import templates
-from app.models import GalleryItem
+from app.models import GalleryItem, GuestbookEntry, Member, UpdatePost
 from app.services import gallery as gallery_svc
 from app.services import updates as updates_svc
 
@@ -55,8 +55,44 @@ MEMBERS = [
 
 
 @router.get("/", response_class=HTMLResponse)
-async def home(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
+async def home(request: Request, session: Session = Depends(get_session)):
+    slider_images = session.exec(
+        select(GalleryItem)
+        .where(GalleryItem.is_deleted == False)
+        .order_by(GalleryItem.uploaded_at.desc())
+        .limit(10)
+    ).all()
+
+    latest_updates = session.exec(
+        select(UpdatePost)
+        .where(UpdatePost.is_deleted == False)
+        .order_by(UpdatePost.posted_at.desc())
+        .limit(3)
+    ).all()
+
+    gallery_strip = session.exec(
+        select(GalleryItem)
+        .where(GalleryItem.is_deleted == False)
+        .order_by(GalleryItem.uploaded_at.desc())
+        .limit(6)
+    ).all()
+
+    members = session.exec(select(Member).order_by(Member.id)).all()
+
+    latest_guestbook = session.exec(
+        select(GuestbookEntry)
+        .order_by(GuestbookEntry.posted_at.desc())
+        .limit(1)
+    ).first()
+
+    return templates.TemplateResponse("home.html", {
+        "request": request,
+        "slider_images": slider_images,
+        "latest_updates": latest_updates,
+        "gallery_strip": gallery_strip,
+        "members": members,
+        "latest_guestbook": latest_guestbook,
+    })
 
 
 @router.get("/our-story", response_class=HTMLResponse)
@@ -65,13 +101,14 @@ async def our_story(request: Request):
 
 
 @router.get("/squad", response_class=HTMLResponse)
-async def squad(request: Request):
-    return templates.TemplateResponse("squad.html", {"request": request, "members": MEMBERS})
+async def squad(request: Request, session: Session = Depends(get_session)):
+    members = session.exec(select(Member).order_by(Member.id)).all()
+    return templates.TemplateResponse("squad.html", {"request": request, "members": members})
 
 
 @router.get("/squad/{member_id:int}", response_class=HTMLResponse)
-async def member_detail(request: Request, member_id: int):
-    member = next((m for m in MEMBERS if m["id"] == member_id), None)
+async def member_detail(request: Request, member_id: int, session: Session = Depends(get_session)):
+    member = session.get(Member, member_id)
     return templates.TemplateResponse("member_detail.html", {"request": request, "member": member})
 
 

@@ -51,6 +51,7 @@ def list_deleted_updates(session: Session, author: str) -> list[UpdatePost]:
     stmt = (
         select(UpdatePost)
         .where(col(UpdatePost.is_deleted) == True)
+        .where(col(UpdatePost.permanently_hidden) == False)
         .where(col(UpdatePost.author) == author)
         .options(selectinload(UpdatePost.images))
         .order_by(col(UpdatePost.posted_at).desc())
@@ -238,23 +239,8 @@ def permanent_delete_update(session: Session, update_id: int) -> bool:
     post = session.get(UpdatePost, update_id)
     if not post:
         return False
-    images = session.exec(
-        select(UpdateImage).where(UpdateImage.update_id == update_id)
-    ).all()
-    for img in images:
-        file_path = BASE_DIR / img.file_url.lstrip("/")
-        if file_path.exists() and file_path.is_file():
-            file_path.unlink()
-        session.delete(img)
-    gallery_items = session.exec(
-        select(GalleryItem).where(col(GalleryItem.source_update_id) == update_id)
-    ).all()
-    for g in gallery_items:
-        file_path = BASE_DIR / g.file_url.lstrip("/")
-        if file_path.exists() and file_path.is_file():
-            file_path.unlink()
-        session.delete(g)
-    session.delete(post)
+    post.permanently_hidden = True
+    session.add(post)
     session.commit()
     return True
 

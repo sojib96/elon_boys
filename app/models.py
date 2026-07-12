@@ -6,16 +6,46 @@ from sqlmodel import Field, Relationship, SQLModel
 
 class Member(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+
+    # ── Identity ──
     name: str
     nickname: str
-    photo_url: Optional[str] = None
-    bio: Optional[str] = None
-    fun_fact: Optional[str] = None
-    current_status: Optional[str] = None
     username: str = Field(unique=True)
     hashed_password: str
-    tag: Optional[str] = None
+
+    # ── Contact / Social ──
     email: Optional[str] = None
+    phone: Optional[str] = None
+    instagram: Optional[str] = None
+    github: Optional[str] = None
+    linkedin: Optional[str] = None
+    portfolio_url: Optional[str] = None
+
+    # ── Personal ──
+    date_of_birth: Optional[str] = None
+    current_city: Optional[str] = None
+    gender: Optional[str] = None
+    blood_group: Optional[str] = None
+    relationship_status: Optional[str] = None
+
+    # ── Work ──
+    occupation: Optional[str] = None
+    current_company: Optional[str] = None
+    current_status: Optional[str] = None
+
+    # ── Squad Display ──
+    tag: Optional[str] = None
+    quote: Optional[str] = None
+    bio: Optional[str] = None
+    fun_fact: Optional[str] = None
+
+    # ── Photos ──
+    photo_url: Optional[str] = None
+    image1: Optional[str] = None
+    image2: Optional[str] = None
+
+    # ── Resume ──
+    resume_url: Optional[str] = None
 
 
 class GlobalQuestion(SQLModel, table=True):
@@ -45,6 +75,7 @@ class GalleryItem(SQLModel, table=True):
     uploaded_at: datetime = Field(default_factory=datetime.utcnow)
     source_update_id: Optional[int] = Field(default=None, foreign_key="updatepost.id")
     is_deleted: bool = Field(default=False)
+    permanently_hidden: bool = Field(default=False)
 
 
 class UpdatePost(SQLModel, table=True):
@@ -56,6 +87,7 @@ class UpdatePost(SQLModel, table=True):
     author: str
     posted_at: datetime = Field(default_factory=datetime.utcnow)
     is_deleted: bool = Field(default=False)
+    permanently_hidden: bool = Field(default=False)
     images: list["UpdateImage"] = Relationship(back_populates="update")
 
 

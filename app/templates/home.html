@@ -1,82 +1,322 @@
 {% extends "base.html" %}
 {% block title %}Home — Elon Boys{% endblock %}
 
-{% block content %}
+{% block hero %}
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap');
 
-    .home-headline {
+    /* ── Slider ── */
+    .slider-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        background: #1A1614;
+    }
+    .slider-track {
+        position: relative;
+        width: 100%;
+    }
+    .slide {
+        display: none;
+        width: 100%;
+        position: relative;
+    }
+    .slide.active {
+        display: block;
+        animation: fade-in 0.6s ease;
+    }
+    @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    .slide img {
+        width: 100%;
+        height: clamp(360px, 60vh, 600px);
+        object-fit: cover;
+        display: block;
+    }
+    .slide-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(26,22,20,0.7) 0%, rgba(26,22,20,0.35) 60%, rgba(26,22,20,0.5) 100%);
+    }
+    .slide-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 40px 24px;
+        text-align: center;
+    }
+    .slide-content h1 {
         font-family: 'Fraunces', Georgia, serif;
         font-style: italic;
         font-weight: 600;
         font-variation-settings: 'opsz' 72;
         letter-spacing: -0.025em;
         line-height: 1.08;
+        font-size: clamp(2rem, 5.5vw, 4rem);
+        color: #EDE8DE;
+        max-width: 640px;
+        margin: 0 auto;
+    }
+    .slide-content p {
+        font-family: 'Inter', system-ui, sans-serif;
+        color: #C4B8A8;
+        font-size: clamp(13px, 1.2vw, 15px);
+        margin-top: 10px;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
     }
 
-    .home-stat {
-        border-right: 1px solid #E8E0D6;
+    .slider-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        opacity: 0;
     }
-    .home-stat:last-child {
-        border-right: 0;
+    .slider-container:hover .slider-arrow {
+        opacity: 1;
+    }
+    .slider-arrow:hover {
+        background: rgba(255,255,255,0.18);
+    }
+    .slider-arrow.prev { left: 16px; }
+    .slider-arrow.next { right: 16px; }
+
+    .slider-dots {
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        display: flex;
+        gap: 8px;
+    }
+    .slider-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.35);
+        border: 0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        padding: 0;
+    }
+    .slider-dot.active {
+        background: #fff;
+        width: 24px;
+        border-radius: 4px;
     }
 
-    .explore-tile {
+    @media (max-width: 768px) {
+        .slider-arrow { display: none; }
+    }
+
+    /* ── Section headers ── */
+    .section-label {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #8B3A3A;
+        font-weight: 500;
+    }
+    .section-rule {
+        width: 48px;
+        height: 1.5px;
+        background: #8B3A3A;
+        border: 0;
+        margin: 8px auto 24px;
+    }
+    .section-heading {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+        font-weight: 700;
+        color: #1A1614;
+        line-height: 1.2;
+    }
+
+    /* ── Updates cards ── */
+    .update-card {
+        background: #FAF8F4;
         border: 1px solid #E8E0D6;
-        transition: border-color 0.25s ease;
+        border-radius: 2px;
+        box-shadow: 0 1px 3px rgba(26, 22, 20, 0.04);
+        padding: 24px 20px;
+        transition: all 0.25s ease;
         text-decoration: none;
         display: block;
-        position: relative;
-        overflow: hidden;
     }
-    .explore-tile:hover {
-        border-color: #C4B8A8;
+    .update-card:hover {
+        box-shadow: 0 8px 24px rgba(26, 22, 20, 0.08);
+        transform: translateY(-2px);
     }
-    .explore-tile:hover .tile-img {
-        transform: scale(1.06);
+    .update-card-title {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #1A1614;
+        line-height: 1.3;
     }
-    .explore-tile:hover .tile-arrow {
-        opacity: 1;
-        transform: translateX(3px);
+    .update-card-excerpt {
+        font-size: 13px;
+        color: #5A5148;
+        line-height: 1.6;
+        font-family: Georgia, 'Times New Roman', serif;
     }
-    .tile-img {
-        transition: transform 0.5s ease;
-    }
-    .tile-arrow {
-        transition: all 0.25s ease;
-        opacity: 0.4;
-    }
-
-    .hero-photo {
-        position: relative;
-        overflow: hidden;
-    }
-    .hero-photo .hero-img {
-        transition: transform 0.6s ease;
-    }
-    .hero-photo:hover .hero-img {
-        transform: scale(1.02);
+    .update-card-meta {
+        font-size: 10px;
+        color: #8A7F76;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-family: 'Inter', system-ui, sans-serif;
     }
 
-    .vintage-frame {
-        border: 1px solid #D4C9B8;
-        box-shadow:
-            0 2px 12px rgba(26,22,20,0.06),
-            inset 0 0 0 1px rgba(255,255,255,0.5);
+    /* ── Gallery strip ── */
+    .strip-scroll {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 8px;
+    }
+    .strip-scroll::-webkit-scrollbar { height: 4px; }
+    .strip-scroll::-webkit-scrollbar-track { background: #E8E0D6; border-radius: 2px; }
+    .strip-scroll::-webkit-scrollbar-thumb { background: #C4B8A8; border-radius: 2px; }
+    .strip-item {
+        flex: 0 0 200px;
+        scroll-snap-align: start;
+        aspect-ratio: 4/3;
         border-radius: 2px;
         overflow: hidden;
+        border: 1px solid #D4C9B8;
+        cursor: pointer;
+        transition: all 0.25s ease;
     }
-    .vintage-frame img {
-        filter: sepia(0.12) contrast(0.92) brightness(1.02);
-        transition: filter 0.6s ease;
-        display: block;
+    .strip-item:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 16px rgba(26, 22, 20, 0.12);
+    }
+    .strip-item img {
         width: 100%;
-        height: auto;
+        height: 100%;
+        object-fit: cover;
+        display: block;
     }
-    .vintage-frame:hover img {
-        filter: sepia(0) contrast(1) brightness(1);
+    .strip-item .fallback {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #F0EBE2;
+        color: #9E8C78;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
     }
 
+    /* ── Member avatars ── */
+    .avatar-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+    .avatar-link {
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.25s ease;
+    }
+    .avatar-link:hover {
+        transform: translateY(-3px);
+    }
+    .avatar-circle {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #E8E0D6;
+        transition: border-color 0.25s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #D4C9B8;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+    }
+    .avatar-link:hover .avatar-circle {
+        border-color: #C1633B;
+    }
+    .avatar-name {
+        font-size: 10px;
+        color: #8A7F76;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+    }
+
+    /* ── Guestbook ── */
+    .guestbook-card {
+        background: #FAF8F4;
+        border: 1px solid #E8E0D6;
+        border-radius: 2px;
+        padding: 28px 24px;
+        text-align: center;
+    }
+    .guestbook-name {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #1A1614;
+    }
+    .guestbook-message {
+        font-size: 14px;
+        color: #5A5148;
+        line-height: 1.7;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-style: italic;
+    }
+    .guestbook-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 10px;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #8B3A3A;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    .guestbook-link:hover {
+        color: #C1633B;
+    }
+
+    /* ── Divider ── */
     .divider-ornament {
         display: flex;
         align-items: center;
@@ -98,144 +338,250 @@
         background: #C4B8A8;
     }
 
+    /* ── Closing ── */
+    .closing-note {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(14px, 2vw, 17px);
+        font-style: italic;
+        color: #4A3F38;
+        line-height: 1.7;
+    }
+
     @media (prefers-reduced-motion: reduce) {
-        .explore-tile { transition: none; }
-        .explore-tile:hover { border-color: inherit; }
-        .explore-tile:hover .tile-img, .tile-img { transform: none; }
-        .explore-tile:hover .tile-arrow { transform: none; opacity: 0.4; }
-        .hero-photo .hero-img, .hero-photo:hover .hero-img { transform: none; }
-        .vintage-frame img, .vintage-frame:hover img { filter: sepia(0.12) contrast(0.92) brightness(1.02); }
+        .slide.active { animation: none; }
+        .update-card { transition: none; }
+        .update-card:hover { transform: none; box-shadow: 0 1px 3px rgba(26,22,20,0.04); }
+        .strip-item { transition: none; }
+        .strip-item:hover { transform: none; box-shadow: none; }
+        .avatar-link { transition: none; }
+        .avatar-link:hover { transform: none; }
     }
 </style>
+{% endblock %}
 
-{% set palette = [
-    {'accent': '#C1633B', 'label': 'terracotta'},
-    {'accent': '#7A9A7A', 'label': 'sage'},
-    {'accent': '#C4A35A', 'label': 'gold'},
-    {'accent': '#8A7F76', 'label': 'taupe'},
-] %}
+{% block content %}
+{% set tagline = "Ten friends. Four years. A lifetime of memories." %}
 
-{% set group_photo = '/static/img/members/cover.jpg' %}
-{% set photo2 = '/static/img/members/img-1099.jpeg' %}
-{% set photo3 = '/static/img/members/food.jpg' %}
-
-{# ── HERO (unchanged) ── #}
-<div class="hero-photo rounded-sm overflow-hidden -mt-8 md:-mt-10 mb-8 relative" style="background: #1A1614;">
-    <img src="{{ group_photo }}" alt="The group" class="hero-img absolute inset-0 w-full h-full object-cover" loading="lazy"
-         onerror="this.style.display='none'">
-    <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(26,22,20,0.7) 0%, rgba(26,22,20,0.35) 60%, rgba(26,22,20,0.5) 100%);"></div>
-    <div class="relative py-20 md:py-28 px-6 text-center">
-        <h1 class="home-headline text-[clamp(2rem,5.5vw,4rem)] text-[#EDE8DE] max-w-xl mx-auto leading-tight">
-            Ten friends. Four years. A lifetime of memories.
-        </h1>
-        <p class="text-[#C4B8A8] text-sm sm:text-base mt-4 max-w-md mx-auto font-sans leading-relaxed tracking-wide">
-            We walked into the same lecture hall as strangers in 2019. We walked out as family in 2023. This is where our story lives on.
-        </p>
-    </div>
-</div>
-
-{# ── STATS + EXPLORE (overlaps hero bottom) ── #}
-<div class="-mt-12 md:-mt-14 mb-16">
-    <div class="grid md:grid-cols-5 gap-6 md:gap-8">
-
-        {# ── STATS (sits on hero edge) ── #}
-        <div class="md:col-span-2 md:mt-11">
-            <div class="grid grid-cols-2 rounded-sm overflow-hidden bg-[#FAF8F4]" style="border: 1px solid #E8E0D6; box-shadow: 0 2px 8px rgba(26,22,20,0.06);">
-                <div class="home-stat px-4 py-5 text-center">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C1633B;">10</span>
-                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Friends</span>
-                </div>
-                <div class="home-stat px-4 py-5 text-center">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #7A9A7A;">4</span>
-                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Years</span>
-                </div>
-                <div class="home-stat px-4 py-5 text-center">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #C4A35A;">12</span>
-                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Events</span>
-                </div>
-                <div class="home-stat px-4 py-5 text-center">
-                    <span class="block" style="font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 26px; color: #8A7F76;">&infin;</span>
-                    <span class="block text-[9px] text-[#8A7F76] uppercase tracking-[0.15em] font-medium font-sans mt-0.5">Memories</span>
-                </div>
-            </div>
-            <p class="text-center text-[11px] text-[#8A7F76] font-sans italic tracking-wide mt-3">&mdash; Still texting the group chat every day. &mdash;</p>
-        </div>
-
-        {# ── EXPLORE ── #}
-        <div class="md:col-span-3">
-            <div class="text-center mb-5">
-                <h2 class="text-[12px] text-[#8B3A3A] font-sans uppercase tracking-[0.22em] font-medium">Explore</h2>
-                <div class="w-10 h-px mx-auto mt-2" style="background: #D4C9B8;"></div>
-            </div>
-
-            {% set explore_links = [
-                ('/squad', 'The Squad', 'Meet the ten of us.', palette[0].accent, photo2),
-                ('/timeline', 'Timeline', 'Year by year.', palette[1].accent, photo3),
-                ('/gallery', 'Gallery', 'Photos & memories.', palette[2].accent, group_photo),
-                ('/updates', 'Updates', 'Latest from the group.', palette[3].accent, group_photo),
-            ] %}
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {% for href, title, desc, color, img in explore_links %}
-                <a href="{{ href }}" class="explore-tile group">
-                    <img src="{{ img }}" alt="" class="tile-img absolute inset-0 w-full h-full object-cover" loading="lazy"
-                         onerror="this.style.display='none'">
-                    <div class="absolute inset-0" style="background: linear-gradient(160deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.6) 100%);"></div>
-                    <div class="absolute inset-0" style="background: linear-gradient(135deg, {{ color }}08, transparent); opacity: 0.4;"></div>
-                    <div class="relative z-10 p-5 sm:p-6 flex items-start justify-between gap-3 min-h-[100px]">
-                        <div class="min-w-0">
-                            <span class="block text-[10px] font-sans uppercase tracking-[0.18em] font-medium mb-1 text-white/60">{{ '%02d' | format(loop.index) }}</span>
-                            <h3 class="text-[16px] leading-snug font-semibold text-white mb-0.5" style="font-family: 'Playfair Display', Georgia, serif;">{{ title }}</h3>
-                            <p class="text-[13px] leading-relaxed text-white/70" style="font-family: Georgia, 'Times New Roman', serif;">{{ desc }}</p>
-                        </div>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tile-arrow mt-1 flex-shrink-0"><path d="M9 18l6-6-6-6"/></svg>
-                    </div>
-                </a>
-                {% endfor %}
+{# ── 1. IMAGE SLIDER ── #}
+<div class="slider-container -mt-8 md:-mt-10">
+    <div class="slider-track">
+        {% if slider_images %}
+        {% for img in slider_images %}
+        <div class="slide {% if loop.first %}active{% endif %}" data-index="{{ loop.index0 }}">
+            <img src="{{ img.file_url }}" alt="{{ img.title }}" loading="{% if loop.first %}eager{% else %}lazy{% endif %}"
+                 onerror="this.style.display='none';this.nextElementSibling.nextElementSibling.style.display='flex'">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>{{ tagline }}</h1>
+                <p>We walked into the same lecture hall as strangers in 2019. We walked out as family in 2023.</p>
             </div>
         </div>
-
+        {% endfor %}
+        {% else %}
+        <div class="slide active">
+            <div style="height: clamp(360px, 60vh, 600px); display:flex;align-items:center;justify-content:center;background:#1A1614;">
+                <div style="text-align:center;padding:24px;">
+                    <h1 style="font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:600;font-size:clamp(2rem,5.5vw,4rem);color:#EDE8DE;max-width:640px;margin:0 auto;line-height:1.08;">{{ tagline }}</h1>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
+    {% if slider_images | length > 1 %}
+    <button class="slider-arrow prev" onclick="prevSlide()" aria-label="Previous slide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="slider-arrow next" onclick="nextSlide()" aria-label="Next slide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <div class="slider-dots">
+        {% for img in slider_images %}
+        <button class="slider-dot {% if loop.first %}active{% endif %}" onclick="goToSlide({{ loop.index0 }})" aria-label="Go to slide {{ loop.index }}"></button>
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
 
-{# ── FEATURED MEMORY ── #}
-<div class="mb-16">
-    <div class="grid md:grid-cols-5 gap-6 md:gap-10 items-center">
-        <figure class="vintage-frame md:col-span-3">
-            <img src="{{ photo2 }}" alt="A memory from the archives" loading="lazy"
+{# ── 2. SQUAD + GUESTBOOK ── #}
+<div class="mt-16">
+    <div class="text-center mb-8">
+        <p class="section-label">The Squad</p>
+        <hr class="section-rule">
+        <h2 class="section-heading">Meet the Crew</h2>
+    </div>
+    <div class="avatar-row max-w-2xl mx-auto">
+        {% for m in members %}
+        <a href="/squad/{{ m.id }}" class="avatar-link">
+            {% if m.image1 %}
+            <img src="{{ m.image1 }}" alt="{{ m.name }}" class="avatar-circle" loading="lazy"
                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="hidden w-full aspect-[4/3] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
-        </figure>
-        <div class="md:col-span-2">
-            <span class="text-[10px] text-[#8B3A3A] font-sans uppercase tracking-[0.22em] font-medium">From the archives</span>
-            <h2 class="text-[22px] leading-snug font-semibold text-[#1A1614] mt-2 mb-3" style="font-family: 'Playfair Display', Georgia, serif;">
-                The night that started it all
-            </h2>
-            <p class="text-[14px] leading-relaxed text-[#4A3F38] mb-2" style="font-family: Georgia, 'Times New Roman', serif;">
-                Ten strangers, one lecture hall, and a shared confusion about which building we were supposed to be in. Someone cracked a joke. Someone else laughed a little too loud. By the end of the week, we had a group chat. By the end of the month, we had a family.
-            </p>
-            <p class="text-[14px] leading-relaxed text-[#4A3F38] mb-4" style="font-family: Georgia, 'Times New Roman', serif;">
-                Four years later, we walked across that same stage together &mdash; caps in the air, arms around each other, still laughing at the same inside jokes.
-            </p>
-            <a href="/timeline" class="inline-flex items-center gap-1.5 text-[11px] text-[#8B3A3A] font-sans uppercase tracking-[0.2em] font-medium hover:text-[#C1633B] transition-colors duration-200 no-underline group">
-                Read the full story
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:translate-x-0.5"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            <div class="avatar-circle" style="display:none;">{{ m.name[:1] }}{{ m.name.split()[-1][:1] }}</div>
+            {% else %}
+            <div class="avatar-circle">{{ m.name[:1] }}{{ m.name.split()[-1][:1] }}</div>
+            {% endif %}
+            <span class="avatar-name">{{ m.nickname or m.name.split()[0] }}</span>
+        </a>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-12 mb-6">
+        <p class="section-label">Guestbook</p>
+        <hr class="section-rule">
+        <h2 class="section-heading">Recent Shoutout</h2>
+    </div>
+    <div class="guestbook-card max-w-md mx-auto">
+        {% if latest_guestbook %}
+        <p class="guestbook-message">&ldquo;{{ latest_guestbook.message }}&rdquo;</p>
+        <p class="guestbook-name mt-3">{{ latest_guestbook.name }}</p>
+        <p class="text-[10px] text-[#8A7F76] font-sans uppercase tracking-[0.08em] mt-1">{{ latest_guestbook.posted_at.strftime('%b %d, %Y') if latest_guestbook.posted_at else '' }}</p>
+        {% else %}
+        <p class="guestbook-message">Be the first to sign our guestbook!</p>
+        {% endif %}
+        <div class="mt-4">
+            <a href="/guestbook" class="guestbook-link">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Leave a message
             </a>
         </div>
     </div>
 </div>
 
-{# ── ORNAMENT DIVIDER ── #}
-<div class="divider-ornament mb-8">
+{# ── DIVIDER ── #}
+<div class="divider-ornament my-14">
     <span class="line"></span>
     <span class="dot"></span>
     <span class="line"></span>
 </div>
 
-{# ── CLOSING NOTE ── #}
-<div class="text-center mb-10">
-    <p class="text-[16px] md:text-[18px] italic leading-relaxed text-[#4A3F38] max-w-md mx-auto" style="font-family: Georgia, 'Times New Roman', serif;">
-        From our group chat to your screen &mdash; thanks for stopping by.
-    </p>
+{# ── 3. LATEST UPDATES ── #}
+{% if latest_updates %}
+<div class="text-center mb-8">
+    <p class="section-label">Latest</p>
+    <hr class="section-rule">
+    <h2 class="section-heading">Updates</h2>
 </div>
+<div class="grid md:grid-cols-3 gap-5 mt-8 max-w-5xl mx-auto">
+    {% for post in latest_updates %}
+    <a href="/updates/{{ post.id }}" class="update-card">
+        <p class="update-card-meta mb-2">{{ post.posted_at.strftime('%b %d, %Y') if post.posted_at else '' }}</p>
+        <h3 class="update-card-title mb-2">{{ post.title }}</h3>
+        {% if post.excerpt %}
+        <p class="update-card-excerpt">{{ post.excerpt }}</p>
+        {% endif %}
+        <p class="update-card-meta mt-3">{{ post.author }}</p>
+    </a>
+    {% endfor %}
+</div>
+<div class="text-center mt-6">
+    <a href="/updates" class="inline-flex items-center gap-1.5 text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-[#8A7F76] hover:text-[#1A1614] transition-colors no-underline">
+        View all updates
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    </a>
+</div>
+{% endif %}
+
+{# ── DIVIDER ── #}
+<div class="divider-ornament my-14">
+    <span class="line"></span>
+    <span class="dot"></span>
+    <span class="line"></span>
+</div>
+
+{# ── 4. GALLERY MINI STRIP ── #}
+{% if gallery_strip %}
+<div class="text-center mb-6">
+    <p class="section-label">Gallery</p>
+    <hr class="section-rule">
+    <h2 class="section-heading">Recent Photos</h2>
+</div>
+<div class="strip-scroll max-w-5xl mx-auto">
+    {% for item in gallery_strip %}
+    <div class="strip-item" onclick="openLightbox('{{ item.file_url }}')">
+        <img src="{{ item.file_url }}" alt="{{ item.title }}" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="fallback" style="display:none;">{{ item.title[:1] }}</div>
+    </div>
+    {% endfor %}
+</div>
+<div class="text-center mt-5">
+    <a href="/gallery" class="inline-flex items-center gap-1.5 text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-[#8A7F76] hover:text-[#1A1614] transition-colors no-underline">
+        View full gallery
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    </a>
+</div>
+{% endif %}
+
+{# ── DIVIDER ── #}
+<div class="divider-ornament my-14">
+    <span class="line"></span>
+    <span class="dot"></span>
+    <span class="line"></span>
+</div>
+
+{# ── 5. CLOSING NOTE ── #}
+<div class="text-center max-w-lg mx-auto mb-10">
+    <p class="closing-note">From our group chat to your screen &mdash; thanks for stopping by.</p>
+</div>
+
+{# ── LIGHTBOX ── #}
+<div id="homeLightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;cursor:pointer;">
+    <img id="homeLightboxImg" src="" alt="" style="max-width:90vw;max-height:90vh;object-fit:contain;cursor:default;">
+</div>
+
+<script>
+var currentSlide = 0;
+var totalSlides = {{ slider_images | length }};
+var autoSlide;
+
+function showSlide(idx) {
+    var slides = document.querySelectorAll('.slide');
+    var dots = document.querySelectorAll('.slider-dot');
+    slides.forEach(function(s) { s.classList.remove('active'); });
+    dots.forEach(function(d) { d.classList.remove('active'); });
+    if (slides[idx]) slides[idx].classList.add('active');
+    if (dots[idx]) dots[idx].classList.add('active');
+    currentSlide = idx;
+}
+
+function nextSlide() {
+    showSlide((currentSlide + 1) % totalSlides);
+    resetAuto();
+}
+
+function prevSlide() {
+    showSlide((currentSlide - 1 + totalSlides) % totalSlides);
+    resetAuto();
+}
+
+function goToSlide(idx) {
+    showSlide(idx);
+    resetAuto();
+}
+
+function resetAuto() {
+    clearInterval(autoSlide);
+    if (totalSlides > 1) {
+        autoSlide = setInterval(nextSlide, 5000);
+    }
+}
+
+function openLightbox(url) {
+    document.getElementById('homeLightbox').style.display = 'flex';
+    document.getElementById('homeLightboxImg').src = url;
+}
+
+function closeLightbox() {
+    document.getElementById('homeLightbox').style.display = 'none';
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+});
+
+if (totalSlides > 1) {
+    autoSlide = setInterval(nextSlide, 5000);
+}
+</script>
 {% endblock %}

@@ -38,13 +38,17 @@ def seed_members(session: Session, write_credentials: bool = True) -> None:
         member = Member(
             name=m["name"],
             nickname=m["nickname"],
+            username=slug,
+            hashed_password=hash_password(password),
+            email=m.get("email"),
             photo_url=m.get("photo_url"),
+            image1=m.get("image1"),
+            image2=m.get("image2"),
             bio=m.get("bio"),
             fun_fact=m.get("fun_fact"),
             current_status=m.get("current_status"),
             tag=m.get("tag"),
-            username=slug,
-            hashed_password=hash_password(password),
+            quote=m.get("quote"),
         )
         session.add(member)
         credentials.append(f"{slug}  {password}")

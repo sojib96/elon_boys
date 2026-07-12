@@ -89,6 +89,7 @@ def list_deleted_gallery(session: Session, uploaded_by: str) -> list[GalleryItem
     query = (
         select(GalleryItem)
         .where(col(GalleryItem.is_deleted) == True)
+        .where(col(GalleryItem.permanently_hidden) == False)
         .where(col(GalleryItem.uploaded_by) == uploaded_by)
         .order_by(col(GalleryItem.uploaded_at).desc())
     )
@@ -140,10 +141,8 @@ def permanent_delete_gallery_item(session: Session, item_id: int) -> GalleryItem
     item = session.get(GalleryItem, item_id)
     if not item:
         return None
-    file_path = BASE_DIR / item.file_url.lstrip("/")
-    if file_path.exists() and file_path.is_file():
-        file_path.unlink()
-    session.delete(item)
+    item.permanently_hidden = True
+    session.add(item)
     session.commit()
     return item
 

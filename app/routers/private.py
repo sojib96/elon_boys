@@ -15,7 +15,7 @@ from app.auth import (
 from app.database import engine, get_session
 from app.email_utils import send_email
 from app.jinja import BASE_DIR, templates
-from app.models import GalleryItem, GlobalQuestion, Member
+from app.models import GalleryItem, GlobalQuestion, Member, UpdatePost
 from app.routers.public import MEMBERS
 from app.schemas import UpdateCreate, UpdateEdit
 from app.services import gallery as gallery_svc
@@ -25,6 +25,8 @@ router = APIRouter()
 
 UPLOADS_DIR = BASE_DIR / "static" / "uploads" / "updates"
 GALLERY_UPLOADS_DIR = BASE_DIR / "static" / "uploads" / "gallery"
+MEMBERS_PHOTOS_DIR = BASE_DIR / "static" / "uploads" / "members" / "photos"
+MEMBERS_RESUMES_DIR = BASE_DIR / "static" / "uploads" / "members" / "resumes"
 
 MEMBER_NAMES = [m["name"] for m in MEMBERS]
 
@@ -412,7 +414,10 @@ async def delete_update(
     deleted = updates_svc.delete_update(session, update_id)
     if not deleted:
         raise HTTPException(status_code=404)
-    return RedirectResponse(url="/updates", status_code=302)
+    return templates.TemplateResponse(
+        "private/delete_success.html",
+        {"request": request, "member": _auth, "post_title": post.title},
+    )
 
 
 @router.get("/gallery/upload", response_class=HTMLResponse)
@@ -579,6 +584,92 @@ async def update_permanent_delete(
     if not deleted:
         raise HTTPException(status_code=404)
     return RedirectResponse(url="/trash", status_code=302)
+
+
+@router.get("/profile/edit", response_class=HTMLResponse)
+async def edit_profile_form(request: Request, _auth: Member = Depends(get_current_member)):
+    return templates.TemplateResponse(
+        "private/edit_profile.html",
+        {"request": request, "member": _auth, "errors": {}},
+    )
+
+
+@router.post("/profile/edit", response_class=HTMLResponse)
+async def edit_profile_submit(
+    request: Request,
+    nickname: str = Form(""),
+    email: str = Form(""),
+    phone: str = Form(""),
+    instagram: str = Form(""),
+    github: str = Form(""),
+    linkedin: str = Form(""),
+    portfolio_url: str = Form(""),
+    date_of_birth: str = Form(""),
+    current_city: str = Form(""),
+    gender: str = Form(""),
+    blood_group: str = Form(""),
+    relationship_status: str = Form(""),
+    occupation: str = Form(""),
+    current_company: str = Form(""),
+    current_status: str = Form(""),
+    tag: str = Form(""),
+    quote: str = Form(""),
+    bio: str = Form(""),
+    fun_fact: str = Form(""),
+    photo: UploadFile = File(None),
+    image1: UploadFile = File(None),
+    image2: UploadFile = File(None),
+    resume: UploadFile = File(None),
+    session: Session = Depends(get_session),
+    _auth: Member = Depends(get_current_member),
+):
+    member = session.get(Member, _auth.id)
+    if not member:
+        raise HTTPException(status_code=404)
+
+    member.nickname = nickname
+    member.email = email or None
+    member.phone = phone or None
+    member.instagram = instagram or None
+    member.github = github or None
+    member.linkedin = linkedin or None
+    member.portfolio_url = portfolio_url or None
+    member.date_of_birth = date_of_birth or None
+    member.current_city = current_city or None
+    member.gender = gender or None
+    member.blood_group = blood_group or None
+    member.relationship_status = relationship_status or None
+    member.occupation = occupation or None
+    member.current_company = current_company or None
+    member.current_status = current_status or None
+    member.tag = tag or None
+    member.quote = quote or None
+    member.bio = bio or None
+    member.fun_fact = fun_fact or None
+
+    def _save_upload(upload: UploadFile, subdir: str) -> str | None:
+        if not upload or not upload.filename:
+            return None
+        ext = Path(upload.filename).suffix
+        filename = f"{uuid.uuid4().hex}{ext}"
+        dest = MEMBERS_PHOTOS_DIR if subdir == "photos" else MEMBERS_RESUMES_DIR
+        content = upload.file.read()
+        (dest / filename).write_bytes(content)
+        return f"/static/uploads/members/{subdir}/{filename}"
+
+    if photo and photo.filename:
+        member.photo_url = _save_upload(photo, "photos")
+    if image1 and image1.filename:
+        member.image1 = _save_upload(image1, "photos")
+    if image2 and image2.filename:
+        member.image2 = _save_upload(image2, "photos")
+    if resume and resume.filename:
+        member.resume_url = _save_upload(resume, "resumes")
+
+    session.add(member)
+    session.commit()
+
+    return RedirectResponse(url="/behind-the-curtain", status_code=302)
 
 
 @router.get("/behind-the-curtain", response_class=HTMLResponse)
