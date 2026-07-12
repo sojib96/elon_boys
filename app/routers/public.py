@@ -67,7 +67,7 @@ async def home(request: Request, session: Session = Depends(get_session)):
         select(UpdatePost)
         .where(UpdatePost.is_deleted == False)
         .order_by(UpdatePost.posted_at.desc())
-        .limit(3)
+        .limit(4)
     ).all()
 
     gallery_strip = session.exec(

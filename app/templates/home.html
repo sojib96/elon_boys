@@ -158,7 +158,7 @@
         border: 1px solid #E8E0D6;
         border-radius: 2px;
         box-shadow: 0 1px 3px rgba(26, 22, 20, 0.04);
-        padding: 24px 20px;
+        padding: 45px 24px;
         transition: all 0.25s ease;
         text-decoration: none;
         display: block;
@@ -503,12 +503,12 @@
 {# ── 3. UPDATES + GALLERY ── #}
 <div class="grid md:grid-cols-2 gap-8 mt-12">
     {% if latest_updates %}
-    <div>
+    <div class="flex flex-col h-full">
         <div class="text-center md:text-left mb-6">
             <p class="section-label">Latest</p>
             <h2 class="section-heading">Updates</h2>
         </div>
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col justify-between gap-4 flex-1">
             {% for post in latest_updates %}
             <a href="/updates/{{ post.id }}" class="update-card">
                 <p class="update-card-meta mb-2">{{ post.posted_at.strftime('%b %d, %Y') if post.posted_at else '' }}</p>
@@ -524,19 +524,30 @@
     {% endif %}
 
     {% if gallery_strip %}
-    <div>
+    <div class="flex flex-col h-full">
         <div class="text-center md:text-left mb-6">
             <p class="section-label">Gallery</p>
             <h2 class="section-heading">Recent Photos</h2>
         </div>
-        <div class="grid grid-cols-2 gap-2">
-            {% for item in gallery_strip[:4] %}
-            <div class="aspect-[5/4] rounded-sm overflow-hidden border border-[#D4C9B8] cursor-pointer" onclick="openLightbox('{{ item.file_url }}')">
-                <img src="{{ item.file_url }}" alt="{{ item.title }}" loading="lazy" class="gallery-grid-img w-full h-full object-cover"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="fallback" style="display:none;">{{ item.title[:1] }}</div>
+        <div class="flex flex-col gap-2 flex-1">
+            <div class="flex gap-2 flex-1 min-h-0">
+                {% for item in gallery_strip[:2] %}
+                <div class="flex-1 rounded-sm overflow-hidden border border-[#D4C9B8] cursor-pointer" onclick="openLightbox('{{ item.file_url }}')">
+                    <img src="{{ item.file_url }}" alt="{{ item.title }}" loading="lazy" class="gallery-grid-img w-full h-full object-cover"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="fallback" style="display:none;">{{ item.title[:1] }}</div>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            <div class="flex gap-2 flex-1 min-h-0">
+                {% for item in gallery_strip[2:4] %}
+                <div class="flex-1 rounded-sm overflow-hidden border border-[#D4C9B8] cursor-pointer" onclick="openLightbox('{{ item.file_url }}')">
+                    <img src="{{ item.file_url }}" alt="{{ item.title }}" loading="lazy" class="gallery-grid-img w-full h-full object-cover"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="fallback" style="display:none;">{{ item.title[:1] }}</div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
     {% endif %}
