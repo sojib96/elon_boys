@@ -3,7 +3,6 @@
 
 {% block content %}
 {% set count = entries|length %}
-{% set is_odd = count % 2 == 1 %}
 <div class="max-w-4xl mx-auto">
 
     {# ── Header ── #}
@@ -23,36 +22,36 @@
     {# ── Form card ── #}
     <div class="mb-10 bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm">
         {% if submitted %}
-        <div class="px-5 py-3 border-b border-[#E8E0D6] bg-[#EDE8DE]">
+        <div class="px-5 py-3 border-b border-[#E8E0D6] bg-[#EDE8DE]" data-auto-dismiss>
             <p class="text-[13px] text-[#1A1614] font-sans font-medium">Thanks &mdash; your message has been posted!</p>
             <p class="text-[10px] text-[#8A7F76] font-sans mt-0.5">(We read it. We may or may not respond. Probably not.)</p>
         </div>
         {% endif %}
-        <div class="px-5 py-4">
+        <div class="px-6 py-7">
             <form method="post" action="/guestbook" class="flex flex-col md:flex-row gap-3 items-stretch">
                 <div class="md:w-1/4">
                     <input type="text" id="name" name="name" required
-                           class="w-full h-full px-3 py-2 text-[13px] font-sans text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8]"
+                           class="w-full h-full px-4 py-4 text-[14px] font-sans text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8]"
                            placeholder="Your name (or alias)">
                 </div>
                 <div class="md:flex-1">
                     <textarea id="message" name="message" rows="1" required
-                              class="w-full h-full px-3 py-2 text-[13px] font-serif text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8] resize-none"
+                              class="w-full h-full px-4 py-4 text-[14px] font-serif text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8] resize-none"
                               placeholder="Write something... or do not. We are not your therapist."></textarea>
                 </div>
                 <button type="submit"
-                        class="px-5 py-2 text-[10px] font-sans font-semibold uppercase tracking-[0.16em] text-white bg-[#8B3A3A] rounded-sm hover:bg-[#A8472F] transition-colors cursor-pointer border-0 whitespace-nowrap">
+                        class="px-6 py-4 text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-white bg-[#8B3A3A] rounded-sm hover:bg-[#A8472F] transition-colors cursor-pointer border-0 whitespace-nowrap">
                     Post &rarr;
                 </button>
             </form>
         </div>
     </div>
 
-    {# ── Entries grid ── #}
+    {# ── Entries masonry ── #}
     {% if entries %}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start" style="grid-auto-rows: min-content;">
+    <div class="md:columns-2 gap-6">
         {% for entry in entries %}
-        <div class="flex gap-3 items-start px-4 py-3 bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm {% if is_odd and loop.last %}md:col-span-2 md:max-w-lg md:mx-auto md:w-full{% endif %}">
+        <div class="break-inside-avoid mb-6 flex gap-3 items-start px-4 py-3 bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm">
             <span class="w-4 shrink-0 flex justify-center pt-1.5" aria-hidden="true">
                 <span class="w-1.5 h-1.5 rounded-full bg-[#8B3A3A] block"></span>
             </span>
@@ -83,5 +82,12 @@
 if (window.location.search.includes('submitted=1')) {
     window.history.replaceState({}, document.title, '/guestbook');
 }
+document.querySelectorAll('[data-auto-dismiss]').forEach(function(el) {
+    setTimeout(function() {
+        el.style.transition = 'opacity 0.4s ease';
+        el.style.opacity = '0';
+        setTimeout(function() { el.remove(); }, 400);
+    }, 3000);
+});
 </script>
 {% endblock %}
