@@ -247,22 +247,21 @@
     }
 
     /* ── Member avatars ── */
-    .avatar-row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 18px;
-    }
-    .avatar-link {
+    .avatar-card {
         text-decoration: none;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 8px;
-        transition: transform 0.25s ease;
+        padding: 20px 12px;
+        background: #FAF8F4;
+        border: 1px solid #E8E0D6;
+        border-radius: 2px;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
-    .avatar-link:hover {
-        transform: translateY(-4px);
+    .avatar-card:hover {
+        transform: scale(1.04);
+        box-shadow: 0 8px 24px rgba(26, 22, 20, 0.08);
     }
     .avatar-circle {
         width: 100px;
@@ -280,7 +279,7 @@
         font-weight: 700;
         color: #fff;
     }
-    .avatar-link:hover .avatar-circle {
+    .avatar-card:hover .avatar-circle {
         border-color: #C1633B;
         box-shadow: 0 0 0 3px rgba(193,99,59,0.15);
     }
@@ -290,9 +289,8 @@
         font-family: 'Inter', system-ui, sans-serif;
         font-weight: 600;
         letter-spacing: 0.04em;
-        transition: color 0.25s ease;
     }
-    .avatar-link:hover .avatar-name {
+    .avatar-card:hover .avatar-name {
         color: #C1633B;
     }
     .avatar-tag {
@@ -301,14 +299,7 @@
         font-weight: 600;
         letter-spacing: 0.2em;
         color: #8B3A3A;
-        opacity: 0;
-        transform: translateY(-4px);
-        transition: opacity 0.25s ease, transform 0.25s ease;
         pointer-events: none;
-    }
-    .avatar-link:hover .avatar-tag {
-        opacity: 1;
-        transform: translateY(0);
     }
 
     /* ── Guestbook ── */
@@ -332,23 +323,6 @@
         font-family: Georgia, 'Times New Roman', serif;
         font-style: italic;
     }
-    .guestbook-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 10px;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-weight: 600;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: #8B3A3A;
-        text-decoration: none;
-        transition: color 0.2s ease;
-    }
-    .guestbook-link:hover {
-        color: #C1633B;
-    }
-
     /* ── Divider ── */
     .divider-ornament {
         display: flex;
@@ -386,10 +360,10 @@
         .update-card:hover { transform: none; box-shadow: 0 1px 3px rgba(26,22,20,0.04); }
         .strip-item { transition: none; }
         .strip-item:hover { transform: none; box-shadow: none; }
-        .avatar-link { transition: none; }
-        .avatar-link:hover { transform: none; }
-        .avatar-link:hover .avatar-name { color: inherit; }
-        .avatar-tag { opacity: 1; transform: none; transition: none; }
+        .avatar-card { transition: none; }
+        .avatar-card:hover { transform: none; box-shadow: none; }
+        .avatar-card:hover .avatar-name { color: inherit; }
+        .avatar-card:hover .avatar-circle { border-color: #E8E0D6; box-shadow: none; }
         .gallery-grid-img { filter: none; }
     }
 </style>
@@ -439,14 +413,14 @@
 </div>
 
 {# ── 2. SQUAD + GUESTBOOK ── #}
-<div class="mt-12">
+<div class="mt-20">
     <div class="text-center mb-6">
         <p class="section-label">The Squad</p>
         <h2 class="section-heading">Meet the Crew</h2>
     </div>
-    <div class="avatar-row max-w-2xl mx-auto">
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
         {% for m in members %}
-        <a href="/squad/{{ m.id }}" class="avatar-link">
+        <a href="/squad/{{ m.id }}" class="avatar-card">
             {% if m.image1 %}
             <img src="{{ m.image1 }}" alt="{{ m.name }}" class="avatar-circle" loading="lazy"
                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -455,7 +429,7 @@
             <div class="avatar-circle">{{ m.name[:1] }}{{ m.name.split()[-1][:1] }}</div>
             {% endif %}
             <span class="avatar-name">{{ m.nickname or m.name.split()[0] }}</span>
-            <span class="avatar-tag">{{ m.tag }}</span>
+            {% if m.tag %}<span class="avatar-tag">{{ m.tag }}</span>{% endif %}
         </a>
         {% endfor %}
     </div>
@@ -465,19 +439,18 @@
         <h2 class="section-heading">Recent Shoutout</h2>
     </div>
     {% if latest_guestbook %}
-    <div class="guestbook-card max-w-md mx-auto divide-y divide-[#E8E0D6]">
+    <div class="guestbook-card max-w-md mx-auto">
         {% for entry in latest_guestbook %}
-        <div {% if not loop.first %}class="pt-4"{% endif %}>
-            <p class="guestbook-message">&ldquo;{{ entry.message }}&rdquo;</p>
-            <div class="flex items-center justify-between mt-2">
+        <div class="{% if not loop.first %}mt-3{% endif %} {% if loop.index0 % 2 == 0 %}bg-[#FAF8F4]{% else %}bg-white{% endif %} border-l-2 border-[#8B3A3A] rounded-sm px-4 py-3">
+            <div class="flex items-center justify-between mb-1">
                 <span class="text-[12px] font-sans font-semibold text-[#1A1614]">{{ entry.name }}</span>
                 <span class="text-[10px] text-[#8A7F76] font-sans">{{ entry.posted_at.strftime('%b %d, %Y') if entry.posted_at else '' }}</span>
             </div>
+            <p class="text-[13px] font-serif italic text-[#5A5148] leading-relaxed">&ldquo;{{ entry.message }}&rdquo;</p>
         </div>
         {% endfor %}
-        <div class="pt-4">
-            <a href="/guestbook" class="guestbook-link">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <div class="mt-5 pt-4 border-t border-[#E8E0D6] text-center">
+            <a href="/guestbook" class="inline-block py-2.5 px-6 text-[10px] font-sans font-semibold uppercase tracking-[0.16em] text-white bg-[#8B3A3A] rounded-sm hover:bg-[#A8472F] transition-colors no-underline cursor-pointer">
                 Leave a message
             </a>
         </div>
@@ -490,8 +463,7 @@
         <p class="text-[14px] text-[#5A5148] font-sans mb-1">The guestbook is open &mdash; drop a note for the squad.</p>
         <p class="text-[12px] text-[#8A7F76] font-sans mb-4">Tell a story, share a laugh, or just say hi.</p>
         <div>
-            <a href="/guestbook" class="guestbook-link text-[11px]">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <a href="/guestbook" class="inline-block py-2.5 px-6 text-[10px] font-sans font-semibold uppercase tracking-[0.16em] text-white bg-[#8B3A3A] rounded-sm hover:bg-[#A8472F] transition-colors no-underline cursor-pointer">
                 Leave a message
             </a>
         </div>
@@ -499,15 +471,8 @@
     {% endif %}
 </div>
 
-{# ── DIVIDER ── #}
-<div class="divider-ornament my-10">
-    <span class="line"></span>
-    <span class="dot"></span>
-    <span class="line"></span>
-</div>
-
 {# ── 3. UPDATES + GALLERY ── #}
-<div class="grid md:grid-cols-2 gap-8 mt-12">
+<div class="grid md:grid-cols-2 gap-8 mt-20">
     {% if latest_updates %}
     <div class="flex flex-col h-full">
         <div class="text-center md:text-left mb-6">
@@ -573,15 +538,8 @@
     </div>
 </div>
 
-{# ── DIVIDER ── #}
-<div class="divider-ornament my-10">
-    <span class="line"></span>
-    <span class="dot"></span>
-    <span class="line"></span>
-</div>
-
 {# ── 4. CLOSING NOTE ── #}
-<div class="text-center max-w-lg mx-auto mb-8">
+<div class="text-center max-w-lg mx-auto mt-20 mb-8">
     <p class="closing-note">From our group chat to your screen &mdash; thanks for stopping by.</p>
 </div>
 
