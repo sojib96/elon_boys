@@ -2,6 +2,8 @@
 {% block title %}Guestbook — Elon Boys{% endblock %}
 
 {% block content %}
+{% set count = entries|length %}
+{% set is_odd = count % 2 == 1 %}
 <div class="max-w-4xl mx-auto">
 
     {# ── Header ── #}
@@ -11,10 +13,10 @@
             <h1 class="font-serif font-bold text-[#1A1614] leading-tight text-[clamp(1.3rem,2.5vw,1.75rem)] mt-1">Leave Your Mark</h1>
             <p class="text-[12px] text-[#8A7F76] mt-1 font-sans max-w-md">Warning: contains high levels of nostalgia and inside jokes that will not be explained to you.</p>
         </div>
-        <div class="text-[11px] font-sans text-[#5A5148] shrink-0">
-            <span class="font-semibold text-[#8B3A3A]">{{ entries|length }}</span> entries
-            <span class="mx-1.5 text-[#D4C9B8]">/</span>
-            <span class="italic text-[#8A7F76]">chaos: {{ entries|length * 11 }}%</span>
+        <div class="text-[11px] font-sans font-semibold text-[#8B3A3A] shrink-0">
+            <span>{{ count }} entries</span>
+            <span class="mx-1.5 text-[#D4C9B8] font-normal">|</span>
+            <span>chaos: {{ count * 11 }}%</span>
         </div>
     </div>
 
@@ -27,15 +29,15 @@
         </div>
         {% endif %}
         <div class="px-5 py-4">
-            <form method="post" action="/guestbook" class="flex flex-col md:flex-row gap-3">
+            <form method="post" action="/guestbook" class="flex flex-col md:flex-row gap-3 items-stretch">
                 <div class="md:w-1/4">
                     <input type="text" id="name" name="name" required
-                           class="w-full px-3 py-2 text-[13px] font-sans text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8]"
+                           class="w-full h-full px-3 py-2 text-[13px] font-sans text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8]"
                            placeholder="Your name (or alias)">
                 </div>
                 <div class="md:flex-1">
                     <textarea id="message" name="message" rows="1" required
-                              class="w-full px-3 py-2 text-[13px] font-serif text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8] resize-none"
+                              class="w-full h-full px-3 py-2 text-[13px] font-serif text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8] resize-none"
                               placeholder="Write something... or do not. We are not your therapist."></textarea>
                 </div>
                 <button type="submit"
@@ -48,11 +50,13 @@
 
     {# ── Entries grid ── #}
     {% if entries %}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start" style="grid-auto-rows: min-content;">
         {% for entry in entries %}
-        <div class="bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm px-4 py-3 flex gap-3 items-start">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#8B3A3A] mt-1.5 shrink-0"></span>
-            <div class="min-w-0">
+        <div class="flex gap-3 items-start px-4 py-3 bg-[#FAF8F4] border border-[#E8E0D6] rounded-sm {% if is_odd and loop.last %}md:col-span-2 md:max-w-lg md:mx-auto md:w-full{% endif %}">
+            <span class="w-4 shrink-0 flex justify-center pt-1.5" aria-hidden="true">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#8B3A3A] block"></span>
+            </span>
+            <div class="min-w-0 flex-1">
                 <p class="text-[13px] font-serif italic text-[#5A5148] leading-relaxed">&ldquo;{{ entry.message }}&rdquo;</p>
                 <div class="flex items-center gap-2 mt-2">
                     <span class="text-[11px] font-sans font-semibold text-[#1A1614]">{{ entry.name }}</span>
