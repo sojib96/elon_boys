@@ -3,287 +3,450 @@
 
 {% block content %}
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap');
 
-    .paper-texture {
-        background-color: #F5F0E8;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  main:has(.dossier) {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  /* ── Dossier card ── */
+  .dossier-card {
+    background: #FAF8F4;
+    border: 1px solid #E8E0D6;
+    border-left: 3px solid #D4C9B8;
+    border-radius: 2px;
+    padding: 0;
+    box-shadow: 0 1px 3px rgba(26, 22, 20, 0.04);
+    transition: box-shadow 0.3s ease;
+  }
+  .dossier-card:hover {
+    box-shadow: 0 4px 16px rgba(26, 22, 20, 0.07);
+  }
+
+  .dossier-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 24px 0;
+  }
+  .dossier-card-header .icon-box {
+    width: 28px;
+    height: 28px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .dossier-card-header h2 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #8A7F76;
+    margin: 0;
+  }
+
+  .dossier-card-body {
+    padding: 16px 24px 20px;
+  }
+
+  /* ── Metadata field row ── */
+  .field-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid #F0EBE2;
+  }
+  .field-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .field-row:first-child {
+    padding-top: 0;
+  }
+
+  .field-label {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #8A7F76;
+    text-align: right;
+    line-height: 1.4;
+    padding-top: 2px;
+  }
+
+  .field-input {
+    display: block;
+    width: 100%;
+    padding: 6px 10px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    color: #1A1614;
+    background: #F5F1EA;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    outline: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .field-input::placeholder {
+    color: #C4B8A8;
+    font-size: 13px;
+  }
+  .field-input:not(:placeholder-shown) {
+    background: #FFF;
+    border-color: #E8E0D6;
+  }
+  .field-input:focus {
+    background: #FFF;
+    border-color: #8B3A3A;
+  }
+  .field-input:disabled {
+    background: transparent;
+    color: #B8AFA2;
+    cursor: not-allowed;
+  }
+
+  .field-textarea {
+    min-height: 64px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .field-file {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 12px;
+    color: #5A5148;
+  }
+  .field-file::file-selector-button {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border: 1px solid #D4C9B8;
+    border-radius: 2px;
+    background: transparent;
+    color: #5A5148;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .field-file::file-selector-button:hover {
+    border-color: #8B3A3A;
+    color: #8B3A3A;
+  }
+
+  .field-meta {
+    font-size: 10px;
+    color: #B8AFA2;
+    margin-top: 4px;
+  }
+
+  /* ── Section accent colors ── */
+  .accent-identity { border-left-color: #8B3A3A; }
+  .accent-identity .icon-box { background: #8B3A3A; }
+  .accent-social { border-left-color: #7A9A7A; }
+  .accent-social .icon-box { background: #7A9A7A; }
+  .accent-personal { border-left-color: #C4A35A; }
+  .accent-personal .icon-box { background: #C4A35A; }
+  .accent-work { border-left-color: #5A7A9A; }
+  .accent-work .icon-box { background: #5A7A9A; }
+  .accent-squad { border-left-color: #9A7A7A; }
+  .accent-squad .icon-box { background: #9A7A7A; }
+  .accent-photos { border-left-color: #6A9A7A; }
+  .accent-photos .icon-box { background: #6A9A7A; }
+
+  /* ── Back link ── */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8A7F76;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .back-link:hover {
+    color: #8B3A3A;
+  }
+  .back-link svg {
+    transition: transform 0.2s ease;
+  }
+  .back-link:hover svg {
+    transform: translateX(-2px);
+  }
+
+  /* ── Save button ── */
+  .btn-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 36px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #8B3A3A;
+    border: 1.5px solid #8B3A3A;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.15s ease;
+  }
+  .btn-save:hover {
+    background: #6F2A2A;
+  }
+  .btn-save:active {
+    transform: scale(0.97);
+  }
+
+  /* ── Mobile: collapse metadata rows ── */
+  @media (max-width: 640px) {
+    .field-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
     }
-
-    .form-section {
-        background: #FAF8F4;
-        border: 1px solid #E8E0D6;
-        border-radius: 2px;
-        box-shadow: 0 1px 3px rgba(26, 22, 20, 0.04);
-        padding: 32px 28px;
-    }
-
-    .form-section-title {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #1A1614;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 1.5px solid #E8E0D6;
-    }
-
     .field-label {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 10px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: #8A7F76;
-        font-weight: 600;
-        display: block;
-        margin-bottom: 6px;
+      text-align: left;
+      font-size: 9px;
     }
-
-    .field-input {
-        display: block;
-        width: 100%;
-        padding: 10px 0 8px;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 14px;
-        color: #1A1614;
-        background: transparent;
-        border: 0;
-        border-bottom: 1.5px solid #D4C9B8;
-        outline: none;
-        transition: border-color 0.2s ease;
+    .dossier-card-header {
+      padding: 14px 16px 0;
     }
-    .field-input::placeholder { color: #C4B8A8; font-size: 13px; }
-    .field-input:focus { border-bottom-color: #8B3A3A; }
-
-    .field-textarea {
-        display: block;
-        width: 100%;
-        padding: 10px 0 8px;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 14px;
-        color: #1A1614;
-        background: transparent;
-        border: 0;
-        border-bottom: 1.5px solid #D4C9B8;
-        outline: none;
-        transition: border-color 0.2s ease;
-        min-height: 80px;
-        resize: vertical;
+    .dossier-card-body {
+      padding: 12px 16px 16px;
     }
-    .field-textarea::placeholder { color: #C4B8A8; font-size: 13px; }
-    .field-textarea:focus { border-bottom-color: #8B3A3A; }
+  }
 
-    .field-file {
-        display: block;
-        width: 100%;
-        padding: 8px 0;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 12px;
-        color: #5A5148;
-    }
-
+  @media (prefers-reduced-motion: reduce) {
+    .dossier-card,
+    .field-input,
     .btn-save {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 32px;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: #fff;
-        background: #8B3A3A;
-        border: 1.5px solid #8B3A3A;
-        border-radius: 2px;
-        cursor: pointer;
-        transition: background 0.25s ease;
+      transition: none;
     }
-    .btn-save:hover { background: #6F2A2A; }
-    .btn-save:active { transform: scale(0.98); }
-
-    .error-text { color: #991B1B; font-size: 11px; margin-top: 4px; }
-
-    @media (prefers-reduced-motion: reduce) {
-        .field-input, .field-textarea { transition: none; }
-        .btn-save { transition: none; }
-        .btn-save:active { transform: none; }
+    .btn-save:active {
+      transform: none;
     }
+  }
 </style>
 
-<div class="paper-texture min-h-screen -mt-8 md:-mt-10 px-6 sm:px-8" style="margin-left: calc(-1 * (100vw - 100%) / 2); margin-right: calc(-1 * (100vw - 100%) / 2); padding-left: calc((100vw - 100%) / 2 + 1.5rem); padding-right: calc((100vw - 100%) / 2 + 1.5rem);">
-    <div class="max-w-2xl mx-auto">
-        <a href="/behind-the-curtain" class="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-wider font-semibold text-gray-400 hover:text-coral-600 transition-colors mb-8">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-            Back to Dashboard
-        </a>
+<div class="dossier min-h-screen w-full bg-[#F5F0E8] -mt-8 md:-mt-10 px-6 sm:px-8"
+     style="padding-top: 3rem; padding-bottom: 4rem;">
+  <div class="max-w-2xl mx-auto">
 
-        <div class="text-center mb-8 reveal">
-            <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Profile</span>
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Edit Profile</h1>
-            <p class="text-gray-500 text-sm mt-2">{{ member.name }} &mdash; Update your squad information.</p>
-        </div>
-
-        <form method="POST" action="/profile/edit" enctype="multipart/form-data" class="space-y-6 stagger">
-
-            {# ── IDENTITY ── #}
-            <div class="form-section reveal">
-                <h2 class="form-section-title">Identity</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="field-label" for="name">Name</label>
-                        <input type="text" id="name" value="{{ member.name }}" disabled class="field-input text-gray-400">
-                    </div>
-                    <div>
-                        <label class="field-label" for="nickname">Nickname</label>
-                        <input type="text" id="nickname" name="nickname" value="{{ member.nickname or '' }}" placeholder="e.g. Ace" class="field-input">
-                    </div>
-                </div>
-            </div>
-
-            {# ── CONTACT / SOCIAL ── #}
-            <div class="form-section reveal">
-                <h2 class="form-section-title">Contact &amp; Social</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="field-label" for="email">Email</label>
-                        <input type="email" id="email" name="email" value="{{ member.email or '' }}" placeholder="you@example.com" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="phone">Phone</label>
-                        <input type="text" id="phone" name="phone" value="{{ member.phone or '' }}" placeholder="+1 555-0123" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="instagram">Instagram</label>
-                        <input type="text" id="instagram" name="instagram" value="{{ member.instagram or '' }}" placeholder="@username" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="github">GitHub</label>
-                        <input type="text" id="github" name="github" value="{{ member.github or '' }}" placeholder="github.com/username" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="linkedin">LinkedIn</label>
-                        <input type="text" id="linkedin" name="linkedin" value="{{ member.linkedin or '' }}" placeholder="linkedin.com/in/username" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="portfolio_url">Portfolio Website</label>
-                        <input type="url" id="portfolio_url" name="portfolio_url" value="{{ member.portfolio_url or '' }}" placeholder="https://yoursite.com" class="field-input">
-                    </div>
-                </div>
-            </div>
-
-            {# ── PERSONAL ── #}
-            <div class="form-section reveal">
-                <h2 class="form-section-title">Personal</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="field-label" for="date_of_birth">Date of Birth</label>
-                        <input type="text" id="date_of_birth" name="date_of_birth" value="{{ member.date_of_birth or '' }}" placeholder="YYYY-MM-DD" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="current_city">Current City</label>
-                        <input type="text" id="current_city" name="current_city" value="{{ member.current_city or '' }}" placeholder="e.g. New York, NY" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="gender">Gender</label>
-                        <input type="text" id="gender" name="gender" value="{{ member.gender or '' }}" placeholder="e.g. Male, Female, Non-binary" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="blood_group">Blood Group</label>
-                        <input type="text" id="blood_group" name="blood_group" value="{{ member.blood_group or '' }}" placeholder="e.g. A+, O-" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="relationship_status">Relationship Status</label>
-                        <input type="text" id="relationship_status" name="relationship_status" value="{{ member.relationship_status or '' }}" placeholder="e.g. Single, Married" class="field-input">
-                    </div>
-                </div>
-            </div>
-
-            {# ── WORK ── #}
-            <div class="form-section reveal">
-                <h2 class="form-section-title">Work</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="field-label" for="occupation">Occupation</label>
-                        <input type="text" id="occupation" name="occupation" value="{{ member.occupation or '' }}" placeholder="e.g. Software Engineer" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="current_company">Current Company</label>
-                        <input type="text" id="current_company" name="current_company" value="{{ member.current_company or '' }}" placeholder="e.g. Google" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="current_status">Status (shown on squad card)</label>
-                        <input type="text" id="current_status" name="current_status" value="{{ member.current_status or '' }}" placeholder="e.g. Software Engineer at Google" class="field-input">
-                    </div>
-                </div>
-            </div>
-
-            {# ── SQUAD DISPLAY ── #}
-            <div class="form-section reveal">
-                <h2 class="form-section-title">Squad Display</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="field-label" for="tag">Tag</label>
-                        <input type="text" id="tag" name="tag" value="{{ member.tag or '' }}" placeholder="e.g. THE BUILDER" class="field-input">
-                    </div>
-                    <div>
-                        <label class="field-label" for="quote">Quote</label>
-                        <textarea id="quote" name="quote" placeholder="A memorable quote..." class="field-textarea">{{ member.quote or '' }}</textarea>
-                    </div>
-                    <div>
-                        <label class="field-label" for="bio">Bio</label>
-                        <textarea id="bio" name="bio" placeholder="Tell your story..." class="field-textarea">{{ member.bio or '' }}</textarea>
-                    </div>
-                    <div>
-                        <label class="field-label" for="fun_fact">Fun Fact</label>
-                        <textarea id="fun_fact" name="fun_fact" placeholder="Something surprising..." class="field-textarea">{{ member.fun_fact or '' }}</textarea>
-                    </div>
-                </div>
-            </div>
-
-            {# ── PHOTOS ── #}
-            <div class="form-section reveal">
-                <h2 class="form-section-title">Photos</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="field-label" for="photo">Profile Photo (avatar)</label>
-                        <input type="file" id="photo" name="photo" accept="image/*" class="field-file">
-                        {% if member.photo_url %}
-                        <p class="text-[10px] text-gray-400 mt-1">Current: {{ member.photo_url }}</p>
-                        {% endif %}
-                    </div>
-                    <div>
-                        <label class="field-label" for="image1">Squad Card Photo</label>
-                        <input type="file" id="image1" name="image1" accept="image/*" class="field-file">
-                        {% if member.image1 %}
-                        <p class="text-[10px] text-gray-400 mt-1">Current: {{ member.image1 }}</p>
-                        {% endif %}
-                    </div>
-                    <div>
-                        <label class="field-label" for="image2">Cover / Hero Photo</label>
-                        <input type="file" id="image2" name="image2" accept="image/*" class="field-file">
-                        {% if member.image2 %}
-                        <p class="text-[10px] text-gray-400 mt-1">Current: {{ member.image2 }}</p>
-                        {% endif %}
-                    </div>
-                    <div>
-                        <label class="field-label" for="resume">Resume</label>
-                        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="field-file">
-                        {% if member.resume_url %}
-                        <p class="text-[10px] text-gray-400 mt-1">Current: {{ member.resume_url }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center reveal pb-8">
-                <button type="submit" class="btn-save">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                    Save Profile
-                </button>
-            </div>
-
-        </form>
+    {# ── Top bar ── #}
+    <div class="flex items-center justify-between mb-8 reveal">
+      <a href="/behind-the-curtain" class="back-link">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Dashboard
+      </a>
+      <span class="font-sans text-[10px] uppercase tracking-widest text-[#8A7F76] font-medium">Profile</span>
     </div>
+
+    {# ── Header ── #}
+    <div class="text-center mb-10 reveal">
+      <h1 class="font-['Playfair_Display'] text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-[#1A1614] tracking-[-0.02em] leading-[1.08]">
+        Edit Profile
+      </h1>
+      <p class="font-serif text-[14px] text-[#8A7F76] italic mt-2">
+        {{ member.name }} &mdash; update your dossier
+      </p>
+    </div>
+
+    <form method="POST" action="/profile/edit" enctype="multipart/form-data" class="space-y-5 stagger">
+
+      {# ── IDENTITY ── #}
+      <div class="dossier-card accent-identity reveal">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#9783;</span>
+          <h2>Identity</h2>
+        </div>
+        <div class="dossier-card-body">
+          <div class="field-row">
+            <span class="field-label">Name</span>
+            <input type="text" value="{{ member.name }}" disabled class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="nickname">Nickname</label>
+            <input type="text" id="nickname" name="nickname" value="{{ member.nickname or '' }}" placeholder="Ace" class="field-input">
+          </div>
+        </div>
+      </div>
+
+      {# ── CONTACT & SOCIAL ── #}
+      <div class="dossier-card accent-social reveal">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#9993;</span>
+          <h2>Contact &amp; Social</h2>
+        </div>
+        <div class="dossier-card-body">
+          <div class="field-row">
+            <label class="field-label" for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ member.email or '' }}" placeholder="you@example.com" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="phone">Phone</label>
+            <input type="text" id="phone" name="phone" value="{{ member.phone or '' }}" placeholder="+1 555-0123" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="instagram">Instagram</label>
+            <input type="text" id="instagram" name="instagram" value="{{ member.instagram or '' }}" placeholder="@username" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="github">GitHub</label>
+            <input type="text" id="github" name="github" value="{{ member.github or '' }}" placeholder="github.com/username" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="linkedin">LinkedIn</label>
+            <input type="text" id="linkedin" name="linkedin" value="{{ member.linkedin or '' }}" placeholder="linkedin.com/in/username" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="portfolio_url">Portfolio</label>
+            <input type="url" id="portfolio_url" name="portfolio_url" value="{{ member.portfolio_url or '' }}" placeholder="https://yoursite.com" class="field-input">
+          </div>
+        </div>
+      </div>
+
+      {# ── PERSONAL ── #}
+      <div class="dossier-card accent-personal reveal">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#9782;</span>
+          <h2>Personal</h2>
+        </div>
+        <div class="dossier-card-body">
+          <div class="field-row">
+            <label class="field-label" for="date_of_birth">DOB</label>
+            <input type="text" id="date_of_birth" name="date_of_birth" value="{{ member.date_of_birth or '' }}" placeholder="YYYY-MM-DD" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="current_city">City</label>
+            <input type="text" id="current_city" name="current_city" value="{{ member.current_city or '' }}" placeholder="New York, NY" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="gender">Gender</label>
+            <input type="text" id="gender" name="gender" value="{{ member.gender or '' }}" placeholder="Male / Female / Non-binary" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="blood_group">Blood</label>
+            <input type="text" id="blood_group" name="blood_group" value="{{ member.blood_group or '' }}" placeholder="A+ / O- / B+" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="relationship_status">Status</label>
+            <input type="text" id="relationship_status" name="relationship_status" value="{{ member.relationship_status or '' }}" placeholder="Single / Married / ..." class="field-input">
+          </div>
+        </div>
+      </div>
+
+      {# ── WORK ── #}
+      <div class="dossier-card accent-work reveal">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#9881;</span>
+          <h2>Work</h2>
+        </div>
+        <div class="dossier-card-body">
+          <div class="field-row">
+            <label class="field-label" for="occupation">Occupation</label>
+            <input type="text" id="occupation" name="occupation" value="{{ member.occupation or '' }}" placeholder="Software Engineer" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="current_company">Company</label>
+            <input type="text" id="current_company" name="current_company" value="{{ member.current_company or '' }}" placeholder="Google" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="current_status">Card Status</label>
+            <input type="text" id="current_status" name="current_status" value="{{ member.current_status or '' }}" placeholder="Software Engineer at Google" class="field-input">
+          </div>
+        </div>
+      </div>
+
+      {# ── SQUAD DISPLAY ── #}
+      <div class="dossier-card accent-squad reveal">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#9733;</span>
+          <h2>Squad Display</h2>
+        </div>
+        <div class="dossier-card-body">
+          <div class="field-row">
+            <label class="field-label" for="tag">Tag</label>
+            <input type="text" id="tag" name="tag" value="{{ member.tag or '' }}" placeholder="THE BUILDER" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="quote">Quote</label>
+            <textarea id="quote" name="quote" placeholder="A memorable quote..." class="field-input field-textarea">{{ member.quote or '' }}</textarea>
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="bio">Bio</label>
+            <textarea id="bio" name="bio" placeholder="Tell your story..." class="field-input field-textarea">{{ member.bio or '' }}</textarea>
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="fun_fact">Fun Fact</label>
+            <textarea id="fun_fact" name="fun_fact" placeholder="Something surprising..." class="field-input field-textarea">{{ member.fun_fact or '' }}</textarea>
+          </div>
+        </div>
+      </div>
+
+      {# ── PHOTOS ── #}
+      <div class="dossier-card accent-photos reveal">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#128247;</span>
+          <h2>Photos &amp; Files</h2>
+        </div>
+        <div class="dossier-card-body">
+          <div class="field-row">
+            <label class="field-label" for="photo">Avatar</label>
+            <div>
+              <input type="file" id="photo" name="photo" accept="image/*" class="field-file">
+              {% if member.photo_url %}<p class="field-meta">Current: {{ member.photo_url }}</p>{% endif %}
+            </div>
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="image1">Squad Card</label>
+            <div>
+              <input type="file" id="image1" name="image1" accept="image/*" class="field-file">
+              {% if member.image1 %}<p class="field-meta">Current: {{ member.image1 }}</p>{% endif %}
+            </div>
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="image2">Cover Photo</label>
+            <div>
+              <input type="file" id="image2" name="image2" accept="image/*" class="field-file">
+              {% if member.image2 %}<p class="field-meta">Current: {{ member.image2 }}</p>{% endif %}
+            </div>
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="resume">Resume</label>
+            <div>
+              <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="field-file">
+              {% if member.resume_url %}<p class="field-meta">Current: {{ member.resume_url }}</p>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# ── Submit ── #}
+      <div class="text-center pt-2 pb-8 reveal">
+        <button type="submit" class="btn-save">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Save Profile
+        </button>
+      </div>
+
+    </form>
+  </div>
 </div>
 {% endblock %}

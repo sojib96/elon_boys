@@ -2,115 +2,144 @@
 {% block title %}Upload to Gallery — Elon Boys{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto">
-    <a href="/behind-the-curtain" class="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-wider font-semibold text-gray-400 hover:text-coral-600 transition-colors mb-8">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-        Back
-    </a>
+<link rel="stylesheet" href="/static/css/private.css">
+<style>
+  main:has(.dossier-page) {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+</style>
 
-    <div class="text-center mb-10 reveal">
-        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Upload</span>
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Upload to Gallery</h1>
-        <p class="text-gray-500 text-sm mt-2">Add photos to the public gallery.</p>
+<div class="dossier-page">
+  <div class="max-w-2xl mx-auto">
+    <div class="reveal">
+      <div class="top-bar">
+        <a href="/behind-the-curtain" class="back-link">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+          Dashboard
+        </a>
+        <span class="section-label">Upload</span>
+      </div>
+      <div class="page-header">
+        <h1>Upload to Gallery</h1>
+        <p>Add photos to the public gallery.</p>
+      </div>
     </div>
 
-    <form method="POST" action="/gallery/upload" enctype="multipart/form-data" class="space-y-6 reveal">
+    <form method="POST" action="/gallery/upload" enctype="multipart/form-data" class="space-y-5 stagger">
 
-        <div class="bg-white rounded-xl shadow-card border border-gray-100 p-6">
-            <label class="block text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-2" for="title">Title</label>
-            <input
-                type="text" id="title" name="title"
-                value="{{ form.title | default('') }}"
-                class="w-full border-b-2 border-gray-200 focus:border-coral-500 outline-none py-2 text-gray-800 text-sm transition-colors"
-                placeholder="Give your photo a name"
-            >
-            {% if errors.title %}
-            <p class="text-red-500 text-xs mt-1">{{ errors.title }}</p>
-            {% endif %}
+      <div class="dossier-card accent-terracotta reveal">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#9998;</span>
+          <h2>Title</h2>
         </div>
+        <div class="dossier-card-body">
+          <div class="field-row">
+            <label class="field-label" for="title">Title</label>
+            <div style="width:100%;">
+              <input type="text" id="title" name="title" value="{{ form.title | default('') }}" class="field-input {% if errors.title %}input-error{% endif %}" placeholder="Give your photo a name">
+              {% if errors.title %}<p class="field-meta" style="color:#DC2626;margin-top:4px;">{{ errors.title }}</p>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <div class="bg-white rounded-xl shadow-card border border-gray-100 p-6">
-            <label class="block text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-2" for="category">Category</label>
-            <div class="flex items-center gap-2">
-                <select
-                    id="category" name="category"
-                    class="flex-1 border-b-2 border-gray-200 focus:border-coral-500 outline-none py-2 text-gray-800 text-sm transition-colors bg-transparent"
-                >
-                    <option value="" disabled {% if not form.category %}selected{% endif %}>Select a category</option>
-                    {% for cat in categories %}
-                    <option value="{{ cat }}" {% if form.category == cat %}selected{% endif %}>{{ cat }}</option>
-                    {% endfor %}
+      <div class="dossier-card accent-amber reveal">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#128193;</span>
+          <h2>Category</h2>
+        </div>
+        <div class="dossier-card-body">
+          <div class="field-row">
+            <label class="field-label" for="category">Category</label>
+            <div style="width:100%;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <select id="category" name="category" class="field-select" style="flex:1;">
+                  <option value="" disabled {% if not form.category %}selected{% endif %}>Select a category</option>
+                  {% for cat in categories %}
+                  <option value="{{ cat }}" {% if form.category == cat %}selected{% endif %}>{{ cat }}</option>
+                  {% endfor %}
                 </select>
-                <button type="button" id="add-category-btn" class="w-8 h-8 rounded-full bg-coral-50 hover:bg-coral-100 text-coral-600 flex items-center justify-center flex-shrink-0 transition-colors" title="Add a new category">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                <button type="button" id="add-category-btn" style="width:30px;height:30px;border-radius:2px;border:1px solid #D4C9B8;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:border-color 0.2s;" title="Add a new category">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A7F76" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                 </button>
+              </div>
+              <div id="new-category-wrapper" class="hidden" style="display:none;margin-top:10px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input type="text" id="new-category-input" style="flex:1;padding:6px 10px;font-family:'Inter',sans-serif;font-size:13px;color:#1A1614;background:#F5F1EA;border:1px solid #D4C9B8;border-radius:2px;outline:none;" placeholder="New category name" maxlength="50">
+                  <button type="button" id="confirm-category-btn" class="btn-primary-sm">Add</button>
+                  <button type="button" id="cancel-category-btn" class="btn-secondary">Cancel</button>
+                </div>
+              </div>
+              {% if errors.category %}
+              <p class="field-meta" style="color:#DC2626;margin-top:4px;">{{ errors.category }}</p>
+              {% endif %}
             </div>
-            <div id="new-category-wrapper" class="hidden mt-3 flex items-center gap-2">
-                <input type="text" id="new-category-input" class="flex-1 border-b-2 border-coral-400 focus:border-coral-600 outline-none py-1.5 text-sm text-gray-800 transition-colors" placeholder="New category name" maxlength="50">
-                <button type="button" id="confirm-category-btn" class="px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-green-600 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">Add</button>
-                <button type="button" id="cancel-category-btn" class="px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-gray-400 hover:text-gray-600 transition-colors">Cancel</button>
-            </div>
-            {% if errors.category %}
-            <p class="text-red-500 text-xs mt-1">{{ errors.category }}</p>
-            {% endif %}
+          </div>
         </div>
+      </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    var addBtn = document.getElementById('add-category-btn');
-    var wrapper = document.getElementById('new-category-wrapper');
-    var input = document.getElementById('new-category-input');
-    var confirmBtn = document.getElementById('confirm-category-btn');
-    var cancelBtn = document.getElementById('cancel-category-btn');
-    var select = document.getElementById('category');
+  var addBtn = document.getElementById('add-category-btn');
+  var wrapper = document.getElementById('new-category-wrapper');
+  var input = document.getElementById('new-category-input');
+  var confirmBtn = document.getElementById('confirm-category-btn');
+  var cancelBtn = document.getElementById('cancel-category-btn');
+  var select = document.getElementById('category');
 
-    addBtn.addEventListener('click', function() {
-        wrapper.classList.remove('hidden');
-        input.value = '';
-        input.focus();
-    });
+  addBtn.addEventListener('click', function() {
+    wrapper.style.display = '';
+    input.value = '';
+    input.focus();
+  });
 
-    cancelBtn.addEventListener('click', function() {
-        wrapper.classList.add('hidden');
-        input.value = '';
-    });
+  cancelBtn.addEventListener('click', function() {
+    wrapper.style.display = 'none';
+    input.value = '';
+  });
 
-    function addCategory() {
-        var name = input.value.trim();
-        if (!name) return;
-        var opt = document.createElement('option');
-        opt.value = name;
-        opt.textContent = name;
-        select.appendChild(opt);
-        select.value = name;
-        wrapper.classList.add('hidden');
-        input.value = '';
-    }
+  function addCategory() {
+    var name = input.value.trim();
+    if (!name) return;
+    var opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    select.appendChild(opt);
+    select.value = name;
+    wrapper.style.display = 'none';
+    input.value = '';
+  }
 
-    confirmBtn.addEventListener('click', addCategory);
-    input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') { e.preventDefault(); addCategory(); }
-        if (e.key === 'Escape') { wrapper.classList.add('hidden'); input.value = ''; }
-    });
+  confirmBtn.addEventListener('click', addCategory);
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); addCategory(); }
+    if (e.key === 'Escape') { wrapper.style.display = 'none'; input.value = ''; }
+  });
 });
 </script>
 
-        <div class="bg-white rounded-xl shadow-card border-2 border-dashed border-gray-200 p-6 hover:border-coral-300 transition-colors">
-            <label class="block text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-3" for="files">Images</label>
-            <input
-                type="file" id="files" name="files" multiple accept="image/*"
-                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-coral-50 file:text-coral-600 hover:file:bg-coral-100 file:cursor-pointer"
-            >
-            <p class="text-gray-400 text-xs mt-2">Accepted formats: JPG, PNG, GIF, WebP. Multiple files allowed.</p>
+      <div class="dossier-card dashed accent-moss reveal">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#128247;</span>
+          <h2>Images</h2>
+        </div>
+        <div class="dossier-card-body">
+          <div>
+            <input type="file" id="files" name="files" multiple accept="image/*" class="field-file">
+            <p class="field-meta" style="margin-top:6px;">Accepted formats: JPG, PNG, GIF, WebP. Multiple files allowed.</p>
             {% if errors.files %}
-            <p class="text-red-500 text-xs mt-1">{{ errors.files }}</p>
+            <p class="field-meta" style="color:#DC2626;margin-top:4px;">{{ errors.files }}</p>
             {% endif %}
+          </div>
         </div>
+      </div>
 
-        <div class="flex justify-end gap-3 pt-2">
-            <a href="/gallery" class="px-5 py-2.5 text-[11px] uppercase tracking-wider font-semibold text-gray-400 hover:text-gray-600 transition-colors">Cancel</a>
-            <button type="submit" class="px-6 py-2.5 bg-coral-600 hover:bg-coral-700 text-white text-[11px] uppercase tracking-wider font-semibold rounded-lg shadow-md hover:-translate-y-0.5 transition-all duration-200">Upload</button>
-        </div>
+      <div class="flex justify-end gap-3 pt-2 reveal" style="display:flex;justify-content:flex-end;gap:12px;padding-top:8px;">
+        <a href="/gallery" class="btn-secondary">Cancel</a>
+        <button type="submit" class="btn-primary">Upload</button>
+      </div>
     </form>
+  </div>
 </div>
 {% endblock %}

@@ -61,7 +61,7 @@ async def login_page(request: Request):
 @router.post("/login", response_class=HTMLResponse)
 async def login_submit(
     request: Request,
-    username: str = Form(...),
+    identifier: str = Form(...),
     password: str = Form(...),
 ):
     member_id = request.session.get("member_id")
@@ -69,9 +69,14 @@ async def login_submit(
         return RedirectResponse("/behind-the-curtain", status_code=303)
 
     with Session(engine) as session:
-        member = session.exec(
-            select(Member).where(Member.username == username)
-        ).first()
+        if "@" in identifier:
+            member = session.exec(
+                select(Member).where(Member.email == identifier)
+            ).first()
+        else:
+            member = session.exec(
+                select(Member).where(Member.username == identifier)
+            ).first()
 
     if member is None or not verify_password(password, member.hashed_password):
         return templates.TemplateResponse(

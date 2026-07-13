@@ -2,91 +2,51 @@
 {% block title %}Behind the Curtain — Elon Boys{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto">
-    <div class="text-center mb-12 reveal">
-        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Private</span>
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Behind the Curtain</h1>
-        <p class="text-gray-500 text-sm mt-2">Welcome back, {{ member.name }}. Here's everything in one place.</p>
+<link rel="stylesheet" href="/static/css/private.css">
+<style>
+  main:has(.dossier-page) {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+</style>
+
+<div class="dossier-page">
+  <div class="max-w-2xl mx-auto">
+    <div class="reveal">
+      <div class="top-bar">
+        <span class="section-label">Private</span>
+        <span class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#8A7F76] font-medium">Dashboard</span>
+      </div>
+      <div class="page-header">
+        <h1>Behind the Curtain</h1>
+        <p>Welcome back, {{ member.name }}. Here's everything.</p>
+      </div>
     </div>
 
     <div class="space-y-4 stagger">
-        <a href="/profile/edit" class="block bg-white rounded-xl shadow-card border border-gray-100 p-6 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 group">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-lg bg-coral-50 flex items-center justify-center flex-shrink-0">
-                    <span class="text-lg">&#128100;</span>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h3 class="text-sm font-semibold text-gray-900">Edit Profile</h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Update your squad profile, photos, and personal info.</p>
-                </div>
-                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-            </div>
-        </a>
-
-        <a href="/uploads" class="block bg-white rounded-xl shadow-card border border-gray-100 p-6 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 group">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-lg bg-coral-50 flex items-center justify-center flex-shrink-0">
-                    <span class="text-lg">&#128228;</span>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h3 class="text-sm font-semibold text-gray-900">Uploads</h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Raw photos, videos, and files shared within the group.</p>
-                </div>
-                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-            </div>
-        </a>
-
-        <a href="/notes" class="block bg-white rounded-xl shadow-card border border-gray-100 p-6 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 group">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-lg bg-coral-50 flex items-center justify-center flex-shrink-0">
-                    <span class="text-lg">&#128221;</span>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h3 class="text-sm font-semibold text-gray-900">Notes</h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Internal messages and coordination for the group.</p>
-                </div>
-                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-            </div>
-        </a>
-
-        <a href="/updates/new" class="block bg-white rounded-xl shadow-card border border-gray-100 p-6 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 group">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-lg bg-coral-50 flex items-center justify-center flex-shrink-0">
-                    <span class="text-lg">&#9998;</span>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h3 class="text-sm font-semibold text-gray-900">Create Update</h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Publish a new update visible to everyone on the site.</p>
-                </div>
-                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-            </div>
-        </a>
-
-        <a href="/gallery/upload" class="block bg-white rounded-xl shadow-card border border-gray-100 p-6 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 group">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-lg bg-coral-50 flex items-center justify-center flex-shrink-0">
-                    <span class="text-lg">&#128247;</span>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h3 class="text-sm font-semibold text-gray-900">Upload to Gallery</h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Add photos to the public gallery.</p>
-                </div>
-                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-            </div>
-        </a>
-
-        <a href="/trash" class="block bg-white rounded-xl shadow-card border border-gray-100 p-6 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 group">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-lg bg-coral-50 flex items-center justify-center flex-shrink-0">
-                    <span class="text-lg">&#128200;</span>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h3 class="text-sm font-semibold text-gray-900">Trash</h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Restore or permanently delete removed items.</p>
-                </div>
-                <svg class="text-gray-300 group-hover:text-coral-500 transition-colors flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-            </div>
-        </a>
+      {% set sections = [
+        ('/profile/edit', 'Edit Profile', 'Update your squad profile, photos, and personal info.', '\U0001F464', 'accent-terracotta'),
+        ('/uploads', 'Uploads', 'Raw photos, videos, and files shared within the group.', '\U0001F4E4', 'accent-sage'),
+        ('/notes', 'Notes', 'Internal messages and coordination for the group.', '\U0001F4DD', 'accent-gold'),
+        ('/updates/new', 'Create Update', 'Publish a new update visible to everyone on the site.', '\u270E', 'accent-steel'),
+        ('/gallery/upload', 'Upload to Gallery', 'Add photos to the public gallery.', '\U0001F4F7', 'accent-amber'),
+        ('/trash', 'Trash', 'Restore or permanently delete removed items.', '\U0001F4CA', 'accent-stone'),
+      ] %}
+      {% for href, title, desc, icon, accent in sections %}
+      <a href="{{ href }}" class="dossier-card {{ accent }} dossier-link">
+        <div class="dossier-card-header">
+          <span class="icon-box" style="width:32px;height:32px;font-size:15px;">{{ icon }}</span>
+          <div style="flex:1;min-width:0;">
+            <h2 style="font-size:11px;">{{ title }}</h2>
+            <p style="font-family:'Inter',sans-serif;font-size:12px;color:#5A5148;margin-top:2px;">{{ desc }}</p>
+          </div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+            <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      {% endfor %}
     </div>
+  </div>
 </div>
 {% endblock %}

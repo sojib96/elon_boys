@@ -2,174 +2,47 @@
 {% block title %}Member Login — Elon Boys{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="/static/css/private.css">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap');
-
-    main:has(.login-container) {
-        padding: 0 !important;
-        max-width: none !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .issue-label {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 11px;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: #8B3A3A;
-        font-weight: 500;
-    }
-    .issue-rule {
-        width: 72px;
-        height: 1.5px;
-        background: #8B3A3A;
-        border: 0;
-        margin-top: 8px;
-        margin-bottom: 0;
-    }
-
-    .page-headline {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-weight: 700;
-        font-size: clamp(1.8rem, 4vw, 2.5rem);
-        line-height: 1.08;
-        letter-spacing: -0.02em;
-        color: #1A1614;
-    }
-
-    .form-card {
-        background-color: #FAF8F4;
-        border: 1px solid #E8E0D6;
-        box-shadow: 0 1px 3px rgba(26, 22, 20, 0.04);
-        border-radius: 2px;
-        padding: 32px 28px;
-    }
-
-    .form-card-top {
-        border: 0;
-        height: 3px;
-        background: linear-gradient(to bottom, #D4C9B8 0px, #D4C9B8 1px, transparent 1px, transparent 2px, #D4C9B8 2px, #D4C9B8 3px);
-        opacity: 0.5;
-        margin: -32px -28px 24px;
-    }
-
-    .field-label {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 10px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: #8A7F76;
-        font-weight: 600;
-        display: block;
-        margin-bottom: 6px;
-    }
-
-    .field-input {
-        display: block;
-        width: 100%;
-        padding: 10px 0 8px;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 14px;
-        color: #1A1614;
-        background: transparent;
-        border: 0;
-        border-bottom: 1.5px solid #D4C9B8;
-        outline: none;
-        transition: border-color 0.2s ease;
-    }
-    .field-input::placeholder {
-        color: #C4B8A8;
-        font-size: 13px;
-    }
-    .field-input:focus {
-        border-bottom-color: #8B3A3A;
-    }
-
-    .btn-signin {
-        display: block;
-        width: 100%;
-        padding: 12px 24px;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: #fff;
-        background: #8B3A3A;
-        border: 1.5px solid #8B3A3A;
-        border-radius: 2px;
-        cursor: pointer;
-        transition: background 0.25s ease;
-    }
-    .btn-signin:hover {
-        background: #6F2A2A;
-    }
-    .btn-signin:active {
-        transform: scale(0.98);
-    }
-
-    .error-banner {
-        background: #FEF2F2;
-        border: 1px solid #FECACA;
-        color: #991B1B;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 12px;
-        padding: 10px 14px;
-        border-radius: 4px;
-        margin-bottom: 16px;
-        text-align: center;
-    }
-
-    .forgot-link {
-        display: block;
-        text-align: center;
-        margin-top: 14px;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 11px;
-        color: #8A7F76;
-        text-decoration: none;
-        letter-spacing: 0.05em;
-    }
-    .forgot-link:hover {
-        color: #8B3A3A;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .field-input { transition: none; }
-        .btn-signin { transition: none; }
-        .btn-signin:active { transform: none; }
-    }
+  main:has(.dossier-page) {
+    padding: 0 !important;
+    max-width: none !important;
+  }
 </style>
 
-<div class="login-container relative w-full flex flex-col items-center justify-center px-4 py-6">
-    <div class="w-full max-w-sm">
-        <div class="text-center mb-6">
-            <div class="issue-label">Private</div>
-            <hr class="issue-rule mx-auto">
-            <h1 class="page-headline mt-4 mb-2">Member Login</h1>
-            <p class="text-[#8A7F76] text-sm leading-relaxed" style="font-family: Georgia, 'Times New Roman', serif;">Private area for the 10 of us.</p>
-        </div>
-
-        <div class="form-card">
-            <hr class="form-card-top" aria-hidden="true">
-            {% if error %}
-            <div class="error-banner">{{ error }}</div>
-            {% endif %}
-            <form method="post" action="/login">
-                <div class="mb-6">
-                    <label class="field-label" for="username">Username</label>
-                    <input type="text" id="username" name="username" class="field-input" placeholder="Enter your username" required>
-                </div>
-                <div class="mb-8">
-                    <label class="field-label" for="password">Password</label>
-                    <input type="password" id="password" name="password" class="field-input" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="btn-signin">Sign In</button>
-            </form>
-            <a href="/forgot-password" class="forgot-link">Forgot your password?</a>
-        </div>
+<div class="dossier-page flex items-center justify-center" style="padding-top: 0; padding-bottom: 0;">
+  <div class="w-full max-w-sm reveal">
+    <div class="text-center mb-8">
+      <span class="eyebrow">Private</span>
+      <h1 class="font-['Playfair_Display'] text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-[#1A1614] tracking-[-0.02em] leading-[1.08] mt-5 mb-2">
+        Member Login
+      </h1>
+      <p class="font-['Fraunces'] text-[14px] italic text-[#8A7F76]">Private area for the 10 of us.</p>
     </div>
+
+    <div class="dossier-card accent-terracotta">
+      <div class="dossier-card-body">
+        {% if error %}
+        <div class="banner-error">{{ error }}</div>
+        {% endif %}
+        <form method="post" action="/login">
+          <div class="field-row">
+            <label class="field-label" for="identifier">Username or Email</label>
+            <input type="text" id="identifier" name="identifier" class="field-input" placeholder="Enter your username or email" required>
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="password">Password</label>
+            <input type="password" id="password" name="password" class="field-input" placeholder="Enter your password" required>
+          </div>
+          <div class="text-center pt-4">
+            <button type="submit" class="btn-primary w-full justify-center">Sign In</button>
+          </div>
+        </form>
+        <div class="text-center mt-4">
+          <a href="/forgot-password" class="back-link" style="font-size:10px;">Forgot your password?</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

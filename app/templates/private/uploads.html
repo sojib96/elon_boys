@@ -2,43 +2,59 @@
 {% block title %}Private Uploads — Elon Boys{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto">
-    <a href="/behind-the-curtain" class="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-wider font-semibold text-gray-400 hover:text-coral-600 transition-colors mb-8">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-        Back
-    </a>
-    <div class="text-center mb-12 reveal">
-        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Files</span>
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">Private Uploads</h1>
-        <p class="text-gray-500 text-sm mt-2">Raw photos, videos, and files &mdash; just for the group.</p>
+<link rel="stylesheet" href="/static/css/private.css">
+<style>
+  main:has(.dossier-page) {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+</style>
+
+<div class="dossier-page">
+  <div class="max-w-3xl mx-auto">
+    <div class="reveal">
+      <div class="top-bar">
+        <a href="/behind-the-curtain" class="back-link">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+          Dashboard
+        </a>
+        <span class="section-label">Files</span>
+      </div>
+      <div class="page-header">
+        <h1>Private Uploads</h1>
+        <p>Raw photos, videos, and files &mdash; just for the group.</p>
+      </div>
     </div>
 
-    <div class="reveal mb-10">
-        <div class="bg-white rounded-xl shadow-card border-2 border-dashed border-gray-200 p-12 text-center hover:border-coral-300 transition-colors">
-            <div class="w-12 h-12 rounded-xl bg-coral-50 flex items-center justify-center mx-auto mb-3">
-                <span class="text-xl">&#128228;</span>
-            </div>
-            <p class="text-gray-600 text-sm font-medium">Upload area coming in a future sprint.</p>
-            <p class="text-gray-400 text-xs mt-1">Drag &amp; drop files here</p>
+    <div class="reveal" style="margin-bottom:2rem;">
+      <div class="dossier-card dashed accent-stone">
+        <div class="dossier-card-body text-center" style="padding:2.5rem 1.5rem;">
+          <div style="width:36px;height:36px;border-radius:2px;background:#F5F1EA;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:18px;">&#128228;</div>
+          <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:#5A5148;">Upload area coming in a future sprint.</p>
+          <p style="font-family:'Inter',sans-serif;font-size:11px;color:#B8AFA2;margin-top:4px;">Drag &amp; drop files here</p>
         </div>
+      </div>
     </div>
 
+    {% if uploads %}
     <div class="space-y-3 stagger">
-        {% for upload in uploads %}
-        {% set is_teal = loop.index0 % 2 == 0 %}
-        <div class="bg-white rounded-xl shadow-card border border-gray-100 hover:shadow-card-hover transition-all duration-300 overflow-hidden hover:-translate-y-0.5">
-            <div class="flex items-center gap-4 p-4">
-                <div class="w-9 h-9 rounded-lg {% if is_teal %}bg-teal-50{% else %}bg-coral-50{% endif %} flex items-center justify-center flex-shrink-0">
-                    <span class="text-sm">&#128196;</span>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-gray-800 truncate">{{ upload.title }}</p>
-                    <p class="text-xs text-gray-400 mt-0.5">Uploaded by {{ upload.uploaded_by }} &sdot; {{ upload.uploaded_at }}</p>
-                </div>
-                <svg class="text-gray-300" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      {% for upload in uploads %}
+      {% set accent = 'accent-sage' if loop.index0 % 2 == 0 else 'accent-coral' %}
+      <div class="dossier-card {{ accent }}">
+        <div class="dossier-card-body" style="padding:14px 20px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:32px;height:32px;border-radius:2px;background:#F5F1EA;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;">&#128196;</div>
+            <div style="flex:1;min-width:0;">
+              <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#1A1614;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ upload.title }}</p>
+              <p style="font-family:'Inter',sans-serif;font-size:10px;color:#B8AFA2;margin-top:2px;">Uploaded by {{ upload.uploaded_by }} &sdot; {{ upload.uploaded_at }}</p>
             </div>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </div>
         </div>
-        {% endfor %}
+      </div>
+      {% endfor %}
     </div>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

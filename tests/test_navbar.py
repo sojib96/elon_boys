@@ -31,12 +31,13 @@ def client():
         yield c
 
 
-def _login(client: TestClient):
-    resp = client.post(
-        "/login",
-        data={"username": "alex.chen", "password": TEST_PASSWORD},
-        follow_redirects=False,
-    )
+def _login(client: TestClient, as_email: bool = False):
+    data = {"password": TEST_PASSWORD}
+    if as_email:
+        data["identifier"] = "alex.chen@elonboys.com"
+    else:
+        data["identifier"] = "alex.chen"
+    resp = client.post("/login", data=data, follow_redirects=False)
     assert resp.status_code in (302, 303)
 
 
@@ -59,6 +60,20 @@ class TestNavbarAnonymous:
 
 
 class TestNavbarLoggedIn:
+    def test_logged_in_shows_logout_username(self, client, setup_app_db):
+        _login(client)
+        resp = client.get("/")
+        assert resp.status_code == 200
+        assert 'href="/logout"' in resp.text
+        assert ">Logout<" in resp.text
+
+    def test_logged_in_shows_logout_email(self, client, setup_app_db):
+        _login(client, as_email=True)
+        resp = client.get("/")
+        assert resp.status_code == 200
+        assert 'href="/logout"' in resp.text
+        assert ">Logout<" in resp.text
+
     def test_logged_in_shows_logout(self, client, setup_app_db):
         _login(client)
         resp = client.get("/")

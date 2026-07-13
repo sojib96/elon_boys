@@ -2,101 +2,32 @@
 {% block title %}Post Deleted — Elon Boys{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="/static/css/private.css">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap');
-
-    .paper-texture {
-        background-color: #F5F0E8;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    }
-
-    .success-card {
-        background: #FAF8F4;
-        border: 1px solid #E8E0D6;
-        border-radius: 2px;
-        box-shadow: 0 1px 3px rgba(26, 22, 20, 0.04);
-        padding: 48px 32px;
-        text-align: center;
-        max-width: 480px;
-        margin: 0 auto;
-    }
-
-    .success-icon {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background: #EDF5F0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 20px;
-    }
-
-    .success-title {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #1A1614;
-        margin-bottom: 8px;
-    }
-
-    .success-body {
-        font-family: Georgia, 'Times New Roman', serif;
-        font-size: 14px;
-        color: #5A5148;
-        line-height: 1.7;
-        margin-bottom: 28px;
-    }
-
-    .btn-updates {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 24px;
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: #fff;
-        background: #8B3A3A;
-        border: 1.5px solid #8B3A3A;
-        border-radius: 2px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background 0.25s ease;
-    }
-    .btn-updates:hover {
-        background: #6F2A2A;
-    }
-    .btn-updates:active {
-        transform: scale(0.98);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .btn-updates { transition: none; }
-        .btn-updates:active { transform: none; }
-    }
+  main:has(.dossier-page) {
+    padding: 0 !important;
+    max-width: none !important;
+  }
 </style>
 
-<div class="paper-texture min-h-screen -mt-8 md:-mt-10 px-6 sm:px-8 flex items-center justify-center" style="margin-left: calc(-1 * (100vw - 100%) / 2); margin-right: calc(-1 * (100vw - 100%) / 2); padding-left: calc((100vw - 100%) / 2 + 1.5rem); padding-right: calc((100vw - 100%) / 2 + 1.5rem);">
+<div class="dossier-page flex items-center justify-center" style="padding-top: 0; padding-bottom: 0;">
+  <div class="w-full max-w-sm reveal">
     <div class="success-card">
-        <div class="success-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A7D5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-            </svg>
-        </div>
-        <h1 class="success-title">Post Deleted</h1>
-        <p class="success-body">
-            &ldquo;{{ post_title }}&rdquo; has been moved to the trash.<br>
-            You can restore it from the trash at any time.
-        </p>
-        <div class="flex flex-wrap items-center justify-center gap-3">
-            <a href="/updates" class="btn-updates">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                Back to Updates
-            </a>
-        </div>
+      <div class="success-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A7D5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h1 class="success-title">Post Deleted</h1>
+      <p class="success-body">
+        &ldquo;{{ post_title }}&rdquo; has been moved to the trash.<br>
+        You can restore it from the trash at any time.
+      </p>
+      <a href="/updates" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Back to Updates
+      </a>
     </div>
+  </div>
 </div>
 {% endblock %}

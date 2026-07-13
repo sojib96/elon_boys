@@ -35,12 +35,13 @@ def seed_members(session: Session, write_credentials: bool = True) -> None:
         used_slugs.add(slug)
 
         password = secrets.token_urlsafe(12)
+        email = m.get("email", "")
         member = Member(
             name=m["name"],
             nickname=m["nickname"],
             username=slug,
             hashed_password=hash_password(password),
-            email=m.get("email"),
+            email=email,
             photo_url=m.get("photo_url"),
             image1=m.get("image1"),
             image2=m.get("image2"),
@@ -51,17 +52,17 @@ def seed_members(session: Session, write_credentials: bool = True) -> None:
             quote=m.get("quote"),
         )
         session.add(member)
-        credentials.append(f"{slug}  {password}")
+        credentials.append(f"{slug:25s} {email:30s} {password}")
 
     session.commit()
 
     header = (
         "SEEDED CREDENTIALS - SAVE THESE, THEY WON'T BE SHOWN AGAIN\n"
-        + "=" * 60 + "\n"
-        + "username  password\n"
-        + "-" * 60 + "\n"
+        + "=" * 85 + "\n"
+        + f"{'username':25s} {'email':30s} password\n"
+        + "-" * 85 + "\n"
     )
-    footer = "\n" + "=" * 60
+    footer = "\n" + "=" * 85
 
     console_output = header + "\n".join(credentials) + footer
     print("\n" + console_output + "\n")

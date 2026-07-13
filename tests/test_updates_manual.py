@@ -36,7 +36,7 @@ def authed_client():
                 member.hashed_password = hash_password("testpass123")
                 session.commit()
 
-        resp = c.post("/login", data={"username": "alex.chen", "password": "testpass123"})
+        resp = c.post("/login", data={"identifier": "alex.chen", "password": "testpass123"})
         assert resp.status_code in (200, 303)
         yield c
 
