@@ -52,9 +52,7 @@
 
 {% set featured_ids = [1, 10, 11] %}
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6">
-
-    {# ── HEADER: flush top, centered ── #}
+{# ── HEADER: flush top, centered ── #}
     <div class="-mt-8 md:-mt-10 mb-5 text-center">
         <h1 class="gallery-headline text-[clamp(1.75rem,4.5vw,3rem)] text-[#2C2824]">
             The moments that made us us
@@ -122,7 +120,7 @@
                     <div class="gallery-card-img {% if is_featured %}aspect-[4/3]{% else %}aspect-square{% endif %} overflow-hidden bg-cover bg-center{% if item.file_url %} gallery-img{% endif %}"
                          style="background-color: {{ cc.bg }};{% if item.file_url %} background-image: url('{{ item.file_url }}');{% endif %}">
                         {% if not item.file_url %}
-                        <span class="flex items-center justify-center w-full h-full text-3xl sm:text-4xl opacity-30 select-none">📷</span>
+                        <span class="flex items-center justify-center w-full h-full opacity-30 select-none"><svg class="w-8 h-8 sm:w-10 sm:h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
                         {% endif %}
                     </div>
             <div class="cat-glow absolute inset-0 opacity-0 pointer-events-none" style="background: linear-gradient(135deg, {{ cc.accent }} 0%, transparent 60%);"></div>
@@ -146,7 +144,6 @@
             Load More
         </button>
     </div>
-</div>
 
 <script>
 (function() {
@@ -266,7 +263,7 @@
         if (!lightbox) {
             lightbox = document.createElement('div');
             lightbox.id = 'gallery-lightbox';
-            lightbox.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s ease;';
+            lightbox.style.cssText = 'position:fixed;inset:0;z-index:50;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s ease;';
             lightbox.addEventListener('click', function(e) {
                 if (e.target === lightbox) closeLightbox();
             });

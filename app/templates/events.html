@@ -14,7 +14,7 @@
             <h2 class="font-semibold text-espresso-600 text-sm mb-4 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-coral-400 inline-block"></span> Upcoming
             </h2>
-            <div class="grid gap-4">
+            <div class="grid gap-5">
                 {% for event in events_list if event.is_upcoming %}
                 <div class="bg-white rounded-xl shadow-card border border-coral-100 transition-all duration-300 overflow-hidden hover:shadow-card-hover hover:-translate-y-0.5">
                     <div class="h-1 bg-coral-500"></div>
@@ -37,7 +37,7 @@
             <h2 class="font-medium text-espresso-300 text-sm mb-4 flex items-center gap-2">
                 <span class="w-1.5 h-1.5 rounded-full bg-espresso-200 inline-block"></span> Past
             </h2>
-            <div class="grid gap-3">
+            <div class="grid gap-4">
                 {% for event in events_list if not event.is_upcoming %}
                 <div class="bg-white rounded-xl shadow-card border border-espresso-50 transition-all duration-300 overflow-hidden opacity-70 hover:opacity-100 hover:-translate-y-0.5">
                     <div class="h-0.5 bg-espresso-100"></div>

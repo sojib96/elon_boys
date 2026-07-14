@@ -102,6 +102,19 @@
         .stagger > *:nth-child(11) { animation-delay: 0.55s; }
         .stagger > *:nth-child(12) { animation-delay: 0.6s; }
 
+        /* ── Container system ── */
+        .content-container { max-width: 1280px; margin-left: auto; margin-right: auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+        @media (min-width: 640px) { .content-container { padding-left: 2rem; padding-right: 2rem; } }
+
+
+        /* Clean full-bleed (replaces calc((100vw - 100%) / 2) hack) */
+        .full-bleed { width: 100vw; margin-left: calc(-50vw + 50%); }
+
+        /* ── Z-index scale ── */
+        .z-overlay { z-index: 40; }
+        .z-modal { z-index: 50; }
+        .z-toast { z-index: 60; }
+
         /* ── Shared button system ── */
         .btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'Inter', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 2px; cursor: pointer; text-decoration: none; border: 1.5px solid; transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.15s ease; }
         .btn:active { transform: scale(0.97); }
@@ -124,7 +137,7 @@
             inset: 0;
             background: rgba(26, 22, 20, 0.45);
             backdrop-filter: blur(4px);
-            z-index: 9999;
+            z-index: 50;
             align-items: center;
             justify-content: center;
             padding: 16px;

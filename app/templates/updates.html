@@ -12,22 +12,7 @@
         line-height: 1.15;
     }
 
-    /* ── Card grid ── */
-    .card-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 28px;
-    }
-    @media (min-width: 768px) {
-        .card-grid {
-            grid-template-columns: 1fr 1fr;
-        }
-    }
-    @media (min-width: 1024px) {
-        .card-grid {
-            grid-template-columns: 1fr 1fr 1fr;
-        }
-    }
+    /* ── Card grid (responsive via Tailwind) ── */
 
     /* ── Individual card ── */
     .card {
@@ -105,10 +90,7 @@
     {'accent': '#8A7F76'},
 ] %}
 
-<div class="max-w-6xl mx-auto mb-12 md:mb-16 px-4 sm:px-6">
-
-    {# ── HEADER ── #}
-    <div class="-mt-4 md:-mt-6 mb-8 md:mb-10 text-center">
+<div class="-mt-8 md:-mt-10 mb-8 md:mb-10 text-center">
         <h1 class="headline text-[clamp(1.75rem,4.5vw,3rem)] text-[#2C2824]">
             Updates
         </h1>
@@ -123,7 +105,7 @@
         <span class="text-espresso-300 text-[10px]">✦</span>
         <span class="block h-px w-8" style="background: linear-gradient(90deg, #C4B8A8, transparent);"></span>
     </div>
-    <div class="card-grid">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
         {% for post in updates %}
         {% set p = palette[loop.index0 % palette | length] %}
         {% set featured = loop.first and updates|length > 2 %}
@@ -136,5 +118,4 @@
         </a>
         {% endfor %}
     </div>
-</div>
 {% endblock %}
