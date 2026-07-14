@@ -3,17 +3,6 @@
 
 {% block content %}
 <style>
-    .headline {
-        font-family: 'Fraunces', Georgia, serif;
-        font-style: italic;
-        font-weight: 600;
-        font-variation-settings: 'opsz' 72;
-        letter-spacing: -0.025em;
-        line-height: 1.15;
-    }
-
-    /* ── Card grid (responsive via Tailwind) ── */
-
     /* ── Individual card ── */
     .card {
         background-color: #FAF8F4;
@@ -91,7 +80,7 @@
 ] %}
 
 <div class="-mt-8 md:-mt-10 mb-8 md:mb-10 text-center">
-        <h1 class="headline text-[clamp(1.75rem,4.5vw,3rem)] text-[#2C2824]">
+        <h1 class="gallery-headline text-[clamp(1.75rem,4.5vw,3rem)] text-[#2C2824]">
             Updates
         </h1>
         <p class="text-espresso-400 text-sm mt-3 font-sans max-w-sm mx-auto">
@@ -100,10 +89,10 @@
     </div>
 
     {# ── ORNAMENT DIVIDER ── #}
-    <div class="flex items-center justify-center gap-3 mb-12 md:mb-14 select-none" aria-hidden="true">
-        <span class="block h-px w-8" style="background: linear-gradient(90deg, transparent, #C4B8A8);"></span>
-        <span class="text-espresso-300 text-[10px]">✦</span>
-        <span class="block h-px w-8" style="background: linear-gradient(90deg, #C4B8A8, transparent);"></span>
+    <div class="ornament-star mb-12 md:mb-14" aria-hidden="true">
+        <span class="line" style="background: linear-gradient(90deg, transparent, var(--color-border));"></span>
+        <span class="star">✦</span>
+        <span class="line" style="background: linear-gradient(90deg, var(--color-border), transparent);"></span>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
         {% for post in updates %}

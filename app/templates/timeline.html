@@ -3,66 +3,6 @@
 
 {% block content %}
 <style>
-    .paper-texture {
-        background-color: #F5F0E8;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    }
-
-    .issue-label {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 11px;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: #8B3A3A;
-        font-weight: 500;
-    }
-    .issue-rule {
-        width: 72px;
-        height: 1.5px;
-        background: #8B3A3A;
-        border: 0;
-        margin-top: 8px;
-        margin-bottom: 0;
-    }
-
-    .page-headline {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-weight: 700;
-        font-size: clamp(2rem, 5vw, 3.25rem);
-        line-height: 1.08;
-        letter-spacing: -0.02em;
-        color: #1A1614;
-    }
-
-    .year-num {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: clamp(2.2rem, 4vw, 3rem);
-        font-weight: 700;
-        line-height: 1;
-        letter-spacing: -0.03em;
-    }
-
-    .year-label {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 11px;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        font-weight: 500;
-    }
-
-    .year-sub {
-        font-family: Georgia, 'Times New Roman', serif;
-        font-size: 14px;
-        font-style: italic;
-        color: #8A7F76;
-    }
-
-    .year-rule {
-        flex: 1;
-        height: 1px;
-        min-width: 20px;
-    }
-
     .tl-card {
         background-color: #FAF8F4;
         border: 1px solid #E8E0D6;
@@ -117,27 +57,6 @@
         background: var(--accent);
     }
 
-    .divider-ornament {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        user-select: none;
-    }
-    .divider-ornament .line {
-        display: block;
-        width: 40px;
-        height: 1px;
-        background: #C4B8A8;
-    }
-    .divider-ornament .dot {
-        display: block;
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        background: #C4B8A8;
-    }
-
     @media (prefers-reduced-motion: reduce) {
         .tl-card { transition: none; }
         .tl-card:hover { background-color: inherit; }
@@ -175,7 +94,7 @@
             <div class="issue-label">Journey</div>
             <hr class="issue-rule mx-auto">
             <h1 class="page-headline mt-5">Memory Timeline</h1>
-            <p class="text-[#8A7F76] text-sm mt-3 max-w-sm mx-auto" style="font-family: Georgia, 'Times New Roman', serif;">Our four-year journey, captured year by year.</p>
+            <p class="text-espresso-400 text-sm mt-3 max-w-sm mx-auto body-narrative">Our four-year journey, captured year by year.</p>
         </div>
 
         {# ── ORNAMENT DIVIDER ── #}

@@ -4,28 +4,27 @@
 {% block content %}
 <div class="max-w-4xl mx-auto">
     <div class="text-center mb-14 reveal">
-        <span class="text-coral-600 text-[11px] uppercase tracking-wider font-semibold bg-white border border-coral-200 rounded-full px-4 py-1.5 inline-block mb-4">Calendar</span>
-        <h1 class="text-3xl md:text-4xl font-bold text-ink tracking-[-0.02em]">Events</h1>
+        <span class="issue-label inline-block mb-4">Calendar</span>
+        <h1 class="page-headline">Events</h1>
         <p class="text-espresso-400 text-sm mt-2">Past and upcoming reunions and meetups.</p>
     </div>
 
     <div class="space-y-10">
         <div class="reveal">
             <h2 class="font-semibold text-espresso-600 text-sm mb-4 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-coral-400 inline-block"></span> Upcoming
+                <span class="w-2 h-2 rounded-full inline-block" style="background: var(--color-primary);"></span> Upcoming
             </h2>
             <div class="grid gap-5">
                 {% for event in events_list if event.is_upcoming %}
-                <div class="bg-white rounded-xl shadow-card border border-coral-100 transition-all duration-300 overflow-hidden hover:shadow-card-hover hover:-translate-y-0.5">
-                    <div class="h-1 bg-coral-500"></div>
+                <div class="card-editorial overflow-hidden" style="border-top: 3px solid var(--color-primary);">
                     <div class="p-5">
                         <div class="flex items-start justify-between gap-4">
                             <div class="flex-1">
                                 <h3 class="font-semibold text-ink mb-1">{{ event.title }}</h3>
-                                <p class="text-coral-600 text-[13px] font-medium mb-2">{{ event.date }}</p>
+                                <p style="color: var(--color-primary);" class="text-[13px] font-medium mb-2">{{ event.date }}</p>
                                 <p class="text-espresso-400 text-sm leading-relaxed">{{ event.description }}</p>
                             </div>
-                            <span class="bg-coral-50 text-coral-600 text-[11px] font-medium px-2.5 py-1 rounded-lg border border-coral-200 whitespace-nowrap">Upcoming</span>
+                            <span class="bg-[var(--color-primary-bg)] text-[var(--color-primary-dark)] text-[11px] font-medium px-2.5 py-1 rounded-sm border whitespace-nowrap" style="border-color: var(--color-primary);">Upcoming</span>
                         </div>
                     </div>
                 </div>
@@ -39,8 +38,7 @@
             </h2>
             <div class="grid gap-4">
                 {% for event in events_list if not event.is_upcoming %}
-                <div class="bg-white rounded-xl shadow-card border border-espresso-50 transition-all duration-300 overflow-hidden opacity-70 hover:opacity-100 hover:-translate-y-0.5">
-                    <div class="h-0.5 bg-espresso-100"></div>
+                <div class="card-editorial overflow-hidden opacity-70 hover:opacity-100" style="border-top: 1px solid var(--color-border);">
                     <div class="p-5">
                         <h3 class="font-medium text-espresso-500 text-[15px] mb-0.5">{{ event.title }}</h3>
                         <p class="text-espresso-300 text-[13px] mb-1.5">{{ event.date }}</p>

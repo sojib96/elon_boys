@@ -1,4 +1,3 @@
-import re
 import secrets
 from pathlib import Path
 
@@ -11,35 +10,21 @@ from app.routers.public import MEMBERS
 CREDENTIALS_FILE = Path(__file__).resolve().parent.parent / "SEEDED_CREDENTIALS.txt"
 
 
-def _slugify(name: str) -> str:
-    slug = re.sub(r"[^a-z0-9]+", ".", name.lower()).strip(".")
-    slug = re.sub(r"\.+", ".", slug)
-    return slug
-
-
 def seed_members(session: Session, write_credentials: bool = True) -> None:
     existing = session.exec(select(Member).limit(1)).first()
     if existing is not None:
         return
 
-    used_slugs: set[str] = set()
     credentials: list[str] = []
 
     for m in MEMBERS:
-        base_slug = _slugify(m["name"])
-        slug = base_slug
-        counter = 2
-        while slug in used_slugs:
-            slug = f"{base_slug}{counter}"
-            counter += 1
-        used_slugs.add(slug)
-
+        username = m["username"]
         password = secrets.token_urlsafe(12)
         email = m.get("email", "")
         member = Member(
             name=m["name"],
-            nickname=m["nickname"],
-            username=slug,
+            nickname=m.get("nickname", ""),
+            username=username,
             hashed_password=hash_password(password),
             email=email,
             photo_url=m.get("photo_url"),
@@ -52,7 +37,7 @@ def seed_members(session: Session, write_credentials: bool = True) -> None:
             quote=m.get("quote"),
         )
         session.add(member)
-        credentials.append(f"{slug:25s} {email:30s} {password}")
+        credentials.append(f"{username:25s} {email:30s} {password}")
 
     session.commit()
 

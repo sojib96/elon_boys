@@ -1,14 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Internal Notes — Elon Boys{% endblock %}
+{% block body_class %} page-private{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="/static/css/private.css">
-<style>
-  main:has(.dossier-page) {
-    padding: 0 !important;
-    max-width: none !important;
-  }
-</style>
 
 <div class="dossier-page">
   <div class="max-w-3xl mx-auto">

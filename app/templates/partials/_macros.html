@@ -30,9 +30,9 @@
   variant: default | hover | bordered
 #}
 {% macro card_start(variant="default", extra="") %}
-{% set classes = "bg-white rounded-xl shadow-card" %}
-{% if variant == "hover" %}{% set classes = classes ~ " hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-300" %}{% endif %}
-{% if variant == "bordered" %}{% set classes = classes ~ " border border-espresso-50" %}{% endif %}
+{% set classes = "card-editorial" %}
+{% if variant == "hover" %}{% set classes = classes ~ " hover:-translate-y-0.5" %}{% endif %}
+{% if variant == "bordered" %}{% set classes = classes ~ " border-2" %}{% endif %}
 <div class="{{ classes }} {{ extra }}">
 {% endmacro %}
 
@@ -48,8 +48,8 @@
 #}
 {% macro section_header(eyebrow, heading, description=None) %}
 <div class="text-center mb-6">
-    <span class="text-[10px] uppercase tracking-[0.22em] font-medium text-[#8B3A3A] block mb-1">{{ eyebrow }}</span>
-    <h2 class="font-serif font-bold text-[#1A1614] leading-tight text-[clamp(1.3rem,2.5vw,1.75rem)]">{{ heading }}</h2>
+    <span class="section-label block mb-1">{{ eyebrow }}</span>
+    <h2 class="section-heading">{{ heading }}</h2>
     {% if description %}
     <p class="text-espresso-400 text-sm mt-2 max-w-md mx-auto">{{ description }}</p>
     {% endif %}

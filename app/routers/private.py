@@ -1,6 +1,5 @@
 import random
 import secrets
-import uuid
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
@@ -14,19 +13,16 @@ from app.auth import (
 )
 from app.database import engine, get_session
 from app.email_utils import send_email
-from app.jinja import BASE_DIR, templates
+from app.image_utils import process_avatar, process_cover, process_gallery, process_squad_card, process_update_image
+from app.jinja import templates
 from app.models import GalleryItem, GlobalQuestion, Member, UpdatePost
 from app.routers.public import MEMBERS
 from app.schemas import UpdateCreate, UpdateEdit
 from app.services import gallery as gallery_svc
 from app.services import updates as updates_svc
+from app.storage import upload_file
 
 router = APIRouter()
-
-UPLOADS_DIR = BASE_DIR / "static" / "uploads" / "updates"
-GALLERY_UPLOADS_DIR = BASE_DIR / "static" / "uploads" / "gallery"
-MEMBERS_PHOTOS_DIR = BASE_DIR / "static" / "uploads" / "members" / "photos"
-MEMBERS_RESUMES_DIR = BASE_DIR / "static" / "uploads" / "members" / "resumes"
 
 MEMBER_NAMES = [m["name"] for m in MEMBERS]
 
@@ -259,7 +255,6 @@ async def create_update_submit(
         errors["content"] = "Content is required."
 
     image_urls = []
-    saved_files = []
     for f in files:
         if not f.filename:
             continue
@@ -268,14 +263,9 @@ async def create_update_submit(
                 f"'{f.filename}' is not a valid image (received {f.content_type})."
             )
             continue
-        ext = Path(f.filename).suffix.lower() if f.filename else ".jpg"
-        safe_name = f"{uuid.uuid4().hex}{ext}"
-        UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
-        dest = UPLOADS_DIR / safe_name
         content_bytes = await f.read()
-        dest.write_bytes(content_bytes)
-        image_urls.append(f"/static/uploads/updates/{safe_name}")
-        saved_files.append(dest)
+        processed = process_update_image(content_bytes)
+        image_urls.append(upload_file(processed, "updates", "image/jpeg"))
 
     if errors:
         return templates.TemplateResponse(
@@ -358,7 +348,6 @@ async def edit_update_submit(
         errors["content"] = "Content is required."
 
     new_image_urls = []
-    saved_files = []
     for f in files:
         if not f.filename:
             continue
@@ -367,14 +356,9 @@ async def edit_update_submit(
                 f"'{f.filename}' is not a valid image (received {f.content_type})."
             )
             continue
-        ext = Path(f.filename).suffix.lower() if f.filename else ".jpg"
-        safe_name = f"{uuid.uuid4().hex}{ext}"
-        UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
-        dest = UPLOADS_DIR / safe_name
         content_bytes = await f.read()
-        dest.write_bytes(content_bytes)
-        new_image_urls.append(f"/static/uploads/updates/{safe_name}")
-        saved_files.append(dest)
+        processed = process_update_image(content_bytes)
+        new_image_urls.append(upload_file(processed, "updates", "image/jpeg"))
 
     if errors:
         existing_images = [{"id": img.id, "file_url": img.file_url} for img in post.images]
@@ -469,18 +453,15 @@ async def gallery_upload_submit(
         )
 
     valid_exts = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
-    GALLERY_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
     for f in files:
         if not f.filename:
             continue
         ext = Path(f.filename).suffix.lower() if f.filename else ".jpg"
         if ext not in valid_exts:
             continue
-        safe_name = f"{uuid.uuid4().hex}{ext}"
-        dest = GALLERY_UPLOADS_DIR / safe_name
         content_bytes = await f.read()
-        dest.write_bytes(content_bytes)
-        file_url = f"/static/uploads/gallery/{safe_name}"
+        processed = process_gallery(content_bytes)
+        file_url = upload_file(processed, "gallery", "image/jpeg")
         gallery_svc.create_gallery_item(session, title=title.strip(), category=category, file_url=file_url, uploaded_by=_auth.name)
 
     return RedirectResponse(url="/gallery", status_code=302)
@@ -652,24 +633,24 @@ async def edit_profile_submit(
     member.bio = bio or None
     member.fun_fact = fun_fact or None
 
-    def _save_upload(upload: UploadFile, subdir: str) -> str | None:
+    def _save_upload(upload: UploadFile, folder: str, process_fn=None) -> str | None:
         if not upload or not upload.filename:
             return None
-        ext = Path(upload.filename).suffix
-        filename = f"{uuid.uuid4().hex}{ext}"
-        dest = MEMBERS_PHOTOS_DIR if subdir == "photos" else MEMBERS_RESUMES_DIR
         content = upload.file.read()
-        (dest / filename).write_bytes(content)
-        return f"/static/uploads/members/{subdir}/{filename}"
+        ct = upload.content_type or "image/jpeg"
+        if process_fn:
+            content = process_fn(content)
+            ct = "image/jpeg"
+        return upload_file(content, folder, ct)
 
     if photo and photo.filename:
-        member.photo_url = _save_upload(photo, "photos")
+        member.photo_url = _save_upload(photo, "members/photos", process_avatar)
     if image1 and image1.filename:
-        member.image1 = _save_upload(image1, "photos")
+        member.image1 = _save_upload(image1, "members/photos", process_squad_card)
     if image2 and image2.filename:
-        member.image2 = _save_upload(image2, "photos")
+        member.image2 = _save_upload(image2, "members/photos", process_cover)
     if resume and resume.filename:
-        member.resume_url = _save_upload(resume, "resumes")
+        member.resume_url = _save_upload(resume, "members/resumes")
 
     session.add(member)
     session.commit()

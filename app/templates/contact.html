@@ -1,42 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Contact — Elon Boys{% endblock %}
+{% block main_class %} main--compact{% endblock %}
 
 {% block content %}
 <style>
-    main:has(.contact-container) {
-        padding: 0 !important;
-        max-width: none !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .issue-label {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 11px;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: #8B3A3A;
-        font-weight: 500;
-    }
-    .issue-rule {
-        width: 72px;
-        height: 1.5px;
-        background: #8B3A3A;
-        border: 0;
-        margin-top: 8px;
-        margin-bottom: 0;
-    }
-
-    .page-headline {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-weight: 700;
-        font-size: clamp(1.6rem, 4vw, 2.5rem);
-        line-height: 1.08;
-        letter-spacing: -0.02em;
-        color: #1A1614;
-    }
-
     .contact-card {
         background-color: #FAF8F4;
         border: 1px solid #E8E0D6;
@@ -59,13 +26,6 @@
         flex-shrink: 0;
     }
 
-    .card-divider {
-        border: 0;
-        height: 3px;
-        background: linear-gradient(to bottom, #D4C9B8 0px, #D4C9B8 1px, transparent 1px, transparent 2px, #D4C9B8 2px, #D4C9B8 3px);
-        opacity: 0.5;
-    }
-
     @media (prefers-reduced-motion: reduce) {
         .contact-card { transition: none; }
         .contact-card:hover { background-color: inherit; }
@@ -77,11 +37,11 @@
         <div class="text-center mb-6">
             <div class="issue-label">If You Must</div>
             <hr class="issue-rule mx-auto">
-            <h1 class="page-headline mt-4 mb-2">Fine, Talk To Us</h1>
-            <p class="text-[#8A7F76] text-sm leading-relaxed max-w-xs mx-auto" style="font-family: Georgia, 'Times New Roman', serif;">We probably won&rsquo;t reply immediately, but go ahead.</p>
+            <h1 class="page-headline mt-4 mb-2" style="font-size: clamp(1.6rem, 4vw, 2.5rem);">Fine, Talk To Us</h1>
+            <p class="text-espresso-400 text-sm leading-relaxed max-w-xs mx-auto body-narrative">We probably won&rsquo;t reply immediately, but go ahead.</p>
         </div>
 
-        <hr class="card-divider mb-6">
+        <hr class="divider-double mb-6">
 
         <div class="grid gap-4 md:grid-cols-3">
 

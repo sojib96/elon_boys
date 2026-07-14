@@ -20,6 +20,8 @@ def create_db_and_tables():
 
 
 def _migrate():
+    if not DATABASE_URL.startswith("sqlite"):
+        return
     with Session(engine) as session:
         conn = session.connection()
         for table in ("galleryitem", "updatepost"):

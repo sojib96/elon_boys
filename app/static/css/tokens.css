@@ -8,49 +8,31 @@
      COLORS — Brand Palette
      ═══════════════════════════════════════════════ */
 
-  /* Primary (terracotta) — main accent */
   --color-primary: #C1633B;
   --color-primary-hover: #D56B4D;
   --color-primary-active: #A8472F;
   --color-primary-dark: #8B3A3A;
   --color-primary-bg: #FFF7ED;
 
-  /* Secondary — forest green */
   --color-secondary: #3A7D5C;
   --color-secondary-hover: #4B8E63;
   --color-secondary-dark: #2D6247;
   --color-secondary-bg: #EDF5F0;
 
-  /* ═══════════════════════════════════════════════
-     COLORS — Neutral / Background
-     ═══════════════════════════════════════════════ */
+  --color-bg-base: #FAF8F4;
+  --color-bg-subtle: #F5F0E8;
+  --color-bg-muted: #EDE8DE;
+  --color-bg-dark: #1A1614;
 
-  --color-bg-base: #FAF8F4;       /* warm off-white — cards, content areas */
-  --color-bg-subtle: #F5F0E8;     /* consolidated F5F0E8/F5F1EA/F0EBE2 — page bg */
-  --color-bg-muted: #EDE8DE;      /* darker beige — secondary surfaces */
-  --color-bg-dark: #1A1614;       /* dark overlay, slider backgrounds */
+  --color-text-primary: #1A1614;
+  --color-text-secondary: #2C2824;
+  --color-text-body: #4A3F38;
+  --color-text-muted: #5A5148;
+  --color-text-subtle: #8A7F76;
+  --color-text-placeholder: #C4B8A8;
 
-  /* ═══════════════════════════════════════════════
-     COLORS — Text
-     ═══════════════════════════════════════════════ */
-
-  --color-text-primary: #1A1614;      /* headings, brand */
-  --color-text-secondary: #2C2824;    /* subheadings */
-  --color-text-body: #4A3F38;        /* body text */
-  --color-text-muted: #5A5148;       /* muted body text */
-  --color-text-subtle: #8A7F76;      /* meta, captions, footer */
-  --color-text-placeholder: #C4B8A8; /* placeholder text */
-
-  /* ═══════════════════════════════════════════════
-     COLORS — Borders / Dividers
-     ═══════════════════════════════════════════════ */
-
-  --color-border-light: #E8E0D6;  /* nav borders, card borders */
-  --color-border: #D4C9B8;        /* stronger borders, dividers, form fields */
-
-  /* ═══════════════════════════════════════════════
-     COLORS — Semantic (success / error)
-     ═══════════════════════════════════════════════ */
+  --color-border-light: #E8E0D6;
+  --color-border: #D4C9B8;
 
   --color-success: #3A7D5C;
   --color-success-bg: #EDF5F0;
@@ -62,10 +44,6 @@
   --color-error-border: #FECACA;
   --color-error-dark: #991B1B;
 
-  /* ═══════════════════════════════════════════════
-     COLORS — Dossier / Card Accents
-     ═══════════════════════════════════════════════ */
-
   --color-accent-terracotta: #8B3A3A;
   --color-accent-sage: #7A9A7A;
   --color-accent-gold: #C4A35A;
@@ -75,31 +53,21 @@
   --color-accent-amber: #D4A24E;
   --color-accent-stone: #B8AFA2;
 
-  /* ═══════════════════════════════════════════════
-     FONTS
-     ═══════════════════════════════════════════════ */
-
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-serif: 'Fraunces', Georgia, serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-narrative: Georgia, 'Times New Roman', serif;
 
-  /* ═══════════════════════════════════════════════
-     TYPE SCALE (rem, base: 16px)
-     ═══════════════════════════════════════════════ */
-
-  --text-xs: 0.625rem;         /* 10px */
-  --text-sm: 0.6875rem;        /* 11px */
-  --text-base: 0.8125rem;      /* 13px */
-  --text-md: 0.875rem;         /* 14px */
-  --text-lg: 1rem;             /* 16px */
-  --text-xl: 1.25rem;          /* 20px */
-  --text-2xl: 1.5rem;          /* 24px */
-  --text-3xl: 1.875rem;        /* 30px */
+  --text-xs: 0.625rem;
+  --text-sm: 0.6875rem;
+  --text-base: 0.8125rem;
+  --text-md: 0.875rem;
+  --text-lg: 1rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
   --text-display: clamp(2rem, 5.5vw, 4rem);
   --text-display-lg: clamp(2.2rem, 6vw, 4.5rem);
-
-  /* ═══════════════════════════════════════════════
-     SPACING (4px base unit)
-     ═══════════════════════════════════════════════ */
 
   --space-1: 4px;
   --space-2: 8px;
@@ -117,10 +85,6 @@
   --space-20: 80px;
   --space-24: 96px;
 
-  /* ═══════════════════════════════════════════════
-     BORDER-RADIUS
-     ═══════════════════════════════════════════════ */
-
   --radius-button: 2px;
   --radius-card: 2px;
   --radius-md: 4px;
@@ -129,10 +93,6 @@
   --radius-2xl: 16px;
   --radius-full: 9999px;
 
-  /* ═══════════════════════════════════════════════
-     Z-INDEX SCALE
-     ═══════════════════════════════════════════════ */
-
   --z-base: 1;
   --z-dropdown: 10;
   --z-sticky: 50;
@@ -140,10 +100,6 @@
   --z-modal: 9999;
   --z-lightbox: 10000;
   --z-toast: 10001;
-
-  /* ═══════════════════════════════════════════════
-     SHADOWS
-     ═══════════════════════════════════════════════ */
 
   --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.08);
   --shadow-card-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
@@ -157,8 +113,242 @@
 }
 
 /* ═══════════════════════════════════════════════════
-   DARK MODE (future — placeholder)
+   SHARED COMPONENT PATTERNS
    ═══════════════════════════════════════════════════ */
-/*
-.dark { ... }
-*/
+
+/* ── Section label + heading + rule ── */
+.section-label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  font-weight: 500;
+}
+.section-rule {
+  width: 48px;
+  height: 1.5px;
+  background: var(--color-primary-dark);
+  border: 0;
+  margin: 8px auto 24px;
+}
+.section-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+/* ── Issue label (dateline) ── */
+.issue-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  font-weight: 500;
+}
+.issue-rule {
+  width: 72px;
+  height: 1.5px;
+  background: var(--color-primary-dark);
+  border: 0;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+/* ── Page headline ── */
+.page-headline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+
+/* ── Shared card (editorial style) ── */
+.card-editorial {
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border-light);
+  box-shadow: 0 1px 3px rgba(26, 22, 20, 0.04);
+  border-radius: var(--radius-card);
+  transition: background-color 0.25s ease, transform 0.3s ease;
+}
+.card-editorial:hover {
+  background-color: var(--color-bg-subtle);
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-editorial { transition: none; }
+  .card-editorial:hover { background-color: inherit; transform: none; }
+}
+
+/* ── Narrative body text ── */
+.body-narrative {
+  font-family: var(--font-narrative);
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--color-text-secondary);
+}
+
+/* ── Divider ornament (—·—) ── */
+.divider-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  user-select: none;
+}
+.divider-ornament .line {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--color-border);
+}
+.divider-ornament .dot {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-border);
+}
+
+/* ── Star ornament divider ── */
+.ornament-star {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  user-select: none;
+}
+.ornament-star .line {
+  display: block;
+  height: 1px;
+  width: 32px;
+}
+.ornament-star .star {
+  font-size: 10px;
+  color: var(--color-border);
+}
+
+/* ── Paper texture background ── */
+.paper-texture {
+  background-color: var(--color-bg-subtle);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* ── Double hairline divider ── */
+.divider-double {
+  border: 0;
+  height: 3px;
+  background: linear-gradient(to bottom, var(--color-border) 0px, var(--color-border) 1px, transparent 1px, transparent 2px, var(--color-border) 2px, var(--color-border) 3px);
+  opacity: 0.6;
+}
+
+/* ── Gallery headline (Fraunces italic) ── */
+.gallery-headline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-variation-settings: 'opsz' 72;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+/* ── Tag badge ── */
+.tag-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--color-bg-dark);
+  color: var(--color-bg-subtle);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: var(--radius-md);
+}
+
+/* ── Quote (Fraunces italic) ── */
+.quote-serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* ── Page layout: full-bleed sections ── */
+.page-contrast {
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  width: 100vw;
+}
+@media (min-width: 640px) {
+  .page-contrast {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* ── Private page layout ── */
+.page-private main {
+  padding: 0 !important;
+  max-width: none !important;
+}
+
+/* ── Compact page layout (contact) ── */
+.main--compact {
+  padding: 0 !important;
+  max-width: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Filter chip (gallery page) ── */
+.filter-chip {
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+.filter-chip.active .dot {
+  box-shadow: 0 0 0 2px white, 0 0 0 4px currentColor;
+}
+
+/* ── Year numeral (timeline) ── */
+.year-num {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.year-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.year-sub {
+  font-family: var(--font-narrative);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--color-text-subtle);
+}
+.year-rule {
+  flex: 1;
+  height: 1px;
+  min-width: 20px;
+}
+
+/* ── Scrollbar styling ── */
+.scroll-strip::-webkit-scrollbar { height: 4px; }
+.scroll-strip::-webkit-scrollbar-track { background: var(--color-border-light); border-radius: 2px; }
+.scroll-strip::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .filter-chip { transition: none; }
+}
