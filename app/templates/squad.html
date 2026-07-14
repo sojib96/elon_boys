@@ -8,7 +8,7 @@
         Each one is built differently
     </h1>
     <p class="text-espresso-400 text-sm sm:text-base mt-3 max-w-md mx-auto body-narrative">
-        Ten strangers who became family. Here&rsquo;s the crew that made it all unforgettable.
+        Eleven strangers who became family. Here&rsquo;s the crew that made it all unforgettable.
     </p>
 </div>
 <div class="ornament-star mb-8" aria-hidden="true">
@@ -17,6 +17,8 @@
     <span class="line" style="background: linear-gradient(90deg, var(--color-border), transparent);"></span>
 </div>
 
+
+{% if members %}
 
 {# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ #}
 {#  ROW 1 — Members 1–3 (3 cols)         #}
@@ -242,5 +244,12 @@
     </div>
   </a>
 </div>
+
+{% else %}
+<div class="text-center py-20">
+    <p class="text-espresso-400 font-display text-sm uppercase tracking-widest">No members yet</p>
+    <p class="text-espresso-300 text-sm mt-2">Run the seed script to populate the squad.</p>
+</div>
+{% endif %}
 
 {% endblock %}

@@ -16,15 +16,12 @@ from app.email_utils import send_email
 from app.image_utils import process_avatar, process_cover, process_gallery, process_squad_card, process_update_image
 from app.jinja import templates
 from app.models import GalleryItem, GlobalQuestion, Member, UpdatePost
-from app.routers.public import MEMBERS
 from app.schemas import UpdateCreate, UpdateEdit
 from app.services import gallery as gallery_svc
 from app.services import updates as updates_svc
 from app.storage import upload_file
 
 router = APIRouter()
-
-MEMBER_NAMES = [m["name"] for m in MEMBERS]
 
 PRIVATE_UPLOADS = [
     {"id": 1, "file_url": None, "title": "Graduation video (raw)", "uploaded_by": "Alex", "uploaded_at": "2026-06-20"},
@@ -234,7 +231,7 @@ async def create_update_form(
 ):
     return templates.TemplateResponse(
         "private/create_update.html",
-        {"request": request, "authors": MEMBER_NAMES, "errors": {}, "form": {}, "member": _auth},
+        {"request": request, "authors": [], "errors": {}, "form": {}, "member": _auth},
     )
 
 
@@ -272,7 +269,7 @@ async def create_update_submit(
             "private/create_update.html",
             {
                 "request": request,
-                "authors": MEMBER_NAMES,
+                "authors": [],
                 "errors": errors,
                 "form": {"title": title, "content": content, "excerpt": excerpt},
                 "member": _auth,
@@ -308,7 +305,7 @@ async def edit_update_form(
         "private/create_update.html",
         {
             "request": request,
-            "authors": MEMBER_NAMES,
+            "authors": [],
             "errors": {},
             "form": {
                 "title": post.title,
@@ -366,7 +363,7 @@ async def edit_update_submit(
             "private/create_update.html",
             {
                 "request": request,
-                "authors": MEMBER_NAMES,
+                "authors": [],
                 "errors": errors,
                 "form": {"title": title, "content": content, "excerpt": excerpt},
                 "existing_images": existing_images,

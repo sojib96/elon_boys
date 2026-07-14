@@ -1,11 +1,8 @@
-from datetime import datetime
 import math
-from pathlib import Path
 
 from sqlalchemy.orm import selectinload
 from sqlmodel import Session, col, select
 
-from app.jinja import BASE_DIR
 from app.models import GalleryItem, UpdateImage, UpdatePost
 from app.schemas import UpdateCreate, UpdateEdit
 from app.services.gallery import (
@@ -243,79 +240,3 @@ def permanent_delete_update(session: Session, update_id: int) -> bool:
     session.add(post)
     session.commit()
     return True
-
-
-def seed_if_empty(session: Session) -> None:
-    existing = session.exec(select(UpdatePost).limit(1)).first()
-    if existing is not None:
-        return
-
-    seeds = [
-        {
-            "title": "Five Years Since Graduation",
-            "content": "Can you believe it's been five years? We're planning a reunion this summer. Details coming soon — save the date for August 15th!",
-            "excerpt": "Reunion plans are underway for August 15th.",
-            "author": "Md Sojib",
-            "posted_at": datetime(2026, 6, 15),
-        },
-        {
-            "title": "Welcome to the Website!",
-            "content": "We finally have a permanent home for all our memories. This is where we'll keep our photos, stories, and updates. Welcome back, everyone.",
-            "excerpt": "Our permanent home for photos, stories, and updates.",
-            "author": "Md. Nazmul Islam Nayem",
-            "posted_at": datetime(2026, 6, 1),
-        },
-        {
-            "title": "New Addition to the Squad",
-            "content": "Big news — Mehedi and his partner just welcomed a baby girl! Little Sofia already has the whole group wrapped around her finger. Mazel tov!",
-            "excerpt": "Mehedi welcomed a baby girl named Sofia!",
-            "author": "Md. Mehedi Hasan",
-            "posted_at": datetime(2026, 5, 20),
-        },
-        {
-            "title": "Farhan Dropped a New Track",
-            "content": "Our very own music producer just released a new single. It's called 'Nostalgia' and yes, there's a sample of our graduation night in there. Go stream it!",
-            "excerpt": "Farhan released a new single called 'Nostalgia'.",
-            "author": "Farhan Jarif Nibir",
-            "posted_at": datetime(2026, 4, 10),
-        },
-        {
-            "title": "Remembering the House",
-            "content": "Niaz found a video from our old house share. It's 3 minutes of chaos, burnt toast, and someone falling off a chair. It's perfect.",
-            "excerpt": "A found video from the old house share days.",
-            "author": "Niaz Mahmud",
-            "posted_at": datetime(2026, 3, 5),
-        },
-        {
-            "title": "Beach Day Flashback",
-            "content": "Remember when we spent an entire Saturday building a sandcastle that looked more like a sand-blob? Best Worst Castle 2023, right there.",
-            "excerpt": "Our legendary sand-blob from 2023.",
-            "author": "Al Zubayer Saad",
-            "posted_at": datetime(2026, 2, 18),
-        },
-        {
-            "title": "The Great Pancake Disaster",
-            "content": "Someone (Arnob) thought it was a good idea to flip pancakes without a spatula. The ceiling still has a stain. We framed it as modern art.",
-            "excerpt": "Arnob's spatula-free pancake experiment gone wrong.",
-            "author": "Safi Ullah Chowdhury",
-            "posted_at": datetime(2026, 1, 22),
-        },
-        {
-            "title": "Midnight Rooftop Conversations",
-            "content": "Some of the best talks happened on that creaky rooftop. Life, love, dreams, and whether pineapple belongs on pizza. The jury's still out.",
-            "excerpt": "Late-night talks on the creaky rooftop.",
-            "author": "Apurba Datta",
-            "posted_at": datetime(2025, 12, 14),
-        },
-    ]
-
-    for s in seeds:
-        post = UpdatePost(
-            title=s["title"],
-            content=s["content"],
-            excerpt=s["excerpt"],
-            author=s["author"],
-            posted_at=s["posted_at"],
-        )
-        session.add(post)
-    session.commit()

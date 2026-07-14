@@ -20,21 +20,6 @@ EVENTS_LIST = [
     {"id": 6, "title": "Winter Potluck", "date": "2024-12-20", "description": "Everyone brought something they'd learned to cook. The fire alarm went off twice. Best night of the year.", "is_upcoming": False},
 ]
 
-MEMBERS = [
-    {"id": 1, "name": "Md Sojib", "username": "sojib@elonboys", "nickname": "", "email": "20101030@uap-bd.edu", "photo_url": None, "image1": None, "image2": None, "bio": "", "fun_fact": "", "current_status": "", "quote": "", "tag": ""},
-    {"id": 2, "name": "Md. Nazmul Islam Nayem", "username": "nayem@elonboys", "nickname": "", "email": "20101013@uap-bd.edu", "photo_url": None, "image1": None, "image2": None, "bio": "", "fun_fact": "", "current_status": "", "quote": "", "tag": ""},
-    {"id": 3, "name": "Md. Mehedi Hasan", "username": "mehedi@elonboys", "nickname": "", "email": "20101007@uap-bd.edu", "photo_url": None, "image1": None, "image2": None, "bio": "", "fun_fact": "", "current_status": "", "quote": "", "tag": ""},
-    {"id": 4, "name": "Apurba Datta", "username": "apurba@elonboys", "nickname": "", "email": "20101040@uap-bd.edu", "photo_url": None, "image1": None, "image2": None, "bio": "", "fun_fact": "", "current_status": "", "quote": "", "tag": ""},
-    {"id": 5, "name": "Farhan Jarif Nibir", "username": "nibir@elonboys", "nickname": "", "email": "20101053@uap-bd.edu", "photo_url": None, "image1": None, "image2": None, "bio": "", "fun_fact": "", "current_status": "", "quote": "", "tag": ""},
-    {"id": 6, "name": "Safi Ullah Chowdhury", "username": "safi@elonboys", "nickname": "", "email": "20101010@uap-bd.edu", "photo_url": None, "image1": None, "image2": None, "bio": "", "fun_fact": "", "current_status": "", "quote": "", "tag": ""},
-    {"id": 7, "name": "Niaz Mahmud", "username": "niaz@elonboys", "nickname": "", "email": "20101019@uap-bd.edu", "photo_url": None, "image1": None, "image2": None, "bio": "", "fun_fact": "", "current_status": "", "quote": "", "tag": ""},
-    {"id": 8, "name": "Al Zubayer Saad", "username": "saad@elonboys", "nickname": "", "email": "20101027@uap-bd.edu", "photo_url": None, "image1": None, "image2": None, "bio": "", "fun_fact": "", "current_status": "", "quote": "", "tag": ""},
-    {"id": 9, "name": "MAHIR TAJWAR BHUIYAN", "username": "mahir@elonboys", "nickname": "", "email": "20101034@uap-bd.edu", "photo_url": None, "image1": None, "image2": None, "bio": "", "fun_fact": "", "current_status": "", "quote": "", "tag": ""},
-    {"id": 10, "name": "Md. Rufiad Rahi Arnob", "username": "arnob@elonboys", "nickname": "", "email": "20101006@uap-bd.edu", "photo_url": None, "image1": None, "image2": None, "bio": "", "fun_fact": "", "current_status": "", "quote": "", "tag": ""},
-    {"id": 11, "name": "Mahfuj Mahtab Mohot", "username": "mohot@elonboys", "nickname": "", "email": "19201003@uap-bd.edu", "photo_url": None, "image1": None, "image2": None, "bio": "", "fun_fact": "", "current_status": "", "quote": "", "tag": ""},
-]
-
-
 @router.get("/", response_class=HTMLResponse)
 async def home(request: Request, session: Session = Depends(get_session)):
     slider_images = session.exec(

@@ -35,3 +35,7 @@ SEEDED_CREDENTIALS.txt
 data/
 test_forgot_flow.py
 tests/playwright_verification.py
+
+# Seed data — member names/emails are kept out of the repo
+scripts/seed_data.json
+scripts/SEEDED_CREDENTIALS.txt
