@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Page Not Found — Elon Boys{% endblock %}
 
+{% from "partials/_macros.html" import btn %}
+
 {% block content %}
 <div class="max-w-lg mx-auto text-center py-16 reveal">
     <span class="text-5xl mb-4 inline-block opacity-60">&#128683;</span>
     <h1 class="text-3xl font-bold text-ink tracking-[-0.02em]">Page Not Found</h1>
     <p class="text-espresso-400 mt-3 text-lg">Looks like this page drifted away like a uni memory.</p>
     <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-        <a href="/" class="bg-coral-500 hover:bg-coral-600 text-white font-medium px-5 py-2.5 rounded-lg transition-all duration-200 text-sm shadow-sm hover:shadow-glow">&larr; Go Home</a>
-        <a href="/squad" class="text-espresso-400 hover:text-ink border border-espresso-200 bg-white hover:bg-white px-5 py-2.5 rounded-lg transition-all duration-200 text-sm font-medium">Meet the Squad</a>
+        {{ btn("&larr; Go Home", variant="primary", href="/") }}
+        {{ btn("Meet the Squad", variant="secondary", href="/squad") }}
     </div>
 </div>
 {% endblock %}

@@ -82,9 +82,6 @@
         @keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
-
-
-
         .reveal { opacity: 0; transform: translateY(16px); transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
         .reveal.visible { opacity: 1; transform: translateY(0); }
         .reveal-left { opacity: 0; transform: translateX(-20px); transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
@@ -105,60 +102,82 @@
         .stagger > *:nth-child(11) { animation-delay: 0.55s; }
         .stagger > *:nth-child(12) { animation-delay: 0.6s; }
 
+        /* ── Shared button system ── */
+        .btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'Inter', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 2px; cursor: pointer; text-decoration: none; border: 1.5px solid; transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.15s ease; }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background: #8B3A3A; border-color: #8B3A3A; color: #fff; }
+        .btn-primary:hover { background: #6F2A2A; }
+        .btn-secondary { background: transparent; border-color: #D4C9B8; color: #8A7F76; }
+        .btn-secondary:hover { border-color: #8B3A3A; color: #8B3A3A; }
+        .btn-danger { background: #FEF2F2; border-color: #FECACA; color: #DC2626; }
+        .btn-danger:hover { background: #FEE2E2; }
+        .btn-sm { padding: 7px 18px; font-size: 10px; gap: 6px; }
+        .btn-md { padding: 10px 28px; }
+        .btn-lg { padding: 12px 36px; }
+        .btn .justify-center { justify-content: center; }
+        .btn.w-full { width: 100%; }
+
+        /* ── Shared card / modal (public) ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(26, 22, 20, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-card {
+            background: #FAF8F4;
+            border: 1px solid #E8E0D6;
+            border-radius: 2px;
+            padding: 28px 24px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(26, 22, 20, 0.18);
+            text-align: center;
+        }
+        .modal-card.accent-gold {
+            border-left: 3px solid #C4A35A;
+        }
+        .modal-card.accent-terracotta {
+            border-left: 3px solid #8B3A3A;
+        }
+        .modal-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: #1A1614;
+            margin-bottom: 8px;
+        }
+        .modal-body {
+            font-family: 'Fraunces', Georgia, serif;
+            font-size: 13px;
+            font-style: italic;
+            color: #8A7F76;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .reveal, .reveal-left, .reveal-right { opacity: 1; transform: none; }
             .stagger > * { opacity: 1; transform: none; animation: none; }
-
+            .btn { transition: none; }
+            .btn:active { transform: none; }
         }
     </style>
 </head>
 <body class="font-sans text-ink bg-espresso-50 flex flex-col min-h-screen">
-    <nav class="sticky top-0 z-50 border-b border-[#E8E0D6] bg-espresso-50" role="navigation" aria-label="Main navigation">
-        <div class="max-w-7xl mx-auto px-6 sm:px-8">
-            <div class="flex items-center justify-between h-12">
-                <a href="/" class="font-sans text-[13px] font-semibold tracking-tight text-[#1A1614] no-underline">Elon Boys</a>
-
-                <div id="desktop-nav" class="hidden md:flex items-center gap-0">
-                    {% set nav_links = [
-                        ('/', 'Home'),
-                        ('/squad', 'Squad'),
-                        ('/timeline', 'Timeline'),
-                        ('/gallery', 'Gallery'),
-                        ('/updates', 'Updates'),
-                        ('/guestbook', 'Guestbook'),
-                        ('/contact', 'Contact'),
-                    ] %}
-                    {% for href, label in nav_links %}
-                    <a href="{{ href }}" class="masthead-link {% if request.url.path == href %}active{% endif %}">{{ label }}</a>
-                    {% endfor %}
-                    {% if request.state.current_member %}
-                    <a href="/behind-the-curtain" class="masthead-link {% if request.url.path == '/behind-the-curtain' %}active{% endif %}">Behind the Curtain</a>
-                    <a href="/logout" class="masthead-link masthead-login">Logout</a>
-                    {% else %}
-                    <a href="/login" class="masthead-link masthead-login">Login</a>
-                    {% endif %}
-                </div>
-
-                <button id="menu-btn" class="md:hidden p-1 -mr-1 rounded hover:bg-[rgba(193,99,59,0.08)] transition-colors" aria-label="Toggle navigation menu" aria-expanded="false">
-                    <div class="hamburger" id="hamburger-icon">
-                        <span></span><span></span><span></span>
-                    </div>
-                </button>
-            </div>
-
-            <div id="mobile-menu" class="md:hidden hidden pb-4 pt-2 border-t border-[#E8E0D6]" role="menu">
-                {% for href, label in nav_links %}
-                <a href="{{ href }}" class="block px-2 py-2 text-sm text-[#4A3F38] hover:text-[#C1633B] font-medium transition-colors duration-200" role="menuitem">{{ label }}</a>
-                {% endfor %}
-                {% if request.state.current_member %}
-                <a href="/behind-the-curtain" class="block px-2 py-2 text-sm text-[#4A3F38] hover:text-[#C1633B] font-medium transition-colors duration-200" role="menuitem">Behind the Curtain</a>
-                <a href="/logout" class="block mt-2 px-2 py-2 text-sm text-[#C1633B] font-semibold">Logout</a>
-                {% else %}
-                <a href="/login" class="block mt-2 px-2 py-2 text-sm text-[#C1633B] font-semibold">Login</a>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
+    {% include "partials/_nav.html" %}
 
     {% block hero %}{% endblock %}
 
@@ -170,58 +189,7 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
     </button>
 
-    <footer id="site-footer" class="border-t border-[#E8E0D6] pt-10 pb-0 mt-12">
-        <div class="max-w-7xl mx-auto px-6 sm:px-8">
-            <div class="grid md:grid-cols-12 gap-8 md:gap-6 pb-6">
-                <div class="md:col-span-4">
-                    <span class="font-sans text-[13px] font-semibold text-[#1A1614]">Elon Boys</span>
-                    <p class="text-[#8A7F76] text-[12px] leading-relaxed mt-1 max-w-[260px]">Ten friends. Four years. A lifetime of memories.</p>
-                </div>
-                <div class="md:col-span-2">
-                    <span class="text-[#8A7F76] text-[9px] uppercase tracking-[0.18em] font-semibold block mb-2">Pages</span>
-                    <div class="flex flex-col gap-1.5">
-                        <a href="/squad" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Squad</a>
-                        <a href="/timeline" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Timeline</a>
-                        <a href="/gallery" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Gallery</a>
-                        <a href="/updates" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Updates</a>
-                        <a href="/guestbook" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Guestbook</a>
-                        <a href="/contact" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Contact</a>
-                    </div>
-                </div>
-                <div class="md:col-span-2">
-                    <span class="text-[#8A7F76] text-[9px] uppercase tracking-[0.18em] font-semibold block mb-2">Connect</span>
-                    <div class="flex flex-col gap-1.5">
-                        <a href="#" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Instagram</a>
-                        <a href="#" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">X (Twitter)</a>
-                        <a href="#" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">Facebook</a>
-                        <a href="#" class="text-[#4A3F38] hover:text-[#C1633B] text-[12px] font-medium transition-colors duration-200">YouTube</a>
-                    </div>
-                </div>
-                <div class="md:col-span-4">
-                    <span class="text-[#8A7F76] text-[9px] uppercase tracking-[0.18em] font-semibold block mb-2">Founded</span>
-                    <p class="text-[#4A3F38] text-[12px] font-medium">Est. 2019 &middot; Graduated 2023</p>
-                    <p class="text-[#8A7F76] text-[11px] mt-0.5">Still going strong.</p>
-                </div>
-            </div>
-            <div class="border-t border-[#E8E0D6] py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p class="text-[#8A7F76] text-[10px]">&copy; 2026 Elon Boys. All rights reserved.</p>
-                <div class="flex items-center gap-4">
-                    <a href="#" class="text-[#8A7F76] hover:text-[#C1633B] transition-colors duration-200" aria-label="Instagram">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                    </a>
-                    <a href="#" class="text-[#8A7F76] hover:text-[#C1633B] transition-colors duration-200" aria-label="X (Twitter)">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    </a>
-                    <a href="#" class="text-[#8A7F76] hover:text-[#C1633B] transition-colors duration-200" aria-label="Facebook">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                    </a>
-                    <a href="#" class="text-[#8A7F76] hover:text-[#C1633B] transition-colors duration-200" aria-label="YouTube">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    {% include "partials/_footer.html" %}
 
     <script>
     (function(){

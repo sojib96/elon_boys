@@ -1,0 +1,107 @@
+{#
+  ────────────────────────────────────────────────────────────
+  MACROS — Shared UI Components
+  Use: {% from "partials/_macros.html" import btn, card, section_header, modal %}
+  ────────────────────────────────────────────────────────────
+#}
+
+{#
+  ── BUTTON ──
+  {% btn(text, variant="primary", size="md", href=None, extra="") %}
+  variant: primary | secondary | danger
+  size:    sm | md | lg
+  href:    if set, renders <a> instead of <button>
+  extra:   additional CSS classes
+#}
+{% macro btn(text, variant="primary", size="md", href=None, extra="") %}
+{% set base = "btn btn-" ~ variant %}
+{% if size == "sm" %}{% set base = base ~ " btn-sm" %}{% elif size == "lg" %}{% set base = base ~ " btn-lg" %}{% endif %}
+{% if href %}
+<a href="{{ href }}" class="{{ base }} {{ extra }}">{{ text }}</a>
+{% else %}
+<button type="submit" class="{{ base }} {{ extra }}">{{ text }}</button>
+{% endif %}
+{% endmacro %}
+
+
+{#
+  ── CARD WRAPPER ──
+  {% card_start(variant="default", extra="") %} ... {% card_end() %}
+  variant: default | hover | bordered
+#}
+{% macro card_start(variant="default", extra="") %}
+{% set classes = "bg-white rounded-xl shadow-card" %}
+{% if variant == "hover" %}{% set classes = classes ~ " hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-300" %}{% endif %}
+{% if variant == "bordered" %}{% set classes = classes ~ " border border-espresso-50" %}{% endif %}
+<div class="{{ classes }} {{ extra }}">
+{% endmacro %}
+
+{% macro card_end() %}
+</div>
+{% endmacro %}
+
+
+{#
+  ── SECTION HEADER ──
+  {% section_header(eyebrow, heading, description=None) %}
+  Displays an eyebrow label + heading + optional description.
+#}
+{% macro section_header(eyebrow, heading, description=None) %}
+<div class="text-center mb-6">
+    <span class="text-[10px] uppercase tracking-[0.22em] font-medium text-[#8B3A3A] block mb-1">{{ eyebrow }}</span>
+    <h2 class="font-serif font-bold text-[#1A1614] leading-tight text-[clamp(1.3rem,2.5vw,1.75rem)]">{{ heading }}</h2>
+    {% if description %}
+    <p class="text-espresso-400 text-sm mt-2 max-w-md mx-auto">{{ description }}</p>
+    {% endif %}
+</div>
+{% endmacro %}
+
+
+{#
+  ── MODAL ──
+  {% modal(id, title, body, cancel_text="Cancel", confirm_text="Confirm", confirm_class="btn-primary", left_accent="gold") %}
+  Renders a modal overlay with card inside. Requires JS to toggle .active on the overlay.
+  left_accent: color name (maps to accent-* class) or None for no left border
+#}
+{% macro modal(id, title, body, cancel_text="Cancel", confirm_text="Confirm", confirm_class="btn-primary", left_accent="gold") %}
+<div class="modal-overlay" id="{{ id }}">
+    <div class="modal-card{% if left_accent %} accent-{{ left_accent }}{% endif %}">
+        <div class="modal-body">{{ body }}</div>
+        <div style="margin-bottom: 16px;">
+            <h3 class="modal-title">{{ title }}</h3>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn-secondary flex-1 justify-center" onclick="closeModal('{{ id }}')">{{ cancel_text }}</button>
+            <button type="button" class="{{ confirm_class }} flex-1 justify-center" id="{{ id }}-confirm">{{ confirm_text }}</button>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+
+{#
+  ── PAGE HEADER (private) ──
+  {% page_header(title, description=None) %}
+  Standard h1 + p for private dashboard pages.
+#}
+{% macro page_header(title, description=None) %}
+<div class="page-header">
+    <h1>{{ title }}</h1>
+    {% if description %}
+    <p>{{ description }}</p>
+    {% endif %}
+</div>
+{% endmacro %}
+
+
+{#
+  ── BACK LINK ──
+  {% back_link(href, text) %}
+  Standardized back-link arrow + text.
+#}
+{% macro back_link(href, text) %}
+<a href="{{ href }}" class="back-link">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    {{ text }}
+</a>
+{% endmacro %}
