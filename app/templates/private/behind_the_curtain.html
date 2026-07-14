@@ -15,7 +15,7 @@
     <div class="reveal">
       <div class="top-bar">
         <span class="section-label">Private</span>
-        <span class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#8A7F76] font-medium">Dashboard</span>
+        <span class="section-label">Dashboard</span>
       </div>
       <div class="page-header">
         <h1>Behind the Curtain</h1>
@@ -35,12 +35,12 @@
       {% for href, title, desc, icon, accent in sections %}
       <a href="{{ href }}" class="dossier-card {{ accent }} dossier-link">
         <div class="dossier-card-header">
-          <span class="icon-box" style="width:32px;height:32px;font-size:15px;">{{ icon }}</span>
-          <div style="flex:1;min-width:0;">
-            <h2 style="font-size:11px;">{{ title }}</h2>
-            <p style="font-family:'Inter',sans-serif;font-size:12px;color:#5A5148;margin-top:2px;">{{ desc }}</p>
+          <span class="icon-box w-8 h-8 text-base">{{ icon }}</span>
+          <div class="min-w-0 flex-1">
+            <h2 class="text-[11px]">{{ title }}</h2>
+            <p class="mt-0.5 font-sans text-[12px] text-dossier-body">{{ desc }}</p>
           </div>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0">
             <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
           </svg>
         </div>

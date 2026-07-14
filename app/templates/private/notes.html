@@ -26,10 +26,10 @@
       </div>
     </div>
 
-    <div class="reveal" style="margin-bottom:2rem;">
+    <div class="reveal mb-8">
       <div class="dossier-card dashed accent-stone">
-        <div class="dossier-card-body text-center" style="padding:2rem 1.5rem;">
-          <p style="font-family:'Inter',sans-serif;font-size:13px;color:#5A5148;">New note form coming in a future sprint.</p>
+        <div class="dossier-card-body text-center px-6 py-8">
+          <p class="font-sans text-[13px] text-dossier-body">New note form coming in a future sprint.</p>
         </div>
       </div>
     </div>
@@ -39,15 +39,15 @@
       {% for note in notes_list %}
       {% set accent = 'accent-gold' if loop.index0 % 2 == 0 else 'accent-coral' %}
       <div class="dossier-card {{ accent }}">
-        <div class="dossier-card-body" style="padding:16px 20px;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-            <div style="width:30px;height:30px;border-radius:50%;background:#F5F1EA;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#5A5148;flex-shrink:0;">{{ note.author[:1] }}</div>
-            <div style="flex:1;">
-              <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#1A1614;">{{ note.author }}</span>
-              <span style="font-family:'Inter',sans-serif;font-size:10px;color:#B8AFA2;margin-left:8px;">{{ note.posted_at }}</span>
+        <div class="dossier-card-body px-5 py-4">
+          <div class="mb-2.5 flex items-center gap-3">
+            <div class="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-full bg-[#F5F1EA] font-sans text-[12px] font-bold text-dossier-body">{{ note.author[:1] }}</div>
+            <div class="flex-1">
+              <span class="font-sans text-[13px] font-semibold text-dossier-strong">{{ note.author }}</span>
+              <span class="ml-2 font-sans text-[10px] text-dossier-muted">{{ note.posted_at }}</span>
             </div>
           </div>
-          <p style="font-family:'Inter',sans-serif;font-size:13px;color:#5A5148;line-height:1.6;">{{ note.message }}</p>
+          <p class="font-sans text-[13px] text-dossier-body leading-relaxed">{{ note.message }}</p>
         </div>
       </div>
       {% endfor %}

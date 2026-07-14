@@ -59,11 +59,11 @@
 
 {#
   ── MODAL ──
-  {% modal(id, title, body, cancel_text="Cancel", confirm_text="Confirm", confirm_class="btn-primary", left_accent="gold") %}
+  {% modal(id, title, body, cancel_text="Cancel", confirm_text="Confirm", confirm_class="btn btn-primary", left_accent="gold") %}
   Renders a modal overlay with card inside. Requires JS to toggle .active on the overlay.
   left_accent: color name (maps to accent-* class) or None for no left border
 #}
-{% macro modal(id, title, body, cancel_text="Cancel", confirm_text="Confirm", confirm_class="btn-primary", left_accent="gold") %}
+{% macro modal(id, title, body, cancel_text="Cancel", confirm_text="Confirm", confirm_class="btn btn-primary", left_accent="gold") %}
 <div class="modal-overlay" id="{{ id }}">
     <div class="modal-card{% if left_accent %} accent-{{ left_accent }}{% endif %}">
         <div class="modal-body">{{ body }}</div>
@@ -71,7 +71,7 @@
             <h3 class="modal-title">{{ title }}</h3>
         </div>
         <div class="modal-actions">
-            <button type="button" class="btn-secondary flex-1 justify-center" onclick="closeModal('{{ id }}')">{{ cancel_text }}</button>
+            <button type="button" class="btn btn-secondary flex-1 justify-center" onclick="closeModal('{{ id }}')">{{ cancel_text }}</button>
             <button type="button" class="{{ confirm_class }} flex-1 justify-center" id="{{ id }}-confirm">{{ confirm_text }}</button>
         </div>
     </div>

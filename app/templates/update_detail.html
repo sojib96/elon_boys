@@ -292,12 +292,12 @@
             {# ── AUTHOR: contributor byline ── #}
             <div class="pt-5 border-t border-[#D4C9B8]">
                 <div class="flex items-start gap-4">
-                    <span class="w-10 h-10 flex-shrink-0 border border-[#D4C9B8] flex items-center justify-center text-sm text-[#8B3A3A] font-serif font-semibold" style="font-family: 'Playfair Display', Georgia, serif;">{{ post.author[0] }}{{ post.author.split()[-1][0] if ' ' in post.author else '' }}</span>
+                    <span class="w-10 h-10 flex-shrink-0 border border-[#D4C9B8] flex items-center justify-center text-sm text-[#8B3A3A] font-['Playfair_Display'] font-semibold">{{ post.author[0] }}{{ post.author.split()[-1][0] if ' ' in post.author else '' }}</span>
                     <div class="min-w-0">
                         <p class="text-[11px] text-[#8B3A3A] font-serif italic mb-0.5">Written by</p>
-                        <h3 class="text-base font-semibold text-[#1A1614]" style="font-family: 'Playfair Display', Georgia, serif;">{{ post.author }}</h3>
+                        <h3 class="text-base font-semibold text-[#1A1614] font-['Playfair_Display']">{{ post.author }}</h3>
                         <p class="text-[10px] text-[#8A7F76] font-serif italic uppercase tracking-wider mt-1">Member since 2019</p>
-                        <p class="text-[14px] text-[#2C2824] leading-relaxed mt-3" style="font-family: Georgia, 'Times New Roman', serif;">One of the ten. Always there for a bad joke, a late-night snack run, or a heartfelt talk.</p>
+                        <p class="text-[14px] text-[#2C2824] leading-relaxed mt-3 font-['Georgia']">One of the ten. Always there for a bad joke, a late-night snack run, or a heartfelt talk.</p>
                     </div>
                 </div>
             </div>
@@ -328,7 +328,7 @@
 {% if member %}
 <div class="modal-overlay" id="deleteModal">
     <div class="modal-card accent-terracotta">
-        <div style="width:48px;height:48px;border-radius:50%;background:#FEF2F2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+        <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#FEF2F2]">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#991B1B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="3 6 5 6 21 6"/>
                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>

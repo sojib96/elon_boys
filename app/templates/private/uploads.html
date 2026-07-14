@@ -26,12 +26,12 @@
       </div>
     </div>
 
-    <div class="reveal" style="margin-bottom:2rem;">
+    <div class="reveal mb-8">
       <div class="dossier-card dashed accent-stone">
-        <div class="dossier-card-body text-center" style="padding:2.5rem 1.5rem;">
-          <div style="width:36px;height:36px;border-radius:2px;background:#F5F1EA;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:18px;">&#128228;</div>
-          <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:#5A5148;">Upload area coming in a future sprint.</p>
-          <p style="font-family:'Inter',sans-serif;font-size:11px;color:#B8AFA2;margin-top:4px;">Drag &amp; drop files here</p>
+        <div class="dossier-card-body text-center py-10 px-6">
+          <div class="mx-auto mb-2.5 flex h-9 w-9 items-center justify-center rounded-sm bg-[#F5F1EA] text-lg">&#128228;</div>
+          <p class="font-sans text-[13px] font-medium text-dossier-body">Upload area coming in a future sprint.</p>
+          <p class="font-sans text-[11px] text-dossier-muted mt-1">Drag &amp; drop files here</p>
         </div>
       </div>
     </div>
@@ -41,14 +41,14 @@
       {% for upload in uploads %}
       {% set accent = 'accent-sage' if loop.index0 % 2 == 0 else 'accent-coral' %}
       <div class="dossier-card {{ accent }}">
-        <div class="dossier-card-body" style="padding:14px 20px;">
-          <div style="display:flex;align-items:center;gap:14px;">
-            <div style="width:32px;height:32px;border-radius:2px;background:#F5F1EA;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;">&#128196;</div>
-            <div style="flex:1;min-width:0;">
-              <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#1A1614;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ upload.title }}</p>
-              <p style="font-family:'Inter',sans-serif;font-size:10px;color:#B8AFA2;margin-top:2px;">Uploaded by {{ upload.uploaded_by }} &sdot; {{ upload.uploaded_at }}</p>
+        <div class="dossier-card-body px-5 py-3.5">
+          <div class="flex items-center gap-3.5">
+            <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-sm bg-[#F5F1EA] text-base">&#128196;</div>
+            <div class="min-w-0 flex-1">
+              <p class="truncate font-sans text-[13px] font-semibold text-dossier-strong">{{ upload.title }}</p>
+              <p class="mt-0.5 font-sans text-[10px] text-dossier-muted">Uploaded by {{ upload.uploaded_by }} &sdot; {{ upload.uploaded_at }}</p>
             </div>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
           </div>
         </div>
       </div>

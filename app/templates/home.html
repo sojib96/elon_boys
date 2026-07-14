@@ -122,6 +122,16 @@
         border-radius: 4px;
     }
 
+    /* ── Lightbox ── */
+    .home-lightbox { position:fixed; inset:0; z-index:50; align-items:center; justify-content:center; padding:20px; }
+    .home-lightbox-bg { background:rgba(0,0,0,0.85); }
+    .home-lightbox-btn { position:absolute; z-index:10; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+    .home-lightbox-close { top:16px; right:16px; width:36px; height:36px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); color:#fff; }
+    .home-lightbox-nav { top:50%; transform:translateY(-50%); width:40px; height:40px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); color:#fff; }
+    .home-lightbox-prev { left:16px; }
+    .home-lightbox-next { right:16px; }
+    .home-lightbox-img { max-width:90vw; max-height:90vh; object-fit:contain; cursor:default; }
+
     /* ── Section headers ── */
     .section-label {
         font-family: 'Inter', system-ui, sans-serif;
@@ -392,9 +402,9 @@
         {% endfor %}
         {% else %}
         <div class="slide active">
-            <div style="height: clamp(360px, 60vh, 600px); display:flex;align-items:center;justify-content:center;background:#1A1614;">
-                <div style="text-align:center;padding:24px;">
-                    <h1 style="font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:600;font-size:clamp(2rem,5.5vw,4rem);color:#EDE8DE;max-width:640px;margin:0 auto;line-height:1.08;">{{ tagline }}</h1>
+            <div class="flex items-center justify-center" style="height: clamp(360px, 60vh, 600px); background:#1A1614;">
+                <div class="text-center p-6">
+                    <h1 class="mx-auto max-w-[640px] font-serif font-semibold italic leading-[1.08] tracking-tight" style="font-size:clamp(2rem,5.5vw,4rem);color:#EDE8DE;">{{ tagline }}</h1>
                 </div>
             </div>
         </div>
@@ -547,17 +557,17 @@
 </div>
 
 {# ── LIGHTBOX ── #}
-<div id="homeLightbox" onclick="if(event.target===this)closeLightbox()" style="display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;">
-    <button onclick="closeLightbox()" style="position:absolute;top:16px;right:16px;z-index:10;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;" aria-label="Close">
+<div id="homeLightbox" onclick="if(event.target===this)closeLightbox()" class="home-lightbox home-lightbox-bg" style="display:none;">
+    <button onclick="closeLightbox()" class="home-lightbox-btn home-lightbox-close" aria-label="Close">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></svg>
     </button>
-    <button id="lightboxPrev" onclick="prevGalleryImg()" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);z-index:10;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;display:none;align-items:center;justify-content:center;cursor:pointer;" aria-label="Previous">
+    <button id="lightboxPrev" onclick="prevGalleryImg()" class="home-lightbox-btn home-lightbox-nav home-lightbox-prev" style="display:none;" aria-label="Previous">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <button id="lightboxNext" onclick="nextGalleryImg()" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);z-index:10;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;display:none;align-items:center;justify-content:center;cursor:pointer;" aria-label="Next">
+    <button id="lightboxNext" onclick="nextGalleryImg()" class="home-lightbox-btn home-lightbox-nav home-lightbox-next" style="display:none;" aria-label="Next">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
     </button>
-    <img id="homeLightboxImg" src="" alt="" style="max-width:90vw;max-height:90vh;object-fit:contain;cursor:default;">
+    <img id="homeLightboxImg" src="" alt="" class="home-lightbox-img">
 </div>
 
 <script>
