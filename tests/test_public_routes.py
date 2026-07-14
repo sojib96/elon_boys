@@ -14,7 +14,6 @@ ROUTES_200 = [
     "/",
     "/our-story",
     "/squad",
-    "/timeline",
     "/gallery",
     "/updates",
     "/events",
@@ -67,7 +66,7 @@ class TestPublicRoutes:
     def test_navbar_links(self, client):
         resp = client.get("/")
         for label in [
-            "Our Story", "The Squad", "Timeline", "Gallery",
+            "Our Story", "The Squad", "Gallery",
             "Updates", "Events", "Guestbook", "Contact", "Login",
         ]:
             assert label in resp.text, f"Missing nav link: {label}"

@@ -10,26 +10,6 @@ from app.services import updates as updates_svc
 
 router = APIRouter()
 
-TIMELINE_EVENTS = [
-    {"id": 1, "year": 1, "title": "First Day of University", "description": "Ten strangers walked into the same lecture hall. None of us knew we'd just met our best friends.", "photo_urls": None},
-    {"id": 2, "year": 1, "title": "Dorm Floor Dinner", "description": "Our first group dinner — instant noodles, bad pizza, and the beginning of a tradition that lasted four years.", "photo_urls": None},
-    {"id": 3, "year": 1, "title": "Freshman Freshers' Week", "description": "Survived freshers' week together. We bonded over terrible icebreakers and a shared confusion about campus maps.", "photo_urls": None},
-    {"id": 4, "year": 1, "title": "First Group Photo", "description": "Someone pulled out a camera and we all squeezed into frame. That photo still sits on everyone's phone.", "photo_urls": None},
-    {"id": 5, "year": 2, "title": "Spring Break Road Trip", "description": "Rented a beat-up van and drove 12 hours to the coast. The van broke down. We didn't care.", "photo_urls": None},
-    {"id": 6, "year": 2, "title": "Late-Night Study Sessions", "description": "Countless nights in the library basement — fuelled by coffee, despair, and someone's smuggled snacks.", "photo_urls": None},
-    {"id": 7, "year": 2, "title": "University Festival", "description": "We ran a stall at the uni festival. It lost money. We gained memories.", "photo_urls": None},
-    {"id": 8, "year": 2, "title": "Secret Santa", "description": "Our first Secret Santa. David got everyone the same mug. He said it was 'a theme'.", "photo_urls": None},
-    {"id": 9, "year": 3, "title": "House Share Begins", "description": "Moved into our first shared house. The boiler broke on day one. We called it home anyway.", "photo_urls": None},
-    {"id": 10, "year": 3, "title": "Birthday Surprise", "description": "Pulled off a surprise birthday for one of us — complete with a cake that was 70% icing. She cried.", "photo_urls": None},
-    {"id": 11, "year": 3, "title": "Summer Internships", "description": "We scattered across the country for internships. The group chat kept us going.", "photo_urls": None},
-    {"id": 12, "year": 3, "title": "Halloween Party", "description": "Ten costumes, one tiny living room, and a playlist that went until 4AM. The neighbours loved us.", "photo_urls": None},
-    {"id": 13, "year": 4, "title": "Final Year Project Madness", "description": "All-nighters, printer breakdowns, and last-minute panics. We somehow all graduated.", "photo_urls": None},
-    {"id": 14, "year": 4, "title": "Graduation Day", "description": "Caps in the air, tears in our eyes, and one last group photo that still makes us smile.", "photo_urls": None},
-    {"id": 15, "year": 4, "title": "Farewell Dinner", "description": "Our last dinner together as students. We promised to stay close — and we kept that promise.", "photo_urls": None},
-    {"id": 16, "year": 4, "title": "The Afterparty", "description": "We stayed up until sunrise, went through every photo on every phone, and cried more than we'd like to admit.", "photo_urls": None},
-]
-
-
 
 EVENTS_LIST = [
     {"id": 1, "title": "Summer Reunion 2026", "date": "2026-08-15", "description": "Our first official reunion at the old campus. Dinner, drinks, and a walk down memory lane. Partners welcome!", "is_upcoming": True},
@@ -110,14 +90,6 @@ async def squad(request: Request, session: Session = Depends(get_session)):
 async def member_detail(request: Request, member_id: int, session: Session = Depends(get_session)):
     member = session.get(Member, member_id)
     return templates.TemplateResponse("member_detail.html", {"request": request, "member": member})
-
-
-@router.get("/timeline", response_class=HTMLResponse)
-async def timeline(request: Request):
-    years = {}
-    for event in TIMELINE_EVENTS:
-        years.setdefault(event["year"], []).append(event)
-    return templates.TemplateResponse("timeline.html", {"request": request, "years": years})
 
 
 @router.get("/gallery", response_class=HTMLResponse)
