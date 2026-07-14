@@ -19,18 +19,24 @@
 
     {# ── Header ── #}
     <div class="text-center mb-10 reveal">
-      <h1 class="font-['Playfair_Display'] text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-[#1A1614] tracking-[-0.02em] leading-[1.08]">
+      <h1 class="font-serif text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-[#1A1614] tracking-[-0.02em] leading-[1.08]">
         Edit Profile
       </h1>
       <p class="font-serif text-[14px] text-[#8A7F76] italic mt-2">
         {{ member.name }} &mdash; update your dossier
       </p>
+      {% if member.photo_url %}
+      <div class="mt-4 inline-flex items-center gap-3 px-4 py-2 bg-[#FAF8F4] border border-[#E8E0D6] rounded-full">
+        <img src="{{ member.photo_url }}" alt="" class="w-8 h-8 rounded-full object-cover">
+        <span class="text-[11px] text-[#5A5148] font-sans">{{ member.nickname or member.name }}</span>
+      </div>
+      {% endif %}
     </div>
 
     <form method="POST" action="/profile/edit" enctype="multipart/form-data" class="space-y-5 stagger">
 
       {# ── IDENTITY ── #}
-      <div class="dossier-card accent-identity reveal">
+      <div class="dossier-card accent-terracotta reveal">
         <div class="dossier-card-header">
           <span class="icon-box">&#9783;</span>
           <h2>Identity</h2>
@@ -43,6 +49,93 @@
           <div class="field-row">
             <label class="field-label" for="nickname">Nickname</label>
             <input type="text" id="nickname" name="nickname" value="{{ member.nickname or '' }}" placeholder="Ace" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="tag">Tag</label>
+            <input type="text" id="tag" name="tag" value="{{ member.tag or '' }}" placeholder="THE BUILDER" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="quote">Quote</label>
+            <textarea id="quote" name="quote" placeholder="A memorable quote..." class="field-input field-textarea">{{ member.quote or '' }}</textarea>
+          </div>
+        </div>
+      </div>
+
+      {# ── PERSONAL ── #}
+      <div class="dossier-card accent-personal reveal">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#9782;</span>
+          <h2>Personal</h2>
+        </div>
+        <div class="dossier-card-body">
+          <div class="field-row">
+            <label class="field-label" for="date_of_birth">Date of Birth</label>
+            <input type="date" id="date_of_birth" name="date_of_birth" value="{{ member.date_of_birth or '' }}" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="current_city">Current City</label>
+            <div class="w-full flex gap-2 items-center">
+              <input type="text" id="current_city" name="current_city" value="{{ member.current_city or '' }}" placeholder="New York, NY" class="field-input flex-1">
+              <button type="button" id="detect-city-btn" class="photo-upload-btn flex-shrink-0" title="Detect my location">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"/></svg>
+                Detect
+              </button>
+            </div>
+            <p id="geo-status" class="field-meta col-start-2 mt-1 hidden"></p>
+          </div>
+          <div class="field-row">
+            <label class="field-label">Gender</label>
+            <div class="flex flex-wrap gap-3 pt-1">
+              {% set gender_opts = ['Male', 'Female', 'Non-binary', 'Prefer not to say'] %}
+              {% for opt in gender_opts %}
+              <label class="flex items-center gap-1.5 cursor-pointer text-[13px] font-sans text-[#1A1614]">
+                <input type="radio" name="gender" value="{{ opt }}" class="accent-[#8B3A3A]" {% if member.gender == opt %}checked{% endif %}>
+                {{ opt }}
+              </label>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="blood_group">Blood Group</label>
+            <select id="blood_group" name="blood_group" class="field-select">
+              <option value="">Select blood group</option>
+              {% set blood_opts = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+              {% for opt in blood_opts %}
+              <option value="{{ opt }}" {% if member.blood_group == opt %}selected{% endif %}>{{ opt }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="relationship_status">Status</label>
+            <select id="relationship_status" name="relationship_status" class="field-select">
+              <option value="">Select status</option>
+              {% set rs_opts = ['Single', 'In a relationship', 'Engaged', 'Married', 'It\'s complicated', 'Prefer not to say'] %}
+              {% for opt in rs_opts %}
+              <option value="{{ opt }}" {% if member.relationship_status == opt %}selected{% endif %}>{{ opt }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {# ── WORK ── #}
+      <div class="dossier-card accent-work reveal">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#9881;</span>
+          <h2>Work</h2>
+        </div>
+        <div class="dossier-card-body">
+          <div class="field-row">
+            <label class="field-label" for="occupation">Occupation</label>
+            <input type="text" id="occupation" name="occupation" value="{{ member.occupation or '' }}" placeholder="Software Engineer" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="current_company">Company</label>
+            <input type="text" id="current_company" name="current_company" value="{{ member.current_company or '' }}" placeholder="Google" class="field-input">
+          </div>
+          <div class="field-row">
+            <label class="field-label" for="current_status">Card Status</label>
+            <input type="text" id="current_status" name="current_status" value="{{ member.current_status or '' }}" placeholder="Software Engineer at Google" class="field-input">
           </div>
         </div>
       </div>
@@ -81,58 +174,6 @@
         </div>
       </div>
 
-      {# ── PERSONAL ── #}
-      <div class="dossier-card accent-personal reveal">
-        <div class="dossier-card-header">
-          <span class="icon-box">&#9782;</span>
-          <h2>Personal</h2>
-        </div>
-        <div class="dossier-card-body">
-          <div class="field-row">
-            <label class="field-label" for="date_of_birth">DOB</label>
-            <input type="text" id="date_of_birth" name="date_of_birth" value="{{ member.date_of_birth or '' }}" placeholder="YYYY-MM-DD" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="current_city">City</label>
-            <input type="text" id="current_city" name="current_city" value="{{ member.current_city or '' }}" placeholder="New York, NY" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="gender">Gender</label>
-            <input type="text" id="gender" name="gender" value="{{ member.gender or '' }}" placeholder="Male / Female / Non-binary" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="blood_group">Blood</label>
-            <input type="text" id="blood_group" name="blood_group" value="{{ member.blood_group or '' }}" placeholder="A+ / O- / B+" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="relationship_status">Status</label>
-            <input type="text" id="relationship_status" name="relationship_status" value="{{ member.relationship_status or '' }}" placeholder="Single / Married / ..." class="field-input">
-          </div>
-        </div>
-      </div>
-
-      {# ── WORK ── #}
-      <div class="dossier-card accent-work reveal">
-        <div class="dossier-card-header">
-          <span class="icon-box">&#9881;</span>
-          <h2>Work</h2>
-        </div>
-        <div class="dossier-card-body">
-          <div class="field-row">
-            <label class="field-label" for="occupation">Occupation</label>
-            <input type="text" id="occupation" name="occupation" value="{{ member.occupation or '' }}" placeholder="Software Engineer" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="current_company">Company</label>
-            <input type="text" id="current_company" name="current_company" value="{{ member.current_company or '' }}" placeholder="Google" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="current_status">Card Status</label>
-            <input type="text" id="current_status" name="current_status" value="{{ member.current_status or '' }}" placeholder="Software Engineer at Google" class="field-input">
-          </div>
-        </div>
-      </div>
-
       {# ── SQUAD DISPLAY ── #}
       <div class="dossier-card accent-squad reveal">
         <div class="dossier-card-header">
@@ -140,14 +181,6 @@
           <h2>Squad Display</h2>
         </div>
         <div class="dossier-card-body">
-          <div class="field-row">
-            <label class="field-label" for="tag">Tag</label>
-            <input type="text" id="tag" name="tag" value="{{ member.tag or '' }}" placeholder="THE BUILDER" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="quote">Quote</label>
-            <textarea id="quote" name="quote" placeholder="A memorable quote..." class="field-input field-textarea">{{ member.quote or '' }}</textarea>
-          </div>
           <div class="field-row">
             <label class="field-label" for="bio">Bio</label>
             <textarea id="bio" name="bio" placeholder="Tell your story..." class="field-input field-textarea">{{ member.bio or '' }}</textarea>
@@ -159,109 +192,10 @@
         </div>
       </div>
 
-      {# ── PHOTOS ── #}
-      <div class="dossier-card accent-photos reveal">
-        <div class="dossier-card-header">
-          <span class="icon-box">&#128247;</span>
-          <h2>Photos &amp; Files</h2>
-        </div>
-        <div class="dossier-card-body">
-          <div class="field-row">
-            <label class="field-label" for="photo">Avatar</label>
-            <div class="photo-upload-row">
-              <div class="photo-upload-preview">
-                {% if member.photo_url %}
-                <img src="{{ member.photo_url }}" alt="" class="photo-upload-thumb" loading="lazy">
-                {% else %}
-                <div class="photo-upload-placeholder">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                </div>
-                {% endif %}
-              </div>
-              <div class="photo-upload-action">
-                <input type="file" id="photo" name="photo" accept="image/*" class="photo-dropzone-input">
-                <label for="photo" class="photo-upload-btn">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                  Replace
-                </label>
-                <span class="photo-upload-name" id="file-chosen-photo">No file chosen</span>
-              </div>
-            </div>
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="image1">Squad Card</label>
-            <div class="photo-upload-row">
-              <div class="photo-upload-preview">
-                {% if member.image1 %}
-                <img src="{{ member.image1 }}" alt="" class="photo-upload-thumb" loading="lazy">
-                {% else %}
-                <div class="photo-upload-placeholder">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                </div>
-                {% endif %}
-              </div>
-              <div class="photo-upload-action">
-                <input type="file" id="image1" name="image1" accept="image/*" class="photo-dropzone-input">
-                <label for="image1" class="photo-upload-btn">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                  Replace
-                </label>
-                <span class="photo-upload-name" id="file-chosen-image1">No file chosen</span>
-              </div>
-            </div>
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="image2">Cover Photo</label>
-            <div class="photo-upload-row">
-              <div class="photo-upload-preview">
-                {% if member.image2 %}
-                <img src="{{ member.image2 }}" alt="" class="photo-upload-thumb" loading="lazy">
-                {% else %}
-                <div class="photo-upload-placeholder">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 5 5 4-4 5 5"/></svg>
-                </div>
-                {% endif %}
-              </div>
-              <div class="photo-upload-action">
-                <input type="file" id="image2" name="image2" accept="image/*" class="photo-dropzone-input">
-                <label for="image2" class="photo-upload-btn">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                  Replace
-                </label>
-                <span class="photo-upload-name" id="file-chosen-image2">No file chosen</span>
-              </div>
-            </div>
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="resume">Resume</label>
-            <div class="photo-upload-row">
-              <div class="photo-upload-preview">
-                {% if member.resume_url %}
-                <div class="photo-upload-placeholder" style="background:#E8E0D6">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5A5148" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                </div>
-                {% else %}
-                <div class="photo-upload-placeholder">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                </div>
-                {% endif %}
-              </div>
-              <div class="photo-upload-action">
-                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="photo-dropzone-input">
-                <label for="resume" class="photo-upload-btn">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                  Replace
-                </label>
-                <span class="photo-upload-name" id="file-chosen-resume">No file chosen</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {# ── Submit ── #}
-      <div class="text-center pt-2 pb-8 reveal">
-        <button type="submit" class="btn btn-primary btn-lg">
+      <div class="flex justify-end gap-3 pt-2 pb-8 reveal">
+        <a href="/behind-the-curtain" class="btn btn-secondary btn-md">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-md">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
           Save Profile
         </button>
@@ -270,17 +204,55 @@
     </form>
   </div>
 </div>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  ['photo', 'image1', 'image2', 'resume'].forEach(function(id) {
-    var input = document.getElementById(id);
-    var label = document.getElementById('file-chosen-' + id);
-    if (input && label) {
-      input.addEventListener('change', function() {
-        label.textContent = input.files.length === 0 ? 'No file chosen' : input.files[0].name;
-      });
-    }
-  });
-});
+(function() {
+  var detectBtn = document.getElementById('detect-city-btn');
+  var cityInput = document.getElementById('current_city');
+  var geoStatus = document.getElementById('geo-status');
+
+  if (detectBtn && cityInput && 'geolocation' in navigator) {
+    detectBtn.addEventListener('click', function() {
+      geoStatus.classList.remove('hidden');
+      geoStatus.textContent = 'Detecting location...';
+      geoStatus.style.color = '#8A7F76';
+
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        var lat = pos.coords.latitude;
+        var lng = pos.coords.longitude;
+        geoStatus.textContent = 'Reverse geocoding...';
+
+        fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng + '&addressdetails=1')
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            var addr = data.address || {};
+            var city = addr.city || addr.town || addr.village || addr.county || '';
+            var state = addr.state || '';
+            var country = addr.country || '';
+            var parts = [city, state].filter(Boolean);
+            var result = parts.length ? parts.join(', ') : country;
+            if (result) {
+              cityInput.value = result;
+              cityInput.dispatchEvent(new Event('input'));
+              geoStatus.textContent = 'Detected: ' + result;
+              geoStatus.style.color = '#3A7D5C';
+            } else {
+              geoStatus.textContent = 'Could not determine city from location.';
+              geoStatus.style.color = '#DC2626';
+            }
+          })
+          .catch(function() {
+            geoStatus.textContent = 'Geocoding failed. Try entering manually.';
+            geoStatus.style.color = '#DC2626';
+          });
+      }, function() {
+        geoStatus.textContent = 'Location access denied. Enter city manually.';
+        geoStatus.style.color = '#DC2626';
+      }, { timeout: 10000 });
+    });
+  } else if (detectBtn) {
+    detectBtn.style.display = 'none';
+  }
+})();
 </script>
 {% endblock %}

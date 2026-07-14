@@ -15,7 +15,7 @@ from app.database import engine, get_session
 from app.email_utils import send_email
 from app.image_utils import process_avatar, process_cover, process_gallery, process_squad_card, process_update_image
 from app.jinja import templates
-from app.models import GalleryItem, GlobalQuestion, Member, UpdatePost
+from app.models import GalleryItem, GlobalQuestion, InternalNote, Member, UpdatePost
 from app.schemas import UpdateCreate, UpdateEdit
 from app.services import gallery as gallery_svc
 from app.services import updates as updates_svc
@@ -28,13 +28,6 @@ PRIVATE_UPLOADS = [
     {"id": 2, "file_url": None, "title": "Road trip blooper reel", "uploaded_by": "Maya", "uploaded_at": "2026-06-18"},
     {"id": 3, "file_url": None, "title": "House party photos", "uploaded_by": "James", "uploaded_at": "2026-06-15"},
     {"id": 4, "file_url": None, "title": "Secret Santa outtakes", "uploaded_by": "Priya", "uploaded_at": "2026-06-10"},
-]
-
-INTERNAL_NOTES = [
-    {"id": 1, "author": "Alex", "message": "Who's bringing the grill to the reunion?", "posted_at": "2026-06-22"},
-    {"id": 2, "author": "Maya", "message": "I can bring chairs and a cooler. Also, does anyone have the old playlist?", "posted_at": "2026-06-22"},
-    {"id": 3, "author": "James", "message": "I've got the playlist! It's called 'Uni Vibes' and it's still on my Spotify.", "posted_at": "2026-06-21"},
-    {"id": 4, "author": "Priya", "message": "Can someone pick up Sara from the airport on the 14th?", "posted_at": "2026-06-20"},
 ]
 
 
@@ -216,11 +209,31 @@ async def uploads(request: Request, _auth: Member = Depends(get_current_member))
 
 
 @router.get("/notes", response_class=HTMLResponse)
-async def notes(request: Request, _auth: Member = Depends(get_current_member)):
+async def notes(
+    request: Request,
+    session: Session = Depends(get_session),
+    _auth: Member = Depends(get_current_member),
+):
+    notes_list = session.exec(
+        select(InternalNote).order_by(InternalNote.posted_at.desc())
+    ).all()
     return templates.TemplateResponse(
         "private/notes.html",
-        {"request": request, "notes_list": INTERNAL_NOTES, "member": _auth},
+        {"request": request, "notes_list": notes_list, "member": _auth},
     )
+
+
+@router.post("/notes", response_class=HTMLResponse)
+async def notes_post(
+    request: Request,
+    message: str = Form(min_length=1),
+    session: Session = Depends(get_session),
+    _auth: Member = Depends(get_current_member),
+):
+    note = InternalNote(author=_auth.name, message=message.strip())
+    session.add(note)
+    session.commit()
+    return RedirectResponse(url="/notes", status_code=303)
 
 
 @router.get("/updates/new", response_class=HTMLResponse)

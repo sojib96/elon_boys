@@ -21,31 +21,55 @@
       </div>
     </div>
 
+    {# ── New note form ── #}
     <div class="reveal mb-8">
-      <div class="dossier-card dashed accent-stone">
-        <div class="dossier-card-body text-center px-6 py-8">
-          <p class="font-sans text-[13px] text-dossier-body">New note form coming in a future sprint.</p>
+      <form method="post" action="/notes" class="dossier-card accent-gold">
+        <div class="dossier-card-header">
+          <span class="icon-box">&#9997;</span>
+          <h2>New Note</h2>
         </div>
-      </div>
+        <div class="dossier-card-body">
+          <div class="flex gap-3 items-start">
+            <div class="flex h-[34px] w-[34px] flex-shrink-0 items-center justify-center rounded-full bg-[#F5F1EA] font-sans text-[14px] font-bold text-dossier-body mt-1">{{ member.name[:1] }}</div>
+            <div class="flex-1 min-w-0">
+              <textarea name="message" rows="2" required
+                        class="field-input field-textarea mb-3"
+                        placeholder="Type your message..."></textarea>
+              <div class="flex justify-between items-center">
+                <span class="text-[10px] text-dossier-muted font-sans">Posted as <strong class="text-dossier-strong">{{ member.name }}</strong></span>
+                <button type="submit" class="btn btn-primary btn-sm">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
 
+    {# ── Notes list ── #}
     {% if notes_list %}
     <div class="space-y-4 stagger">
       {% for note in notes_list %}
-      {% set accent = 'accent-gold' if loop.index0 % 2 == 0 else 'accent-coral' %}
-      <div class="dossier-card {{ accent }}">
+      <div class="dossier-card {% if loop.index0 % 2 == 0 %}accent-gold{% else %}accent-coral{% endif %}">
         <div class="dossier-card-body px-5 py-4">
           <div class="mb-2.5 flex items-center gap-3">
             <div class="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-full bg-[#F5F1EA] font-sans text-[12px] font-bold text-dossier-body">{{ note.author[:1] }}</div>
             <div class="flex-1">
               <span class="font-sans text-[13px] font-semibold text-dossier-strong">{{ note.author }}</span>
-              <span class="ml-2 font-sans text-[10px] text-dossier-muted">{{ note.posted_at }}</span>
+              <span class="ml-2 font-sans text-[10px] text-dossier-muted">{{ note.posted_at.strftime('%b %d, %Y at %I:%M %p') }}</span>
             </div>
           </div>
           <p class="font-sans text-[13px] text-dossier-body leading-relaxed">{{ note.message }}</p>
         </div>
       </div>
       {% endfor %}
+    </div>
+    {% else %}
+    <div class="reveal">
+      <div class="dossier-card dashed accent-stone">
+        <div class="dossier-card-body text-center px-6 py-8">
+          <p class="font-sans text-[13px] text-dossier-body">No notes yet. Be the first to break the silence.</p>
+        </div>
+      </div>
     </div>
     {% endif %}
   </div>
