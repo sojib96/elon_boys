@@ -1,20 +1,37 @@
+# Python
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
+*$py.class
 .env
 venv/
 .venv/
-*.db
-static/uploads/*
-!static/uploads/.gitkeep
-app/static/uploads/updates/*
-app/static/uploads/gallery/*
-*.log
-data/
-SEEDED_CREDENTIALS.txt
+ENV/
 .pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Database
+*.db
+
+# Application Specific - Ignore everything in uploads except .gitkeep files
+app/static/uploads/**
+!app/static/uploads/.gitkeep
+!app/static/uploads/**/.gitkeep
+
+# Tooling and IDEs
 .playwright-mcp/
 screenshots/
-*.png
+.vscode/
+.idea/
+
+# Root Assets - Ignore PNGs only in the root directory
+/*.png
+
+# Misc
+*.log
+SEEDED_CREDENTIALS.txt
+data/
 test_forgot_flow.py
 tests/playwright_verification.py
