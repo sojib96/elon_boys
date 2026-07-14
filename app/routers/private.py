@@ -62,13 +62,12 @@ async def login_submit(
         return RedirectResponse("/behind-the-curtain", status_code=303)
 
     with Session(engine) as session:
-        if "@" in identifier:
+        member = session.exec(
+            select(Member).where(Member.username == identifier)
+        ).first()
+        if member is None:
             member = session.exec(
                 select(Member).where(Member.email == identifier)
-            ).first()
-        else:
-            member = session.exec(
-                select(Member).where(Member.username == identifier)
             ).first()
 
     if member is None or not verify_password(password, member.hashed_password):
