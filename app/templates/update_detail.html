@@ -100,12 +100,6 @@
     .body-text p {
         margin-bottom: 1.2em;
     }
-    @media (min-width: 768px) {
-        .body-text {
-            text-align: justify;
-        }
-    }
-
     /* ── Vintage image frame ── */
     .vintage-frame {
         border: 1px solid #D4C9B8;
@@ -135,17 +129,6 @@
         padding: 10px 16px 8px;
         background: #FAF7F2;
         border-top: 1px solid #E8E0D6;
-    }
-
-    /* ── Spread layout ── */
-    @media (min-width: 1024px) {
-        .spread {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: start;
-        }
-        .spread-image { position: sticky; top: 96px; }
     }
 
     /* ── Related posts (TOC index) ── */
@@ -239,10 +222,10 @@
 
 
         {# ── SPREAD: HERO IMAGE + HEADLINE ── #}
-        <div class="spread mb-12">
+        <div class="lg:grid lg:grid-cols-2 lg:gap-10 mb-12">
 
             {# ── LEFT: Hero image ── #}
-            <figure class="vintage-frame spread-image mb-6 lg:mb-0">
+            <figure class="vintage-frame lg:sticky lg:top-24 mb-6 lg:mb-0">
                 {% set active_images = post.images | selectattr('is_deleted', 'equalto', false) | list %}
                 {% if active_images | length > 0 %}
                 <img src="{{ active_images[0].file_url }}" alt="{{ active_images[0].alt_text or post.title }}"
@@ -280,7 +263,7 @@
         </div>
 
         {# ── FULL-WIDTH BODY: interleaved paragraphs + images ── #}
-        <div class="body-text max-w-3xl mx-auto">
+        <div class="body-text max-w-3xl mx-auto md:text-justify">
             {% for block in content_blocks %}
                 {% if block.type == "text" %}
                     <p>{{ block.content }}</p>

@@ -322,6 +322,23 @@
         }
     }
 
+    /* ── Touch/swipe support for gallery lightbox ── */
+    (function() {
+        var x0 = 0;
+        document.addEventListener('touchstart', function(e) {
+            if (!lightbox || lightbox.style.display === 'none') return;
+            x0 = e.changedTouches[0].screenX;
+        }, {passive: true});
+        document.addEventListener('touchend', function(e) {
+            if (!lightbox || lightbox.style.display === 'none') return;
+            var dx = e.changedTouches[0].screenX - x0;
+            if (Math.abs(dx) > 40) {
+                if (dx < 0) openLightbox(currentLightboxIdx + 1);
+                else openLightbox(currentLightboxIdx - 1);
+            }
+        }, {passive: true});
+    })();
+
     cards.forEach(function(card) {
         var img = card.querySelector('.gallery-card-img');
         if (img) {

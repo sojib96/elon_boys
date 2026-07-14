@@ -122,10 +122,6 @@
         border-radius: 4px;
     }
 
-    @media (max-width: 768px) {
-        .slider-arrow { display: none; }
-    }
-
     /* ── Section headers ── */
     .section-label {
         font-family: 'Inter', system-ui, sans-serif;
@@ -405,10 +401,10 @@
         {% endif %}
     </div>
     {% if slider_images | length > 1 %}
-    <button class="slider-arrow prev" onclick="prevSlide()" aria-label="Previous slide">
+    <button class="slider-arrow prev hidden md:flex" onclick="prevSlide()" aria-label="Previous slide">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <button class="slider-arrow next" onclick="nextSlide()" aria-label="Next slide">
+    <button class="slider-arrow next hidden md:flex" onclick="nextSlide()" aria-label="Next slide">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
     </button>
     <div class="slider-dots">
@@ -600,6 +596,22 @@ function goToSlide(idx) {
     resetAuto();
 }
 
+/* ── Touch/swipe support for hero slider ── */
+(function() {
+    var container = document.querySelector('.slider-container');
+    if (!container) return;
+    var x0 = 0;
+    container.addEventListener('touchstart', function(e) {
+        x0 = e.changedTouches[0].screenX;
+    }, {passive: true});
+    container.addEventListener('touchend', function(e) {
+        var dx = e.changedTouches[0].screenX - x0;
+        if (Math.abs(dx) > 40) {
+            if (dx < 0) nextSlide(); else prevSlide();
+        }
+    }, {passive: true});
+})();
+
 function resetAuto() {
     clearInterval(autoSlide);
     if (totalSlides > 1) {
@@ -638,6 +650,23 @@ function prevGalleryImg() {
     currentGalleryIdx = (currentGalleryIdx - 1 + galleryImages.length) % galleryImages.length;
     document.getElementById('homeLightboxImg').src = galleryImages[currentGalleryIdx];
 }
+
+/* ── Touch/swipe support for home lightbox ── */
+(function() {
+    var lb = document.getElementById('homeLightbox');
+    if (!lb) return;
+    var x0 = 0;
+    lb.addEventListener('touchstart', function(e) {
+        x0 = e.changedTouches[0].screenX;
+    }, {passive: true});
+    lb.addEventListener('touchend', function(e) {
+        if (galleryImages.length < 2) return;
+        var dx = e.changedTouches[0].screenX - x0;
+        if (Math.abs(dx) > 40) {
+            if (dx < 0) nextGalleryImg(); else prevGalleryImg();
+        }
+    }, {passive: true});
+})();
 
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLightbox();
