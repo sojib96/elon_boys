@@ -1,0 +1,17 @@
+{% macro file_dropzone(id, name, multiple=false, accept="image/*", label="Photos", hint="Drop photos here or click to browse") %}
+<div class="photo-dropzone" data-multiple="{{ 'true' if multiple else 'false' }}">
+  <input type="file" id="{{ id }}" name="{{ name }}" {% if multiple %}multiple{% endif %} accept="{{ accept }}" class="photo-dropzone-input">
+  <label for="{{ id }}" class="photo-dropzone-label">
+    <span class="photo-dropzone-plus">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M12 5v14"/><path d="M5 12h14"/>
+      </svg>
+    </span>
+    <span class="photo-dropzone-title">{{ label }}</span>
+    <span class="photo-dropzone-hint">{{ hint }}</span>
+  </label>
+  <div class="photo-dropzone-files" id="preview-{{ id }}">
+    <span class="photo-dropzone-empty">No files selected</span>
+  </div>
+</div>
+{% endmacro %}

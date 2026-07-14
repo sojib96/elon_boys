@@ -168,46 +168,92 @@
         <div class="dossier-card-body">
           <div class="field-row">
             <label class="field-label" for="photo">Avatar</label>
-            <div>
-              <div class="file-upload-wrapper">
-                <input type="file" id="photo" name="photo" accept="image/*" class="field-file-input">
-                <label for="photo" class="field-file-label">Choose File</label>
-                <span class="file-chosen" id="file-chosen-photo">No file chosen</span>
+            <div class="photo-upload-row">
+              <div class="photo-upload-preview">
+                {% if member.photo_url %}
+                <img src="{{ member.photo_url }}" alt="" class="photo-upload-thumb" loading="lazy">
+                {% else %}
+                <div class="photo-upload-placeholder">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                {% endif %}
               </div>
-              {% if member.photo_url %}<p class="field-meta">Current: {{ member.photo_url }}</p>{% endif %}
+              <div class="photo-upload-action">
+                <input type="file" id="photo" name="photo" accept="image/*" class="photo-dropzone-input">
+                <label for="photo" class="photo-upload-btn">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  Replace
+                </label>
+                <span class="photo-upload-name" id="file-chosen-photo">No file chosen</span>
+              </div>
             </div>
           </div>
           <div class="field-row">
             <label class="field-label" for="image1">Squad Card</label>
-            <div>
-              <div class="file-upload-wrapper">
-                <input type="file" id="image1" name="image1" accept="image/*" class="field-file-input">
-                <label for="image1" class="field-file-label">Choose File</label>
-                <span class="file-chosen" id="file-chosen-image1">No file chosen</span>
+            <div class="photo-upload-row">
+              <div class="photo-upload-preview">
+                {% if member.image1 %}
+                <img src="{{ member.image1 }}" alt="" class="photo-upload-thumb" loading="lazy">
+                {% else %}
+                <div class="photo-upload-placeholder">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                </div>
+                {% endif %}
               </div>
-              {% if member.image1 %}<p class="field-meta">Current: {{ member.image1 }}</p>{% endif %}
+              <div class="photo-upload-action">
+                <input type="file" id="image1" name="image1" accept="image/*" class="photo-dropzone-input">
+                <label for="image1" class="photo-upload-btn">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  Replace
+                </label>
+                <span class="photo-upload-name" id="file-chosen-image1">No file chosen</span>
+              </div>
             </div>
           </div>
           <div class="field-row">
             <label class="field-label" for="image2">Cover Photo</label>
-            <div>
-              <div class="file-upload-wrapper">
-                <input type="file" id="image2" name="image2" accept="image/*" class="field-file-input">
-                <label for="image2" class="field-file-label">Choose File</label>
-                <span class="file-chosen" id="file-chosen-image2">No file chosen</span>
+            <div class="photo-upload-row">
+              <div class="photo-upload-preview">
+                {% if member.image2 %}
+                <img src="{{ member.image2 }}" alt="" class="photo-upload-thumb" loading="lazy">
+                {% else %}
+                <div class="photo-upload-placeholder">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 5 5 4-4 5 5"/></svg>
+                </div>
+                {% endif %}
               </div>
-              {% if member.image2 %}<p class="field-meta">Current: {{ member.image2 }}</p>{% endif %}
+              <div class="photo-upload-action">
+                <input type="file" id="image2" name="image2" accept="image/*" class="photo-dropzone-input">
+                <label for="image2" class="photo-upload-btn">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  Replace
+                </label>
+                <span class="photo-upload-name" id="file-chosen-image2">No file chosen</span>
+              </div>
             </div>
           </div>
           <div class="field-row">
             <label class="field-label" for="resume">Resume</label>
-            <div>
-              <div class="file-upload-wrapper">
-                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="field-file-input">
-                <label for="resume" class="field-file-label">Choose File</label>
-                <span class="file-chosen" id="file-chosen-resume">No file chosen</span>
+            <div class="photo-upload-row">
+              <div class="photo-upload-preview">
+                {% if member.resume_url %}
+                <div class="photo-upload-placeholder" style="background:#E8E0D6">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5A5148" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                {% else %}
+                <div class="photo-upload-placeholder">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                {% endif %}
               </div>
-              {% if member.resume_url %}<p class="field-meta">Current: {{ member.resume_url }}</p>{% endif %}
+              <div class="photo-upload-action">
+                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="photo-dropzone-input">
+                <label for="resume" class="photo-upload-btn">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  Replace
+                </label>
+                <span class="photo-upload-name" id="file-chosen-resume">No file chosen</span>
+              </div>
             </div>
           </div>
         </div>

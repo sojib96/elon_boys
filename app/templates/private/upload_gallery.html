@@ -2,12 +2,14 @@
 {% block title %}Upload to Gallery — Elon Boys{% endblock %}
 {% block body_class %} page-private{% endblock %}
 
+{% from "private/partials/_file_upload.html" import file_dropzone %}
+
 {% block content %}
 <link rel="stylesheet" href="/static/css/private.css">
 
 <div class="dossier-page">
   <div class="max-w-2xl mx-auto">
-    <div class="reveal">
+    <div class="reveal mb-8">
       <div class="top-bar">
         <a href="/behind-the-curtain" class="back-link">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
@@ -21,58 +23,55 @@
       </div>
     </div>
 
-    <form method="POST" action="/gallery/upload" enctype="multipart/form-data" class="space-y-5 stagger">
+    <form method="POST" action="/gallery/upload" enctype="multipart/form-data" class="space-y-6 stagger">
 
-      <div class="dossier-card accent-terracotta reveal">
-        <div class="dossier-card-header">
-          <span class="icon-box">&#9998;</span>
-          <h2>Title</h2>
+      <div class="reveal flex flex-col sm:flex-row gap-4">
+        <div class="flex-1">
+          <label class="field-label mb-1.5 block" for="title">Title</label>
+          <input type="text" id="title" name="title" value="{{ form.title | default('') }}" class="field-input {% if errors.title %}input-error{% endif %}" placeholder="Give your photo a name">
+          {% if errors.title %}<p class="field-meta field-error">{{ errors.title }}</p>{% endif %}
         </div>
-        <div class="dossier-card-body">
-          <div class="field-row">
-            <label class="field-label" for="title">Title</label>
-            <div class="w-full">
-              <input type="text" id="title" name="title" value="{{ form.title | default('') }}" class="field-input {% if errors.title %}input-error{% endif %}" placeholder="Give your photo a name">
-              {% if errors.title %}<p class="field-meta field-error">{{ errors.title }}</p>{% endif %}
+        <div class="sm:w-48">
+          <label class="field-label mb-1.5 block" for="category">Category</label>
+          <div class="flex items-center gap-2">
+            <select id="category" name="category" class="field-select flex-1">
+              <option value="" disabled {% if not form.category %}selected{% endif %}>Select a category</option>
+              {% for cat in categories %}
+              <option value="{{ cat }}" {% if form.category == cat %}selected{% endif %}>{{ cat }}</option>
+              {% endfor %}
+            </select>
+            <button type="button" id="add-category-btn" class="flex h-[30px] w-[30px] flex-shrink-0 cursor-pointer items-center justify-center rounded-sm border border-[#D4C9B8] bg-transparent transition-colors hover:border-[#8B3A3A]" title="Add a new category">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A7F76" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            </button>
+          </div>
+          <div id="new-category-wrapper" class="mt-2" style="display:none;">
+            <div class="flex items-center gap-2">
+              <input type="text" id="new-category-input" class="flex-1 rounded-sm border border-[#D4C9B8] bg-[#F5F1EA] px-2.5 py-1.5 font-sans text-[13px] text-[#1A1614] outline-none" placeholder="New category name" maxlength="50">
+              <button type="button" id="confirm-category-btn" class="btn btn-sm btn-primary">Add</button>
+              <button type="button" id="cancel-category-btn" class="btn btn-secondary btn-sm">Cancel</button>
             </div>
           </div>
+          {% if errors.category %}
+          <p class="field-meta field-error mt-1">{{ errors.category }}</p>
+          {% endif %}
         </div>
       </div>
 
-      <div class="dossier-card accent-amber reveal">
-        <div class="dossier-card-header">
-          <span class="icon-box">&#128193;</span>
-          <h2>Category</h2>
-        </div>
-        <div class="dossier-card-body">
-          <div class="field-row">
-            <label class="field-label" for="category">Category</label>
-            <div class="w-full">
-              <div class="flex items-center gap-2">
-                <select id="category" name="category" class="field-select flex-1">
-                  <option value="" disabled {% if not form.category %}selected{% endif %}>Select a category</option>
-                  {% for cat in categories %}
-                  <option value="{{ cat }}" {% if form.category == cat %}selected{% endif %}>{{ cat }}</option>
-                  {% endfor %}
-                </select>
-                <button type="button" id="add-category-btn" class="flex h-[30px] w-[30px] flex-shrink-0 cursor-pointer items-center justify-center rounded-sm border border-[#D4C9B8] bg-transparent transition-colors hover:border-[#8B3A3A]" title="Add a new category">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A7F76" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-                </button>
-              </div>
-              <div id="new-category-wrapper" class="mt-2.5" style="display:none;">
-                <div class="flex items-center gap-2">
-                  <input type="text" id="new-category-input" class="flex-1 rounded-sm border border-[#D4C9B8] bg-[#F5F1EA] px-2.5 py-1.5 font-sans text-[13px] text-[#1A1614] outline-none" placeholder="New category name" maxlength="50">
-                  <button type="button" id="confirm-category-btn" class="btn btn-sm btn-primary">Add</button>
-                  <button type="button" id="cancel-category-btn" class="btn btn-secondary btn-sm">Cancel</button>
-                </div>
-              </div>
-              {% if errors.category %}
-              <p class="field-meta field-error">{{ errors.category }}</p>
-              {% endif %}
-            </div>
-          </div>
-        </div>
+      <div class="reveal">
+        {{ file_dropzone('files', 'files', multiple=true) }}
+        <p class="field-meta mt-2">Accepted formats: JPG, PNG, GIF, WebP. Multiple files allowed.</p>
+        {% if errors.files %}
+        <p class="field-meta field-error mt-1">{{ errors.files }}</p>
+        {% endif %}
       </div>
+
+      <div class="flex justify-end gap-3 pt-2 reveal">
+        <a href="/gallery" class="btn btn-secondary btn-sm">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-md">Upload</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -113,41 +112,25 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   var fileInput = document.getElementById('files');
-  var fileChosen = document.getElementById('file-chosen');
+  var preview = document.getElementById('preview-files');
   if (fileInput) {
     fileInput.addEventListener('change', function() {
-      var count = fileInput.files.length;
-      fileChosen.textContent = count === 0 ? 'No file chosen' : count + ' file' + (count > 1 ? 's' : '') + ' selected';
+      var files = fileInput.files;
+      var count = files.length;
+      if (count === 0) {
+        preview.innerHTML = '<span class="photo-dropzone-empty">No files selected</span>';
+        return;
+      }
+      var html = '<span class="photo-dropzone-count">' + count + ' file' + (count > 1 ? 's' : '') + ' selected</span>';
+      for (var i = 0; i < Math.min(count, 5); i++) {
+        html += '<span class="photo-dropzone-file">' + files[i].name + '</span>';
+      }
+      if (count > 5) {
+        html += '<span class="photo-dropzone-file" style="color:#8A7F76;font-style:italic">+' + (count - 5) + ' more</span>';
+      }
+      preview.innerHTML = html;
     });
   }
 });
 </script>
-
-      <div class="dossier-card dashed accent-moss reveal">
-        <div class="dossier-card-header">
-          <span class="icon-box">&#128247;</span>
-          <h2>Images</h2>
-        </div>
-        <div class="dossier-card-body">
-          <div>
-            <div class="file-upload-wrapper">
-              <input type="file" id="files" name="files" multiple accept="image/*" class="field-file-input">
-              <label for="files" class="field-file-label">Choose Files</label>
-              <span class="file-chosen" id="file-chosen">No file chosen</span>
-            </div>
-            <p class="field-meta mt-1.5">Accepted formats: JPG, PNG, GIF, WebP. Multiple files allowed.</p>
-            {% if errors.files %}
-            <p class="field-meta field-error">{{ errors.files }}</p>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-
-      <div class="flex justify-end gap-3 pt-2 reveal">
-        <a href="/gallery" class="btn btn-secondary btn-sm">Cancel</a>
-        <button type="submit" class="btn btn-primary btn-md">Upload</button>
-      </div>
-    </form>
-  </div>
-</div>
 {% endblock %}

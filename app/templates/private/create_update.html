@@ -2,6 +2,8 @@
 {% block title %}{% if post %}Edit Update{% else %}Create Update{% endif %} — Elon Boys{% endblock %}
 {% block body_class %} page-private{% endblock %}
 
+{% from "private/partials/_file_upload.html" import file_dropzone %}
+
 {% block content %}
 <link rel="stylesheet" href="/static/css/private.css">
 
@@ -104,26 +106,14 @@
       </div>
       {% endif %}
 
-      <div class="dossier-card dashed accent-moss reveal">
-        <div class="dossier-card-header">
-          <span class="icon-box">&#128247;</span>
-          <h2>{% if post %}Add More Images{% else %}Images{% endif %} <span class="field-optional">(optional)</span></h2>
-        </div>
-        <div class="dossier-card-body">
-          <div>
-            <div class="file-upload-wrapper">
-              <input type="file" id="files" name="files" multiple accept="image/*" class="field-file-input">
-              <label for="files" class="field-file-label">Choose Files</label>
-              <span class="file-chosen" id="file-chosen">No file chosen</span>
-            </div>
-            <p class="field-meta mt-1.5">Select up to 10 images. Accepted formats: JPG, PNG, GIF.</p>
-            {% if errors.files %}
-            {% for msg in errors.files %}
-            <p class="field-meta field-error">{{ msg }}</p>
-            {% endfor %}
-            {% endif %}
-          </div>
-        </div>
+      <div class="reveal">
+        {{ file_dropzone('files', 'files', multiple=true, label='Images', hint='Drop photos here or click to add up to 10') }}
+        <p class="field-meta mt-2">Accepted formats: JPG, PNG, GIF. Up to 10 images.</p>
+        {% if errors.files %}
+        {% for msg in errors.files %}
+        <p class="field-meta field-error">{{ msg }}</p>
+        {% endfor %}
+        {% endif %}
       </div>
 
       <div class="flex justify-end gap-3 pt-2 reveal">
@@ -136,11 +126,23 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   var fileInput = document.getElementById('files');
-  var fileChosen = document.getElementById('file-chosen');
+  var preview = document.getElementById('preview-files');
   if (fileInput) {
     fileInput.addEventListener('change', function() {
-      var count = fileInput.files.length;
-      fileChosen.textContent = count === 0 ? 'No file chosen' : count + ' file' + (count > 1 ? 's' : '') + ' selected';
+      var files = fileInput.files;
+      var count = files.length;
+      if (count === 0) {
+        preview.innerHTML = '<span class="photo-dropzone-empty">No files selected</span>';
+        return;
+      }
+      var html = '<span class="photo-dropzone-count">' + count + ' file' + (count > 1 ? 's' : '') + ' selected</span>';
+      for (var i = 0; i < Math.min(count, 5); i++) {
+        html += '<span class="photo-dropzone-file">' + files[i].name + '</span>';
+      }
+      if (count > 5) {
+        html += '<span class="photo-dropzone-file" style="color:#8A7F76;font-style:italic">+' + (count - 5) + ' more</span>';
+      }
+      preview.innerHTML = html;
     });
   }
 });
