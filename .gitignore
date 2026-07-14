@@ -39,3 +39,5 @@ tests/playwright_verification.py
 # Seed data — member names/emails are kept out of the repo
 scripts/seed_data.json
 scripts/SEEDED_CREDENTIALS.txt
+scripts/schema.sql
+scripts/seed_insert.sql
