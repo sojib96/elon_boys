@@ -111,6 +111,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (e.key === 'Enter') { e.preventDefault(); addCategory(); }
     if (e.key === 'Escape') { wrapper.style.display = 'none'; input.value = ''; }
   });
+
+  var fileInput = document.getElementById('files');
+  var fileChosen = document.getElementById('file-chosen');
+  if (fileInput) {
+    fileInput.addEventListener('change', function() {
+      var count = fileInput.files.length;
+      fileChosen.textContent = count === 0 ? 'No file chosen' : count + ' file' + (count > 1 ? 's' : '') + ' selected';
+    });
+  }
 });
 </script>
 
@@ -121,7 +130,11 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         <div class="dossier-card-body">
           <div>
-            <input type="file" id="files" name="files" multiple accept="image/*" class="field-file">
+            <div class="file-upload-wrapper">
+              <input type="file" id="files" name="files" multiple accept="image/*" class="field-file-input">
+              <label for="files" class="field-file-label">Choose Files</label>
+              <span class="file-chosen" id="file-chosen">No file chosen</span>
+            </div>
             <p class="field-meta mt-1.5">Accepted formats: JPG, PNG, GIF, WebP. Multiple files allowed.</p>
             {% if errors.files %}
             <p class="field-meta field-error">{{ errors.files }}</p>

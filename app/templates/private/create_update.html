@@ -111,7 +111,11 @@
         </div>
         <div class="dossier-card-body">
           <div>
-            <input type="file" id="files" name="files" multiple accept="image/*" class="field-file file-dossier">
+            <div class="file-upload-wrapper">
+              <input type="file" id="files" name="files" multiple accept="image/*" class="field-file-input">
+              <label for="files" class="field-file-label">Choose Files</label>
+              <span class="file-chosen" id="file-chosen">No file chosen</span>
+            </div>
             <p class="field-meta mt-1.5">Select up to 10 images. Accepted formats: JPG, PNG, GIF.</p>
             {% if errors.files %}
             {% for msg in errors.files %}
@@ -129,4 +133,16 @@
     </form>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var fileInput = document.getElementById('files');
+  var fileChosen = document.getElementById('file-chosen');
+  if (fileInput) {
+    fileInput.addEventListener('change', function() {
+      var count = fileInput.files.length;
+      fileChosen.textContent = count === 0 ? 'No file chosen' : count + ' file' + (count > 1 ? 's' : '') + ' selected';
+    });
+  }
+});
+</script>
 {% endblock %}

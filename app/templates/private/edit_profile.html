@@ -169,28 +169,44 @@
           <div class="field-row">
             <label class="field-label" for="photo">Avatar</label>
             <div>
-              <input type="file" id="photo" name="photo" accept="image/*" class="field-file">
+              <div class="file-upload-wrapper">
+                <input type="file" id="photo" name="photo" accept="image/*" class="field-file-input">
+                <label for="photo" class="field-file-label">Choose File</label>
+                <span class="file-chosen" id="file-chosen-photo">No file chosen</span>
+              </div>
               {% if member.photo_url %}<p class="field-meta">Current: {{ member.photo_url }}</p>{% endif %}
             </div>
           </div>
           <div class="field-row">
             <label class="field-label" for="image1">Squad Card</label>
             <div>
-              <input type="file" id="image1" name="image1" accept="image/*" class="field-file">
+              <div class="file-upload-wrapper">
+                <input type="file" id="image1" name="image1" accept="image/*" class="field-file-input">
+                <label for="image1" class="field-file-label">Choose File</label>
+                <span class="file-chosen" id="file-chosen-image1">No file chosen</span>
+              </div>
               {% if member.image1 %}<p class="field-meta">Current: {{ member.image1 }}</p>{% endif %}
             </div>
           </div>
           <div class="field-row">
             <label class="field-label" for="image2">Cover Photo</label>
             <div>
-              <input type="file" id="image2" name="image2" accept="image/*" class="field-file">
+              <div class="file-upload-wrapper">
+                <input type="file" id="image2" name="image2" accept="image/*" class="field-file-input">
+                <label for="image2" class="field-file-label">Choose File</label>
+                <span class="file-chosen" id="file-chosen-image2">No file chosen</span>
+              </div>
               {% if member.image2 %}<p class="field-meta">Current: {{ member.image2 }}</p>{% endif %}
             </div>
           </div>
           <div class="field-row">
             <label class="field-label" for="resume">Resume</label>
             <div>
-              <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="field-file">
+              <div class="file-upload-wrapper">
+                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="field-file-input">
+                <label for="resume" class="field-file-label">Choose File</label>
+                <span class="file-chosen" id="file-chosen-resume">No file chosen</span>
+              </div>
               {% if member.resume_url %}<p class="field-meta">Current: {{ member.resume_url }}</p>{% endif %}
             </div>
           </div>
@@ -208,4 +224,17 @@
     </form>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  ['photo', 'image1', 'image2', 'resume'].forEach(function(id) {
+    var input = document.getElementById(id);
+    var label = document.getElementById('file-chosen-' + id);
+    if (input && label) {
+      input.addEventListener('change', function() {
+        label.textContent = input.files.length === 0 ? 'No file chosen' : input.files[0].name;
+      });
+    }
+  });
+});
+</script>
 {% endblock %}
