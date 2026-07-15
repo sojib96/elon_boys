@@ -143,9 +143,6 @@ async def forgot_password_submit(
             new_password = secrets.token_urlsafe(12)
             member.hashed_password = hash_password(new_password)
             session.add(member)
-            session.commit()
-
-            request.session.pop("forgot_email", None)
 
             body = (
                 f"Hey {member.nickname},\n\n"
@@ -157,7 +154,17 @@ async def forgot_password_submit(
                 f"Cheers,\nThe Elon Boys Website\n"
                 f"(P.S. We're not mad, just disappointed.)"
             )
-            send_email(email_from_form, "Elon Boys — Your New Password", body)
+
+            if not send_email(email_from_form, "Elon Boys — Your New Password", body):
+                session.rollback()
+                return templates.TemplateResponse(
+                    "private/forgot_password.html",
+                    {"request": request, "error": "Failed to send email. Try again or contact an admin.", "success": None, "question": None, "email": None},
+                    status_code=500,
+                )
+
+            session.commit()
+            request.session.pop("forgot_email", None)
 
             return templates.TemplateResponse(
                 "private/forgot_password.html",
