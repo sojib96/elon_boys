@@ -523,18 +523,18 @@
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  border: 1px solid #E8E0D6;
-  border-left: 3px solid #D4C9B8;
+  border: 1px solid var(--login-border);
+  border-left: 3px solid var(--login-border);
   border-radius: 2px;
   cursor: pointer;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 .option-item:hover {
-  border-left-color: #8B3A3A;
-  background: #FDF8F4;
+  border-left-color: var(--login-accent);
+  background: rgba(128, 0, 0, 0.06);
 }
 .option-item input[type="radio"] {
-  accent-color: #8B3A3A;
+  accent-color: var(--login-accent);
   width: 16px;
   height: 16px;
   cursor: pointer;
@@ -542,7 +542,7 @@
 .option-item label {
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 14px;
-  color: #1A1614;
+  color: var(--login-cream);
   cursor: pointer;
   flex: 1;
 }
@@ -552,11 +552,37 @@
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 600;
   font-size: 16px;
-  color: #1A1614;
+  color: var(--login-cream);
   line-height: 1.5;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #E8E0D6;
+  border-bottom: 1px solid var(--login-border);
+}
+
+/* ── Login success card (forgot password flow) ── */
+.login-success-card {
+  background: var(--login-card);
+  border: 1px solid var(--login-accent);
+  border-radius: 2px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  max-width: 360px;
+  margin: 0 auto;
+}
+.login-success-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--login-cream);
+  margin-bottom: 0.5rem;
+}
+.login-success-body {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--login-muted);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
 }
 
 /* ── Success card ── */
@@ -644,13 +670,15 @@
    ══════════════════════════════════════════════════════════════ */
 
 .page-login {
-  --login-burgundy: #3E0808;
+  --login-bg: #0A0505;
+  --login-card: #1C1818;
+  --login-accent: #800000;
+  --login-accent-hover: #993333;
   --login-gold: #C4A35A;
-  --login-parchment: #FAF7F2;
-  --login-ink: #1A1410;
-  --login-taupe: #8A7B68;
-  --login-border: #DFD3C0;
-  --login-field-bg: #EDE6D8;
+  --login-cream: #EDE6D8;
+  --login-muted: #8A7A7A;
+  --login-input: #241E1E;
+  --login-border: #2A2222;
 }
 
 body.page-login > nav,
@@ -666,7 +694,7 @@ body.page-login #scroll-top {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--login-burgundy);
+  background: var(--login-bg);
   overflow: hidden;
 }
 
@@ -681,7 +709,8 @@ body.page-login #scroll-top {
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 900;
   font-size: clamp(5rem, 16vw, 14rem);
-  color: rgba(242, 235, 224, 0.035);
+  color: rgba(196, 163, 90, 0.05);
+  text-shadow: 0 0 60px rgba(196, 163, 90, 0.03), 0 0 120px rgba(196, 163, 90, 0.015);
   letter-spacing: 0.1em;
   line-height: 1;
   white-space: nowrap;
@@ -708,9 +737,9 @@ body.page-login #scroll-top {
 /* ── Card ── */
 .login-card {
   position: relative;
-  background: var(--login-parchment);
-  border-left: 4px solid var(--login-gold);
-  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: var(--login-card);
+  border-left: 4px solid var(--login-accent);
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* ── Slow scan effect ── */
@@ -723,9 +752,9 @@ body.page-login #scroll-top {
     to bottom,
     transparent 0%,
     transparent 35%,
-    rgba(196, 163, 90, 0.04) 45%,
-    rgba(196, 163, 90, 0.08) 50%,
-    rgba(196, 163, 90, 0.04) 55%,
+    rgba(196, 163, 90, 0.03) 45%,
+    rgba(196, 163, 90, 0.07) 50%,
+    rgba(196, 163, 90, 0.03) 55%,
     transparent 65%,
     transparent 100%
   );
@@ -749,7 +778,7 @@ body.page-login #scroll-top {
   font-weight: 900;
   font-size: clamp(1.5rem, 3.5vw, 2rem);
   letter-spacing: 0.28em;
-  color: var(--login-ink);
+  color: var(--login-cream);
   line-height: 1.1;
   text-align: center;
 }
@@ -757,8 +786,9 @@ body.page-login #scroll-top {
 .login-rule {
   width: 56px;
   height: 2px;
-  background: var(--login-taupe);
+  background: var(--login-gold);
   margin: 16px auto 14px;
+  opacity: 0.5;
 }
 
 .login-meta {
@@ -773,7 +803,7 @@ body.page-login #scroll-top {
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--login-ink);
+  color: var(--login-muted);
 }
 
 /* ── Form body ── */
@@ -785,20 +815,21 @@ body.page-login #scroll-top {
 .login-crest {
   width: 48px;
   height: 48px;
-  border: 2px solid var(--login-border);
+  border: 2px solid var(--login-gold);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.25rem;
-  color: var(--login-taupe);
+  color: var(--login-gold);
+  opacity: 0.8;
 }
 
 .login-heading {
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700;
   font-size: clamp(1.9rem, 4vw, 2.4rem);
-  color: var(--login-ink);
+  color: var(--login-cream);
   line-height: 1.1;
   letter-spacing: -0.02em;
   margin-bottom: 0.4rem;
@@ -808,22 +839,24 @@ body.page-login #scroll-top {
   font-family: 'Lora', Georgia, serif;
   font-style: italic;
   font-size: 12px;
-  color: var(--login-taupe);
+  color: var(--login-muted);
   line-height: 1.5;
   margin-bottom: 1.75rem;
 }
 
 /* ── Error banner ── */
 .login-error {
-  background: rgba(196, 163, 90, 0.08);
-  border: 1px solid rgba(196, 163, 90, 0.25);
-  color: #5C3030;
-  font-family: 'Lora', Georgia, serif;
-  font-size: 12px;
-  padding: 10px 14px;
+  background: rgba(128, 0, 0, 0.12);
+  border: 1px solid rgba(128, 0, 0, 0.25);
+  border-left: 3px solid var(--login-accent);
+  color: #F0D8D0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 14px 18px 14px 18px;
   margin-bottom: 1.25rem;
   text-align: center;
-  border-radius: 1px;
+  border-radius: 2px;
 }
 
 /* ── Form ── */
@@ -842,7 +875,7 @@ body.page-login #scroll-top {
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--login-taupe);
+  color: var(--login-muted);
   margin-bottom: 6px;
   text-align: left;
   padding-top: 0;
@@ -857,7 +890,7 @@ body.page-login #scroll-top {
   left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--login-taupe);
+  color: var(--login-muted);
   pointer-events: none;
 }
 
@@ -867,8 +900,8 @@ body.page-login #scroll-top {
   padding: 13px 14px 13px 44px;
   font-family: 'Lora', Georgia, serif;
   font-size: 15px;
-  color: var(--login-ink);
-  background: var(--login-field-bg);
+  color: var(--login-cream);
+  background: var(--login-input);
   border: 1.5px solid transparent;
   border-bottom: 1.5px solid var(--login-border);
   border-radius: 0;
@@ -876,19 +909,19 @@ body.page-login #scroll-top {
 }
 
 .login-form .field-wrapper .field-input::placeholder {
-  color: #8C8170;
+  color: #5A4A4A;
   font-size: 14px;
   font-style: italic;
 }
 
 .login-form .field-wrapper .field-input:focus {
-  background: #F7F0E4;
+  background: #2A2222;
   border-color: var(--login-border);
-  border-bottom-color: var(--login-ink);
+  border-bottom-color: var(--login-accent);
 }
 
 .login-form .field-wrapper .field-input.input-error {
-  border-bottom-color: #8B3A3A;
+  border-bottom-color: #D55C3A;
 }
 
 /* ── Button ── */
@@ -905,27 +938,39 @@ body.page-login #scroll-top {
   font-size: 14px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #1A1410;
-  background: #B08D40;
+  color: var(--login-cream);
+  background: var(--login-accent);
   border: 1.5px solid transparent;
-  border-bottom: 1.5px solid transparent;
   cursor: pointer;
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .btn-login:hover {
-  background: #3E0808;
-  color: var(--login-gold);
-  border-color: rgba(196, 163, 90, 0.25);
-  border-bottom-color: var(--login-gold);
+  background: var(--login-accent-hover);
+  color: var(--login-cream);
+}
+
+.btn-login:active {
+  background: #660000;
 }
 
 .btn-login .btn-arrow {
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .btn-login:hover .btn-arrow {
   transform: translateX(3px);
+}
+
+/* ── Step indicator ── */
+.login-step {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--login-muted);
+  margin-bottom: 1.25rem;
+  opacity: 0.7;
 }
 
 /* ── Card footer ── */
@@ -943,19 +988,24 @@ body.page-login #scroll-top {
 .login-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--login-taupe);
+  color: var(--login-gold);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .login-link:hover {
-  color: var(--login-gold);
+  color: #D4B86A;
+}
+
+.login-link svg {
+  width: 12px;
+  height: 12px;
 }
 
 .login-back svg {
@@ -977,7 +1027,7 @@ body.page-login #scroll-top {
   .login-watermark {
     font-size: clamp(4rem, 12vw, 8rem);
     letter-spacing: 0.06em;
-    color: rgba(242, 235, 224, 0.025);
+    color: rgba(196, 163, 90, 0.035);
   }
 
   .login-container {
@@ -985,7 +1035,7 @@ body.page-login #scroll-top {
   }
 
   .login-card::after {
-    opacity: 0.5;
+    opacity: 0.3;
   }
 
   .login-masthead {
@@ -1038,7 +1088,7 @@ body.page-login #scroll-top {
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   .login-card {
-    border-left: 4px solid var(--login-gold);
+    border-left: 4px solid var(--login-accent);
   }
 
   .login-card::after {
