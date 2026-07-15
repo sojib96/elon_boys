@@ -915,12 +915,13 @@ body.page-login #scroll-top {
 
 .btn-login:hover {
   background: #3E0808;
-  border-color: var(--login-border);
-  border-bottom-color: var(--login-ink);
+  color: var(--login-gold);
+  border-color: rgba(196, 163, 90, 0.25);
+  border-bottom-color: var(--login-gold);
 }
 
 .btn-login .btn-arrow {
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .btn-login:hover .btn-arrow {
