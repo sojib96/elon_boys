@@ -914,7 +914,7 @@ body.page-login #scroll-top {
 }
 
 .btn-login:hover {
-  background: #F7F0E4;
+  background: #8C5A52;
   border-color: var(--login-border);
   border-bottom-color: var(--login-ink);
 }
