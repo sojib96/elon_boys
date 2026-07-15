@@ -709,99 +709,34 @@ body.page-login #scroll-top {
 .login-card {
   position: relative;
   background: var(--login-parchment);
+  border-left: 4px solid var(--login-gold);
   box-shadow: 0 8px 48px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* ── Snake border ── */
-.login-card::before {
-  content: '';
-  position: absolute;
-  inset: -3px;
-  z-index: -1;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0%,
-    /* ── Snake 1 ── */
-    rgba(196, 163, 90, 0.05) 4%,
-    rgba(196, 163, 90, 0.2) 6%,
-    rgba(196, 163, 90, 0.5) 7.5%,
-    rgba(255, 215, 0, 0.85) 9%,
-    var(--login-gold) 10%,
-    rgba(255, 215, 0, 0.85) 11%,
-    rgba(196, 163, 90, 0.5) 12.5%,
-    rgba(196, 163, 90, 0.2) 14%,
-    rgba(196, 163, 90, 0.05) 16%,
-    transparent 20%,
-    /* ── Snake 2 ── */
-    rgba(196, 163, 90, 0.05) 36%,
-    rgba(196, 163, 90, 0.2) 38%,
-    rgba(196, 163, 90, 0.5) 39.5%,
-    rgba(255, 215, 0, 0.85) 41%,
-    var(--login-gold) 42%,
-    rgba(255, 215, 0, 0.85) 43%,
-    rgba(196, 163, 90, 0.5) 44.5%,
-    rgba(196, 163, 90, 0.2) 46%,
-    rgba(196, 163, 90, 0.05) 48%,
-    transparent 52%,
-    /* ── Snake 3 ── */
-    rgba(196, 163, 90, 0.05) 68%,
-    rgba(196, 163, 90, 0.2) 70%,
-    rgba(196, 163, 90, 0.5) 71.5%,
-    rgba(255, 215, 0, 0.85) 73%,
-    var(--login-gold) 74%,
-    rgba(255, 215, 0, 0.85) 75%,
-    rgba(196, 163, 90, 0.5) 76.5%,
-    rgba(196, 163, 90, 0.2) 78%,
-    rgba(196, 163, 90, 0.05) 80%,
-    transparent 84%,
-    transparent 100%
-  );
-  animation: snake-slither 7s linear infinite;
-}
-
+/* ── Slow scan effect ── */
 .login-card::after {
   content: '';
   position: absolute;
-  inset: -7px;
-  z-index: -2;
-  border-radius: 1px;
-  background: conic-gradient(
-    from 0deg,
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
     transparent 0%,
-    rgba(196, 163, 90, 0.08) 12%,
-    rgba(196, 163, 90, 0.2) 14%,
-    rgba(255, 215, 0, 0.4) 16%,
-    var(--login-gold) 17%,
-    rgba(255, 215, 0, 0.4) 18%,
-    rgba(196, 163, 90, 0.2) 20%,
-    rgba(196, 163, 90, 0.08) 22%,
-    transparent 26%,
-    transparent 44%,
-    rgba(196, 163, 90, 0.08) 56%,
-    rgba(196, 163, 90, 0.2) 58%,
-    rgba(255, 215, 0, 0.4) 60%,
-    var(--login-gold) 61%,
-    rgba(255, 215, 0, 0.4) 62%,
-    rgba(196, 163, 90, 0.2) 64%,
-    rgba(196, 163, 90, 0.08) 66%,
-    transparent 70%,
-    transparent 88%,
-    rgba(196, 163, 90, 0.08) 92%,
-    rgba(196, 163, 90, 0.2) 94%,
-    rgba(255, 215, 0, 0.4) 96%,
-    var(--login-gold) 97%,
-    rgba(255, 215, 0, 0.4) 98%,
-    rgba(196, 163, 90, 0.2) 100%,
+    transparent 35%,
+    rgba(196, 163, 90, 0.04) 45%,
+    rgba(196, 163, 90, 0.08) 50%,
+    rgba(196, 163, 90, 0.04) 55%,
+    transparent 65%,
     transparent 100%
   );
-  filter: blur(4px);
-  opacity: 0.3;
-  animation: snake-slither 10s linear infinite reverse;
+  background-size: 100% 200%;
+  animation: scan 7s ease-in-out infinite;
 }
 
-@keyframes snake-slither {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes scan {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 0% 100%; }
+  100% { background-position: 0% 0%; }
 }
 
 /* ── Masthead ── */
@@ -1023,12 +958,8 @@ body.page-login #scroll-top {
     padding: 0 0.75rem;
   }
 
-  .login-card::before {
-    inset: -2px;
-  }
-
   .login-card::after {
-    display: none;
+    opacity: 0.5;
   }
 
   .login-masthead {
@@ -1080,12 +1011,11 @@ body.page-login #scroll-top {
 
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
-  .login-card::before,
-  .login-card::after {
-    display: none;
-  }
-
   .login-card {
     border-left: 4px solid var(--login-gold);
+  }
+
+  .login-card::after {
+    display: none;
   }
 }
