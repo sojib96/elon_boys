@@ -907,14 +907,16 @@ body.page-login #scroll-top {
   text-transform: uppercase;
   color: #1A1410;
   background: #B08D40;
-  border: none;
+  border: 1.5px solid transparent;
+  border-bottom: 1.5px solid transparent;
   cursor: pointer;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .btn-login:hover {
-  background: #9A7A35;
-  box-shadow: 0 2px 16px rgba(176, 141, 64, 0.35);
+  background: #F7F0E4;
+  border-color: var(--login-border);
+  border-bottom-color: var(--login-ink);
 }
 
 .btn-login .btn-arrow {
