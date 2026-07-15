@@ -16,7 +16,5 @@ services:
         generateValue: true
       - key: GMAIL_ADDRESS
         sync: false
-      - key: MJ_APIKEY_PUBLIC
-        sync: false
-      - key: MJ_APIKEY_PRIVATE
+      - key: RESEND_API_KEY
         sync: false

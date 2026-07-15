@@ -4,11 +4,10 @@ import httpx
 
 
 def send_email(to: str, subject: str, body: str) -> bool:
-    api_key = os.getenv("MJ_APIKEY_PUBLIC", "").strip()
-    api_secret = os.getenv("MJ_APIKEY_PRIVATE", "").strip()
+    api_key = os.getenv("RESEND_API_KEY", "").strip()
     from_email = os.getenv("GMAIL_ADDRESS", "").strip()
 
-    if not api_key or not api_secret or not from_email:
+    if not api_key or not from_email:
         print(
             f"\n[DEV MODE — EMAIL NOT SENT] To: {to} | Subject: {subject}\n{body}\n"
         )
@@ -16,22 +15,18 @@ def send_email(to: str, subject: str, body: str) -> bool:
 
     try:
         response = httpx.post(
-            "https://api.mailjet.com/v3.1/send",
-            auth=(api_key, api_secret),
+            "https://api.resend.com/emails",
+            headers={"Authorization": f"Bearer {api_key}"},
             json={
-                "Messages": [
-                    {
-                        "From": {"Email": from_email},
-                        "To": [{"Email": to}],
-                        "Subject": subject,
-                        "TextPart": body,
-                    }
-                ]
+                "from": from_email,
+                "to": [to],
+                "subject": subject,
+                "text": body,
             },
         )
         if response.status_code >= 300:
             print(
-                f"\n[EMAIL FAILED] Status: {response.status_code} | To: {to} | Subject: {subject}\n{body}\n"
+                f"\n[EMAIL FAILED] Status: {response.status_code} | {response.text}\n"
             )
             return False
         return True
