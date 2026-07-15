@@ -701,20 +701,66 @@ body.page-login #scroll-top {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 500px;
+  max-width: 560px;
   padding: 0 1rem;
 }
 
 /* ── Card ── */
 .login-card {
+  position: relative;
   background: var(--login-parchment);
-  border-left: 4px solid var(--login-gold);
   box-shadow: 0 8px 48px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Fire border ── */
+.login-card::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  background: conic-gradient(
+    from 0deg,
+    #3E0808 0%,
+    #8B0000 12%,
+    #CC3300 22%,
+    #FF6600 34%,
+    #FFCC00 44%,
+    #FF6600 54%,
+    #CC3300 64%,
+    #8B0000 76%,
+    #3E0808 88%,
+    #3E0808 100%
+  );
+  animation: fire-spin 2.5s linear infinite;
+}
+
+.login-card::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  z-index: -2;
+  border-radius: 2px;
+  background: conic-gradient(
+    from 0deg,
+    #3E0808,
+    #FF6600,
+    #FFCC00,
+    #FF6600,
+    #3E0808
+  );
+  filter: blur(6px);
+  opacity: 0.35;
+  animation: fire-spin 3s linear infinite reverse;
+}
+
+@keyframes fire-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* ── Masthead ── */
 .login-masthead {
-  padding: 2.75rem 2.75rem 0;
+  padding: 3rem 3rem 0;
 }
 
 .login-wordmark {
@@ -751,7 +797,7 @@ body.page-login #scroll-top {
 
 /* ── Form body ── */
 .login-body {
-  padding: 2rem 2.75rem 2.5rem;
+  padding: 2.25rem 3rem 2.75rem;
   text-align: center;
 }
 
@@ -886,7 +932,7 @@ body.page-login #scroll-top {
 
 /* ── Card footer ── */
 .login-footer {
-  padding: 0 2.75rem 2.75rem;
+  padding: 0 3rem 3rem;
   text-align: center;
 }
 
@@ -931,8 +977,12 @@ body.page-login #scroll-top {
     padding: 0 0.75rem;
   }
 
-  .login-card {
-    border-left-width: 3px;
+  .login-card::before {
+    inset: -2px;
+  }
+
+  .login-card::after {
+    display: none;
   }
 
   .login-masthead {
@@ -984,4 +1034,12 @@ body.page-login #scroll-top {
 
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
+  .login-card::before,
+  .login-card::after {
+    display: none;
+  }
+
+  .login-card {
+    border-left: 4px solid var(--login-gold);
+  }
 }
