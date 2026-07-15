@@ -909,6 +909,20 @@ body.page-login #scroll-top {
   background: #B08D40;
   border: none;
   cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-login:hover {
+  background: #9A7A35;
+  box-shadow: 0 2px 16px rgba(176, 141, 64, 0.35);
+}
+
+.btn-login .btn-arrow {
+  transition: transform 0.3s ease;
+}
+
+.btn-login:hover .btn-arrow {
+  transform: translateX(3px);
 }
 
 /* ── Card footer ── */
@@ -934,10 +948,19 @@ body.page-login #scroll-top {
   text-transform: uppercase;
   color: var(--login-taupe);
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .login-link:hover {
-  color: var(--login-ink);
+  color: var(--login-gold);
+}
+
+.login-back svg {
+  transition: transform 0.3s ease;
+}
+
+.login-back:hover svg {
+  transform: translateX(-3px);
 }
 
 /* ── Responsive ── */
@@ -1017,5 +1040,17 @@ body.page-login #scroll-top {
 
   .login-card::after {
     display: none;
+  }
+
+  .btn-login,
+  .btn-login .btn-arrow,
+  .login-link,
+  .login-back svg {
+    transition: none;
+  }
+
+  .btn-login:hover .btn-arrow,
+  .login-back:hover svg {
+    transform: none;
   }
 }
