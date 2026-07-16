@@ -7,36 +7,27 @@
 
 <div class="dossier-page">
   <div class="max-w-2xl mx-auto">
-
-    {# ── Top bar ── #}
     <div class="flex items-center justify-between mb-8 reveal">
       <a href="/behind-the-curtain" class="back-link">
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
         Dashboard
       </a>
-      <span class="font-sans text-[10px] uppercase tracking-widest text-[#8A7F76] font-medium">Profile</span>
+      <span class="text-[10px] uppercase tracking-widest text-[var(--color-text-subtle)] font-medium">Profile</span>
     </div>
 
-    {# ── Header ── #}
     <div class="text-center mb-10 reveal">
-      <h1 class="font-serif text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-[#1A1614] tracking-[-0.02em] leading-[1.08]">
-        Edit Profile
-      </h1>
-      <p class="font-serif text-[14px] text-[#8A7F76] italic mt-2">
-        {{ member.name }} &mdash; update your dossier
-      </p>
+      <h1 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-[var(--color-text)] tracking-[-0.02em] leading-[1.08]">Edit Profile</h1>
+      <p class="text-sm italic text-[var(--color-text-muted)] mt-2">{{ member.name }} &mdash; update your dossier</p>
       {% if member.photo_url %}
-      <div class="mt-4 inline-flex items-center gap-3 px-4 py-2 bg-[#FAF8F4] border border-[#E8E0D6] rounded-full">
+      <div class="mt-4 inline-flex items-center gap-3 px-4 py-2 glass-card rounded-full">
         <img src="{{ member.photo_url }}" alt="" class="w-8 h-8 rounded-full object-cover">
-        <span class="text-[11px] text-[#5A5148] font-sans">{{ member.nickname or member.name }}</span>
+        <span class="text-[11px] text-[var(--color-text-muted)]">{{ member.nickname or member.name }}</span>
       </div>
       {% endif %}
     </div>
 
     <form method="POST" action="/profile/edit" enctype="multipart/form-data" class="space-y-5 stagger">
-
-      {# ── IDENTITY ── #}
-      <div class="dossier-card accent-terracotta reveal">
+      <div class="dossier-card accent-personal reveal">
         <div class="dossier-card-header">
           <span class="icon-box">&#9783;</span>
           <h2>Identity</h2>
@@ -61,7 +52,6 @@
         </div>
       </div>
 
-      {# ── PERSONAL ── #}
       <div class="dossier-card accent-personal reveal">
         <div class="dossier-card-header">
           <span class="icon-box">&#9782;</span>
@@ -88,10 +78,7 @@
             <div class="flex flex-wrap gap-3 pt-1">
               {% set gender_opts = ['Male', 'Female', 'Non-binary', 'Prefer not to say'] %}
               {% for opt in gender_opts %}
-              <label class="flex items-center gap-1.5 cursor-pointer text-[13px] font-sans text-[#1A1614]">
-                <input type="radio" name="gender" value="{{ opt }}" class="accent-[#8B3A3A]" {% if member.gender == opt %}checked{% endif %}>
-                {{ opt }}
-              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer text-xs text-[var(--color-text)]"><input type="radio" name="gender" value="{{ opt }}" class="accent-[var(--color-ember)]" {% if member.gender == opt %}checked{% endif %}> {{ opt }}</label>
               {% endfor %}
             </div>
           </div>
@@ -118,7 +105,6 @@
         </div>
       </div>
 
-      {# ── WORK ── #}
       <div class="dossier-card accent-work reveal">
         <div class="dossier-card-header">
           <span class="icon-box">&#9881;</span>
@@ -140,59 +126,32 @@
         </div>
       </div>
 
-      {# ── CONTACT & SOCIAL ── #}
       <div class="dossier-card accent-social reveal">
         <div class="dossier-card-header">
           <span class="icon-box">&#9993;</span>
           <h2>Contact &amp; Social</h2>
         </div>
         <div class="dossier-card-body">
-          <div class="field-row">
-            <label class="field-label" for="email">Email</label>
-            <input type="email" id="email" name="email" value="{{ member.email or '' }}" placeholder="you@example.com" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="phone">Phone</label>
-            <input type="text" id="phone" name="phone" value="{{ member.phone or '' }}" placeholder="+1 555-0123" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="instagram">Instagram</label>
-            <input type="text" id="instagram" name="instagram" value="{{ member.instagram or '' }}" placeholder="@username" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="github">GitHub</label>
-            <input type="text" id="github" name="github" value="{{ member.github or '' }}" placeholder="github.com/username" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="linkedin">LinkedIn</label>
-            <input type="text" id="linkedin" name="linkedin" value="{{ member.linkedin or '' }}" placeholder="linkedin.com/in/username" class="field-input">
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="portfolio_url">Portfolio</label>
-            <input type="url" id="portfolio_url" name="portfolio_url" value="{{ member.portfolio_url or '' }}" placeholder="https://yoursite.com" class="field-input">
-          </div>
+          <div class="field-row"><label class="field-label" for="email">Email</label><input type="email" id="email" name="email" value="{{ member.email or '' }}" placeholder="you@example.com" class="field-input"></div>
+          <div class="field-row"><label class="field-label" for="phone">Phone</label><input type="text" id="phone" name="phone" value="{{ member.phone or '' }}" placeholder="+1 555-0123" class="field-input"></div>
+          <div class="field-row"><label class="field-label" for="instagram">Instagram</label><input type="text" id="instagram" name="instagram" value="{{ member.instagram or '' }}" placeholder="@username" class="field-input"></div>
+          <div class="field-row"><label class="field-label" for="github">GitHub</label><input type="text" id="github" name="github" value="{{ member.github or '' }}" placeholder="github.com/username" class="field-input"></div>
+          <div class="field-row"><label class="field-label" for="linkedin">LinkedIn</label><input type="text" id="linkedin" name="linkedin" value="{{ member.linkedin or '' }}" placeholder="linkedin.com/in/username" class="field-input"></div>
+          <div class="field-row"><label class="field-label" for="portfolio_url">Portfolio</label><input type="url" id="portfolio_url" name="portfolio_url" value="{{ member.portfolio_url or '' }}" placeholder="https://yoursite.com" class="field-input"></div>
         </div>
       </div>
 
-      {# ── SQUAD DISPLAY ── #}
       <div class="dossier-card accent-squad reveal">
         <div class="dossier-card-header">
           <span class="icon-box">&#9733;</span>
           <h2>Squad Display</h2>
         </div>
         <div class="dossier-card-body">
-          <div class="field-row">
-            <label class="field-label" for="bio">Bio</label>
-            <textarea id="bio" name="bio" placeholder="Tell your story..." class="field-input field-textarea">{{ member.bio or '' }}</textarea>
-          </div>
-          <div class="field-row">
-            <label class="field-label" for="fun_fact">Fun Fact</label>
-            <textarea id="fun_fact" name="fun_fact" placeholder="Something surprising..." class="field-input field-textarea">{{ member.fun_fact or '' }}</textarea>
-          </div>
+          <div class="field-row"><label class="field-label" for="bio">Bio</label><textarea id="bio" name="bio" placeholder="Tell your story..." class="field-input field-textarea">{{ member.bio or '' }}</textarea></div>
+          <div class="field-row"><label class="field-label" for="fun_fact">Fun Fact</label><textarea id="fun_fact" name="fun_fact" placeholder="Something surprising..." class="field-input field-textarea">{{ member.fun_fact or '' }}</textarea></div>
         </div>
       </div>
 
-      {# ── Submit ── #}
       <div class="flex justify-end gap-3 pt-2 pb-8 reveal">
         <a href="/behind-the-curtain" class="btn btn-secondary btn-md">Cancel</a>
         <button type="submit" class="btn btn-primary btn-md">
@@ -200,7 +159,6 @@
           Save Profile
         </button>
       </div>
-
     </form>
   </div>
 </div>
@@ -210,18 +168,14 @@
   var detectBtn = document.getElementById('detect-city-btn');
   var cityInput = document.getElementById('current_city');
   var geoStatus = document.getElementById('geo-status');
-
   if (detectBtn && cityInput && 'geolocation' in navigator) {
     detectBtn.addEventListener('click', function() {
       geoStatus.classList.remove('hidden');
       geoStatus.textContent = 'Detecting location...';
-      geoStatus.style.color = '#8A7F76';
-
+      geoStatus.style.color = '#64748B';
       navigator.geolocation.getCurrentPosition(function(pos) {
-        var lat = pos.coords.latitude;
-        var lng = pos.coords.longitude;
+        var lat = pos.coords.latitude, lng = pos.coords.longitude;
         geoStatus.textContent = 'Reverse geocoding...';
-
         fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng + '&addressdetails=1')
           .then(function(r) { return r.json(); })
           .then(function(data) {
@@ -235,24 +189,13 @@
               cityInput.value = result;
               cityInput.dispatchEvent(new Event('input'));
               geoStatus.textContent = 'Detected: ' + result;
-              geoStatus.style.color = '#3A7D5C';
-            } else {
-              geoStatus.textContent = 'Could not determine city from location.';
-              geoStatus.style.color = '#DC2626';
-            }
+              geoStatus.style.color = '#22C55E';
+            } else { geoStatus.textContent = 'Could not determine city.'; geoStatus.style.color = '#EF4444'; }
           })
-          .catch(function() {
-            geoStatus.textContent = 'Geocoding failed. Try entering manually.';
-            geoStatus.style.color = '#DC2626';
-          });
-      }, function() {
-        geoStatus.textContent = 'Location access denied. Enter city manually.';
-        geoStatus.style.color = '#DC2626';
-      }, { timeout: 10000 });
+          .catch(function() { geoStatus.textContent = 'Geocoding failed.'; geoStatus.style.color = '#EF4444'; });
+      }, function() { geoStatus.textContent = 'Location access denied.'; geoStatus.style.color = '#EF4444'; }, { timeout: 10000 });
     });
-  } else if (detectBtn) {
-    detectBtn.style.display = 'none';
-  }
+  } else if (detectBtn) { detectBtn.style.display = 'none'; }
 })();
 </script>
 {% endblock %}

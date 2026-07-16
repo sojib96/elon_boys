@@ -2,261 +2,199 @@
 {% block title %}{% if member %}{{ member.name }} — Elon Boys{% else %}Member Not Found — Elon Boys{% endif %}{% endblock %}
 
 {% block content %}
-<style>
-  .hero-img { transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
-  .hero-wrap:hover .hero-img { transform: scale(1.03); }
-  .stat-card { transition: background-color 0.2s ease; }
-  .stat-card:hover { background-color: #FAF7F4; }
-  .detail-section { opacity: 0; animation: fadeUp 0.6s ease forwards; }
-  .detail-section:nth-child(1) { animation-delay: 0.1s; }
-  .detail-section:nth-child(2) { animation-delay: 0.2s; }
-  .detail-section:nth-child(3) { animation-delay: 0.3s; }
-  .detail-section:nth-child(4) { animation-delay: 0.4s; }
-  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-  .detail-section { transform: translateY(12px); }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-img, .hero-wrap:hover .hero-img, .stat-card, .stat-card:hover { transition: none; transform: none; }
-    .detail-section { opacity: 1; transform: none; animation: none; }
-  }
-</style>
-
 {% if member %}
 {% set role_company = member.current_status|replace(" at ", " • ") %}
 
-{# ─── HERO ─── #}
-<div class="hero-wrap relative overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]" style="min-height: clamp(380px, 70vh, 720px);">
-  <div class="absolute inset-0 bg-gradient-to-br from-[#3D2C1E]/95 via-[#2D2418]/70 to-[#1A1614] z-10"></div>
-  {% if member.image2 %}
-  <img src="{{ member.image2 }}" alt="" class="hero-img absolute inset-0 w-full h-full object-cover" loading="lazy">
-  <div class="absolute inset-0 bg-gradient-to-t from-[#1A1614]/90 via-[#1A1614]/20 to-transparent z-20"></div>
-  {% endif %}
+<div class="content-container">
+  <div class="hero-wrap relative overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem] mb-6" style="min-height: clamp(380px, 60vh, 640px);">
+    <div class="absolute inset-0 bg-gradient-to-br from-[var(--color-void)]/95 via-[var(--color-surface)]/70 to-[var(--color-void)] z-10"></div>
+    {% if member.image2 %}
+    <img src="{{ member.image2 }}" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy">
+    <div class="absolute inset-0 bg-gradient-to-t from-[var(--color-void)]/90 via-[var(--color-void)]/20 to-transparent z-20"></div>
+    {% endif %}
 
-  {# Squad card image floating right #}
-  {% if member.image1 %}
-  <div class="absolute top-6 right-6 sm:top-10 sm:right-10 z-30">
-    <div class="w-16 h-16 sm:w-24 sm:h-24 rounded-xl overflow-hidden ring-2 ring-white/25 shadow-2xl shadow-black/20">
-      <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-full object-cover" loading="lazy">
-    </div>
-  </div>
-  {% endif %}
-
-  {# Name + info bottom-left #}
-  <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-10 md:p-14 z-30">
-    <div class="max-w-4xl mx-auto w-full">
-      <div class="flex items-center gap-2 mb-3">
-        <span class="text-white/40 text-[10px] uppercase tracking-[0.22em] font-medium bg-white/5 px-3 py-1 rounded-full border border-white/10">{{ member.tag }}</span>
-      </div>
-      <h1 class="font-serif text-[clamp(2.4rem,7vw,5rem)] tracking-[-0.03em] text-white leading-[1.04] max-w-3xl">{{ member.name }}</h1>
-      <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-4">
-        {% if member.nickname %}
-        <span class="text-white/60 text-[15px] italic font-serif">{{ member.nickname }}</span>
-        <span class="text-white/15 hidden sm:inline text-lg">&middot;</span>
-        {% endif %}
-        <span class="text-white/70 text-[13px] font-medium tracking-[0.02em]">{{ role_company }}</span>
+    {% if member.image1 %}
+    <div class="absolute top-6 right-6 sm:top-10 sm:right-10 z-30">
+      <div class="w-20 h-20 rounded-xl overflow-hidden ring-2 ring-[var(--color-ember)]/30 shadow-2xl shadow-black/20">
+        <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-full object-cover">
       </div>
     </div>
-  </div>
-</div>
+    {% endif %}
 
-{# ─── QUOTE CARD (overlaps hero) ─── #}
-<div class="max-w-4xl mx-auto -mt-14 sm:-mt-18 relative z-20 px-4 sm:px-0 detail-section">
-  <div class="bg-white rounded-xl border border-[#E8E0D6] p-7 sm:p-10 shadow-[0_8px_32px_rgba(26,22,20,0.07)]">
-    <div class="flex gap-5 sm:gap-7">
-      <span class="text-5xl sm:text-7xl leading-none font-serif text-[#C1633B]/12 flex-shrink-0 -mt-2" aria-hidden="true">&ldquo;</span>
-      <div>
-        <blockquote class="font-serif italic text-[clamp(1.05rem,2.2vw,1.4rem)] leading-[1.7] text-[#4A423E]">
-          {{ member.quote }}
-        </blockquote>
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-5 pt-4 border-t border-[#EDE6DC] text-[11px]">
-          <span class="font-semibold uppercase tracking-[0.15em] text-[#C1633B]">{{ member.tag }}</span>
-          <span class="text-[#D5CBC0]" aria-hidden="true">/</span>
-          <span class="text-[#5A5450]">{{ member.current_status }}</span>
+    <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-10 md:p-14 z-30">
+      <div class="max-w-4xl mx-auto w-full">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="tag">{{ member.tag }}</span>
+        </div>
+        <h1 class="font-heading font-extrabold text-[clamp(2.4rem,7vw,5rem)] tracking-[-0.03em] text-[var(--color-text)] leading-[1.04] max-w-3xl">{{ member.name }}</h1>
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-4">
           {% if member.nickname %}
-          <span class="text-[#D5CBC0]" aria-hidden="true">/</span>
-          <span class="text-[#8A7F76] italic">{{ member.nickname }}</span>
+          <span class="text-[var(--color-text-muted)] text-sm italic">{{ member.nickname }}</span>
+          <span class="text-[var(--color-border)] hidden sm:inline">·</span>
           {% endif %}
+          <span class="text-[var(--color-text-secondary)] text-sm font-medium">{{ role_company }}</span>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-{# ─── ABOUT ─── #}
-<div class="max-w-4xl mx-auto mt-16 sm:mt-20 px-4 sm:px-0 detail-section">
-  <div class="flex items-center gap-3 mb-7">
-    <div class="w-1 h-5 bg-[#C1633B] rounded-full"></div>
-    <p class="text-[10px] uppercase tracking-[0.22em] font-semibold text-[#C1633B]">About</p>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-10">
-    {% if member.image1 %}
-    <div class="md:col-span-2">
-      <div class="rounded-xl overflow-hidden border border-[#E8E0D6] shadow-sm">
-        <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-auto object-cover" loading="lazy">
+  {# QUOTE #}
+  <div class="max-w-4xl mx-auto -mt-16 relative z-20 reveal">
+    <div class="glass-card p-8">
+      <div class="flex gap-5">
+        <span class="text-5xl leading-none text-[var(--color-ember)]/30 flex-shrink-0" aria-hidden="true">&ldquo;</span>
+        <div>
+          <blockquote class="text-lg italic leading-relaxed text-[var(--color-text-secondary)]">
+            {{ member.quote }}
+          </blockquote>
+          <div class="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-[var(--color-border)] text-xs">
+            <span class="tag">{{ member.tag }}</span>
+            <span class="text-[var(--color-text-subtle)]">{{ member.current_status }}</span>
+            {% if member.nickname %}
+            <span class="text-[var(--color-text-subtle)] italic">— {{ member.nickname }}</span>
+            {% endif %}
+          </div>
+        </div>
       </div>
-      {% if member.photo_url %}
-      <div class="mt-3 flex items-center gap-2 text-[11px] text-[#8A7F76] font-sans">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/></svg>
-        <span>{{ member.nickname or member.name }}</span>
-      </div>
-      {% endif %}
-    </div>
-    <div class="md:col-span-3">
-    {% else %}
-    <div class="md:col-span-5">
-    {% endif %}
-      <p class="text-[15px] leading-[1.85] text-[#5A5450] mb-6 font-[450]">{{ member.bio }}</p>
-      {% if member.fun_fact %}
-      <div class="pl-5 border-l-2 border-[#C1633B]/25">
-        <p class="text-sm text-[#8A7F76] leading-relaxed">
-          <span class="italic">{{ member.fun_fact }}</span>
-        </p>
-      </div>
-      {% endif %}
-      {% if member.fun_fact and member.resume_url %}
-      {% elif member.resume_url %}
-      {% endif %}
     </div>
   </div>
-</div>
 
-{# ─── QUICK FACTS ─── #}
-<div class="max-w-4xl mx-auto mt-14 sm:mt-18 px-4 sm:px-0 detail-section">
-  <div class="flex items-center gap-3 mb-7">
-    <div class="w-1 h-5 bg-[#C1633B] rounded-full"></div>
-    <p class="text-[10px] uppercase tracking-[0.22em] font-semibold text-[#C1633B]">Quick Facts</p>
+  {# ABOUT #}
+  <div class="max-w-4xl mx-auto mt-16 reveal">
+    <span class="section-label mb-4">About</span>
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+      {% if member.image1 %}
+      <div class="md:col-span-2">
+        <div class="glass-card overflow-hidden">
+          <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-auto object-cover" loading="lazy">
+        </div>
+      </div>
+      <div class="md:col-span-3">
+      {% else %}
+      <div class="md:col-span-5">
+      {% endif %}
+        <p class="text-sm leading-relaxed text-[var(--color-text-muted)]">{{ member.bio }}</p>
+        {% if member.fun_fact %}
+        <div class="mt-4 pl-4 border-l-2 border-[var(--color-ember)]/30">
+          <p class="text-sm italic text-[var(--color-text-secondary)]">{{ member.fun_fact }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
   </div>
-  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-    <div class="stat-card bg-white border border-[#E8E0D6] rounded-lg p-5">
-      <p class="text-[8px] uppercase tracking-[0.22em] font-semibold text-[#8A7F76] mb-1.5">Known For</p>
-      <p class="font-serif text-[14px] text-[#1F1B18] font-semibold">{{ member.tag }}</p>
-    </div>
-    <div class="stat-card bg-white border border-[#E8E0D6] rounded-lg p-5">
-      <p class="text-[8px] uppercase tracking-[0.22em] font-semibold text-[#8A7F76] mb-1.5">Role</p>
-      <p class="font-serif text-[14px] text-[#1F1B18] font-semibold">{{ member.current_status }}</p>
-    </div>
-    <div class="stat-card bg-white border border-[#E8E0D6] rounded-lg p-5">
-      <p class="text-[8px] uppercase tracking-[0.22em] font-semibold text-[#8A7F76] mb-1.5">Alias</p>
-      <p class="font-serif text-[14px] text-[#1F1B18] font-semibold">{{ member.nickname or '&mdash;'|safe }}</p>
-    </div>
-    {% if member.occupation %}
-    <div class="stat-card bg-white border border-[#E8E0D6] rounded-lg p-5">
-      <p class="text-[8px] uppercase tracking-[0.22em] font-semibold text-[#8A7F76] mb-1.5">Occupation</p>
-      <p class="font-serif text-[14px] text-[#1F1B18] font-semibold">{{ member.occupation }}</p>
-    </div>
-    {% endif %}
-  </div>
-</div>
 
-{# ─── PERSONAL DETAILS ─── #}
-{% if member.date_of_birth or member.current_city or member.gender or member.blood_group or member.relationship_status %}
-<div class="max-w-4xl mx-auto mt-10 sm:mt-14 px-4 sm:px-0 detail-section">
-  <div class="flex items-center gap-3 mb-7">
-    <div class="w-1 h-5 bg-[#C1633B] rounded-full"></div>
-    <p class="text-[10px] uppercase tracking-[0.22em] font-semibold text-[#C1633B]">Personal Details</p>
-  </div>
-  <div class="bg-white border border-[#E8E0D6] rounded-xl overflow-hidden">
-    <div class="grid grid-cols-2 sm:grid-cols-3 divide-x divide-y divide-[#F0EBE2]">
-      {% if member.date_of_birth %}
-      <div class="p-4 sm:p-5">
-        <p class="text-[8px] uppercase tracking-[0.2em] font-semibold text-[#8A7F76] mb-1">DOB</p>
-        <p class="font-sans text-[14px] text-[#1A1614]">{{ member.date_of_birth }}</p>
+  {# QUICK FACTS #}
+  <div class="max-w-4xl mx-auto mt-14 reveal">
+    <span class="section-label mb-4">Quick Facts</span>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="glass-card p-4">
+        <p class="text-[9px] uppercase tracking-[0.15em] font-semibold text-[var(--color-text-subtle)] mb-1">Known For</p>
+        <p class="text-sm font-semibold text-[var(--color-text)]">{{ member.tag }}</p>
       </div>
-      {% endif %}
-      {% if member.current_city %}
-      <div class="p-4 sm:p-5">
-        <p class="text-[8px] uppercase tracking-[0.2em] font-semibold text-[#8A7F76] mb-1">City</p>
-        <p class="font-sans text-[14px] text-[#1A1614]">{{ member.current_city }}</p>
+      <div class="glass-card p-4">
+        <p class="text-[9px] uppercase tracking-[0.15em] font-semibold text-[var(--color-text-subtle)] mb-1">Role</p>
+        <p class="text-sm font-semibold text-[var(--color-text)]">{{ member.current_status }}</p>
       </div>
-      {% endif %}
-      {% if member.gender %}
-      <div class="p-4 sm:p-5">
-        <p class="text-[8px] uppercase tracking-[0.2em] font-semibold text-[#8A7F76] mb-1">Gender</p>
-        <p class="font-sans text-[14px] text-[#1A1614]">{{ member.gender }}</p>
+      <div class="glass-card p-4">
+        <p class="text-[9px] uppercase tracking-[0.15em] font-semibold text-[var(--color-text-subtle)] mb-1">Alias</p>
+        <p class="text-sm font-semibold text-[var(--color-text)]">{{ member.nickname or '—' }}</p>
       </div>
-      {% endif %}
-      {% if member.blood_group %}
-      <div class="p-4 sm:p-5">
-        <p class="text-[8px] uppercase tracking-[0.2em] font-semibold text-[#8A7F76] mb-1">Blood</p>
-        <p class="font-sans text-[14px] text-[#1A1614]">{{ member.blood_group }}</p>
+      {% if member.occupation %}
+      <div class="glass-card p-4">
+        <p class="text-[9px] uppercase tracking-[0.15em] font-semibold text-[var(--color-text-subtle)] mb-1">Occupation</p>
+        <p class="text-sm font-semibold text-[var(--color-text)]">{{ member.occupation }}</p>
       </div>
-      {% endif %}
-      {% if member.relationship_status %}
-      <div class="p-4 sm:p-5">
-        <p class="text-[8px] uppercase tracking-[0.2em] font-semibold text-[#8A7F76] mb-1">Status</p>
-        <p class="font-sans text-[14px] text-[#1A1614]">{{ member.relationship_status }}</p>
-      </div>
-      {% endif %}
-      {% if member.occupation and not (member.date_of_birth or member.current_city or member.gender or member.blood_group or member.relationship_status) %}
       {% endif %}
     </div>
   </div>
-</div>
-{% endif %}
 
-{# ─── CONTACT ─── #}
-{% if member.instagram or member.github or member.linkedin or member.portfolio_url or member.email %}
-<div class="max-w-4xl mx-auto mt-10 sm:mt-14 px-4 sm:px-0 detail-section">
-  <div class="flex items-center gap-3 mb-7">
-    <div class="w-1 h-5 bg-[#C1633B] rounded-full"></div>
-    <p class="text-[10px] uppercase tracking-[0.22em] font-semibold text-[#C1633B]">Connect</p>
+  {# PERSONAL DETAILS #}
+  {% if member.date_of_birth or member.current_city or member.gender or member.blood_group or member.relationship_status %}
+  <div class="max-w-4xl mx-auto mt-10 reveal">
+    <span class="section-label mb-4">Personal Details</span>
+    <div class="glass-card overflow-hidden">
+      <div class="grid grid-cols-2 sm:grid-cols-3 divide-x divide-y divide-[var(--color-border)]">
+        {% if member.date_of_birth %}
+        <div class="p-4">
+          <p class="text-[9px] uppercase tracking-[0.15em] font-semibold text-[var(--color-text-subtle)] mb-1">DOB</p>
+          <p class="text-sm font-medium text-[var(--color-text)]">{{ member.date_of_birth }}</p>
+        </div>
+        {% endif %}
+        {% if member.current_city %}
+        <div class="p-4">
+          <p class="text-[9px] uppercase tracking-[0.15em] font-semibold text-[var(--color-text-subtle)] mb-1">City</p>
+          <p class="text-sm font-medium text-[var(--color-text)]">{{ member.current_city }}</p>
+        </div>
+        {% endif %}
+        {% if member.gender %}
+        <div class="p-4">
+          <p class="text-[9px] uppercase tracking-[0.15em] font-semibold text-[var(--color-text-subtle)] mb-1">Gender</p>
+          <p class="text-sm font-medium text-[var(--color-text)]">{{ member.gender }}</p>
+        </div>
+        {% endif %}
+        {% if member.blood_group %}
+        <div class="p-4">
+          <p class="text-[9px] uppercase tracking-[0.15em] font-semibold text-[var(--color-text-subtle)] mb-1">Blood</p>
+          <p class="text-sm font-medium text-[var(--color-text)]">{{ member.blood_group }}</p>
+        </div>
+        {% endif %}
+        {% if member.relationship_status %}
+        <div class="p-4">
+          <p class="text-[9px] uppercase tracking-[0.15em] font-semibold text-[var(--color-text-subtle)] mb-1">Status</p>
+          <p class="text-sm font-medium text-[var(--color-text)]">{{ member.relationship_status }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
   </div>
-  <div class="flex flex-wrap gap-2">
-    {% if member.instagram %}
-    <a href="https://instagram.com/{{ member.instagram }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E8E0D6] rounded-lg text-[12px] text-[#5A5450] hover:border-[#C1633B] hover:text-[#C1633B] transition-colors">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
-      Instagram
-    </a>
-    {% endif %}
-    {% if member.github %}
-    <a href="https://github.com/{{ member.github }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E8E0D6] rounded-lg text-[12px] text-[#5A5450] hover:border-[#C1633B] hover:text-[#C1633B] transition-colors">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-      GitHub
-    </a>
-    {% endif %}
-    {% if member.linkedin %}
-    <a href="https://linkedin.com/in/{{ member.linkedin }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E8E0D6] rounded-lg text-[12px] text-[#5A5450] hover:border-[#C1633B] hover:text-[#C1633B] transition-colors">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-      LinkedIn
-    </a>
-    {% endif %}
-    {% if member.portfolio_url %}
-    <a href="{{ member.portfolio_url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E8E0D6] rounded-lg text-[12px] text-[#5A5450] hover:border-[#C1633B] hover:text-[#C1633B] transition-colors">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      Portfolio
-    </a>
-    {% endif %}
-    {% if member.email %}
-    <a href="mailto:{{ member.email }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E8E0D6] rounded-lg text-[12px] text-[#5A5450] hover:border-[#C1633B] hover:text-[#C1633B] transition-colors">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      Email
-    </a>
-    {% endif %}
-  </div>
-</div>
-{% endif %}
+  {% endif %}
 
-{# ─── FOOTER ─── #}
-<div class="max-w-4xl mx-auto mt-14 sm:mt-18 mb-10 sm:mb-14 px-4 sm:px-0 detail-section">
-  <div class="flex items-center justify-between pt-6 sm:pt-8 border-t border-[#EDE6DC]">
-    <a href="/squad" class="inline-flex items-center gap-2 text-[13px] font-medium text-[#5A5450] hover:text-[#C1633B] transition-colors duration-200">
-      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-      Back to The Squad
-    </a>
-    <span class="text-[10px] uppercase tracking-[0.12em] text-[#8A7F76] font-medium">{{ member.current_status }}</span>
+  {# SOCIAL #}
+  {% if member.instagram or member.github or member.linkedin or member.portfolio_url or member.email %}
+  <div class="max-w-4xl mx-auto mt-10 reveal">
+    <span class="section-label mb-4">Connect</span>
+    <div class="flex flex-wrap gap-2">
+      {% if member.instagram %}
+      <a href="https://instagram.com/{{ member.instagram }}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Instagram</a>
+      {% endif %}
+      {% if member.github %}
+      <a href="https://github.com/{{ member.github }}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">GitHub</a>
+      {% endif %}
+      {% if member.linkedin %}
+      <a href="https://linkedin.com/in/{{ member.linkedin }}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">LinkedIn</a>
+      {% endif %}
+      {% if member.portfolio_url %}
+      <a href="{{ member.portfolio_url }}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Portfolio</a>
+      {% endif %}
+      {% if member.email %}
+      <a href="mailto:{{ member.email }}" class="btn btn-secondary btn-sm">Email</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  {# BACK #}
+  <div class="max-w-4xl mx-auto mt-14 mb-10 reveal">
+    <div class="flex items-center justify-between pt-6 border-t border-[var(--color-border)]">
+      <a href="/squad" class="btn btn-secondary btn-sm">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Back to The Squad
+      </a>
+      <span class="text-[10px] uppercase tracking-[0.1em] text-[var(--color-text-subtle)]">{{ member.current_status }}</span>
+    </div>
   </div>
 </div>
 
 {% else %}
-<div class="text-center py-24 max-w-3xl mx-auto">
-  <div class="w-12 h-12 rounded-lg bg-[#E8E0D6] flex items-center justify-center mx-auto mb-6">
-    <span class="text-xl font-serif font-bold text-[#8A7F76]">?</span>
+<div class="content-container">
+  <div class="empty-state">
+    <div class="empty-state-icon">?</div>
+    <p class="empty-state-title">Member not found</p>
+    <p class="empty-state-desc">No one here by that ID. Maybe they graduated early.</p>
+    <div class="mt-6">
+      <a href="/squad" class="btn btn-primary">Back to The Squad</a>
+    </div>
   </div>
-  <h1 class="font-serif text-3xl font-bold text-[#1F1B18] mb-2">Member not found</h1>
-  <p class="text-[#8A7F76] text-sm mb-7">No one here by that ID. Maybe they graduated early.</p>
-  <a href="/squad" class="inline-flex items-center gap-2 text-sm font-medium text-[#C1633B] hover:text-[#8A5540] transition-colors duration-200">
-    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-    Back to The Squad
-  </a>
 </div>
 {% endif %}
 {% endblock %}

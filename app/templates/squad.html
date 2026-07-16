@@ -2,164 +2,54 @@
 {% block title %}The Squad — Elon Boys{% endblock %}
 
 {% block content %}
-<style>
-  .squad-card { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease; }
-  .squad-card:hover { transform: translateY(-4px); }
-  .squad-img { transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-  .squad-card:hover .squad-img { transform: scale(1.06); }
-  @media (prefers-reduced-motion: reduce) {
-    .squad-card, .squad-card:hover, .squad-img, .squad-card:hover .squad-img { transition: none; transform: none; }
-  }
-</style>
-
-<div class="-mt-8 md:-mt-10 mb-6 text-center">
-    <span class="section-label block mb-2">The Squad</span>
-    <h1 class="gallery-headline text-[clamp(1.75rem,4.5vw,3rem)] text-[#2C2824]">
-        Each one is built differently
-    </h1>
-    <p class="text-espresso-400 text-sm sm:text-base mt-3 max-w-md mx-auto body-narrative">
+<div class="content-container">
+  <div class="page-header">
+    <div class="page-header-content">
+      <span class="page-header-label">The Squad</span>
+      <h1 class="page-headline">Each one is <span class="gradient-text">built differently</span></h1>
+      <p class="body-text mt-4 max-w-lg">
         Eleven strangers who became family. Here&rsquo;s the crew that made it all unforgettable.
-    </p>
-</div>
-<div class="ornament-star mb-8" aria-hidden="true">
-    <span class="line" style="background: linear-gradient(90deg, transparent, var(--color-border));"></span>
-    <span class="star">✦</span>
-    <span class="line" style="background: linear-gradient(90deg, var(--color-border), transparent);"></span>
-</div>
+      </p>
+    </div>
+  </div>
 
-{% if members %}
-
-{% set card_types = ['type-a', 'type-b', 'type-c', 'type-d', 'type-e'] %}
-{% set bg_grads = ['from-pine/85 via-pine/15 to-transparent', 'from-sangria/85 via-sangria/15 to-transparent', 'from-espresso-600/85 via-espresso-600/15 to-transparent'] %}
-
-<div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5" id="squad-grid">
-  {% for member in members %}
-  {% set idx = loop.index0 %}
-  {% set r = member.current_status|replace(" at ", " • ") %}
-  {% set type_idx = idx % 5 %}
-
-  {# Type A — full-bleed + gradient overlay #}
-  {% if type_idx == 0 %}
-  <a href="/squad/{{ member.id }}" class="squad-card relative overflow-hidden rounded-2xl min-h-[300px] md:h-[360px] shadow-sm hover:shadow-xl group {% if idx == 0 %}md:col-span-2{% endif %}">
-    <div class="absolute inset-0 bg-espresso-200 squad-img">
-      {% if member.image1 %}
-      <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-full object-cover squad-img" loading="lazy" onerror="this.parentElement.classList.add('fallback');this.remove()">
-      {% endif %}
-      <div class="w-full h-full flex items-center justify-center" style="display:none">
-        <span class="font-serif text-5xl font-bold text-espresso-400">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
+  {% if members %}
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 stagger">
+    {% for member in members %}
+    {% set r = member.current_status|replace(" at ", " • ") %}
+    <a href="/squad/{{ member.id }}" class="glass-card overflow-hidden group block">
+      <div class="aspect-[4/3] overflow-hidden">
+        {% if member.image1 %}
+        <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="w-full h-full items-center justify-center" style="display:none;background:var(--color-surface-elevated);">
+          <span class="text-3xl font-extrabold text-[var(--color-text-subtle)]">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
+        </div>
+        {% else %}
+        <div class="w-full h-full flex items-center justify-center" style="background:var(--color-surface-elevated);">
+          <span class="text-3xl font-extrabold text-[var(--color-text-subtle)]">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
+        </div>
+        {% endif %}
       </div>
-    </div>
-    <div class="absolute inset-0 bg-gradient-to-t {{ bg_grads[idx % 3] }}"></div>
-    <span class="card-tag absolute top-3 left-3 z-10">{{ member.tag }}</span>
-    <div class="absolute bottom-0 left-0 right-0 p-5 z-10">
-      <p class="quote-serif text-sm leading-snug text-espresso-50/80">&ldquo;{{ member.quote }}&rdquo;</p>
-      <h3 class="mt-1.5 text-base font-bold text-espresso-50">{{ member.name }}</h3>
-      <p class="text-[9px] uppercase tracking-[0.12em] text-espresso-100/60 font-medium mt-0.5">{{ r }}</p>
-    </div>
-  </a>
-
-  {# Type B — full-bleed + floating caption card #}
-  {% elif type_idx == 1 %}
-  <a href="/squad/{{ member.id }}" class="squad-card relative overflow-hidden rounded-2xl min-h-[300px] md:h-[360px] shadow-sm hover:shadow-xl group">
-    <div class="absolute inset-0 bg-espresso-200 squad-img">
-      {% if member.image1 %}
-      <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-full object-cover squad-img" loading="lazy" onerror="this.parentElement.classList.add('fallback');this.remove()">
-      {% endif %}
-      <div class="w-full h-full flex items-center justify-center" style="display:none">
-        <span class="font-serif text-5xl font-bold text-espresso-400">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-2">
+          <span class="tag">{{ member.tag }}</span>
+        </div>
+        <h3 class="feature-title">{{ member.name }}</h3>
+        {% if member.quote %}
+        <p class="text-sm text-[var(--color-text-muted)] italic mt-1 leading-relaxed">&ldquo;{{ member.quote }}&rdquo;</p>
+        {% endif %}
+        <p class="text-[10px] uppercase tracking-[0.08em] font-semibold text-[var(--color-ember)] mt-3">{{ r }}</p>
       </div>
-    </div>
-    <span class="card-tag absolute top-3 left-3 z-10">{{ member.tag }}</span>
-    <div class="absolute bottom-3 left-3 right-3 z-10 bg-espresso-50/90 backdrop-blur-sm rounded-xl p-3 shadow-sm">
-      <p class="quote-serif text-xs leading-snug text-espresso-600/90">&ldquo;{{ member.quote }}&rdquo;</p>
-      <h3 class="mt-1 text-sm font-bold text-espresso-700">{{ member.name }}</h3>
-      <p class="text-[8px] uppercase tracking-[0.12em] text-espresso-400 font-medium">{{ r }}</p>
-    </div>
-  </a>
-
-  {# Type C — image 70% + bar 30% #}
-  {% elif type_idx == 2 %}
-  <a href="/squad/{{ member.id }}" class="squad-card overflow-hidden rounded-2xl min-h-[300px] md:h-[360px] shadow-sm hover:shadow-xl flex flex-col">
-    <div class="relative flex-[7] min-h-0 bg-espresso-200 squad-img">
-      {% if member.image1 %}
-      <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-full object-cover squad-img" loading="lazy" onerror="this.parentElement.classList.add('fallback');this.remove()">
-      {% endif %}
-      <div class="w-full h-full flex items-center justify-center" style="display:none">
-        <span class="font-serif text-5xl font-bold text-espresso-400">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
-      </div>
-      <span class="card-tag absolute top-3 left-3">{{ member.tag }}</span>
-    </div>
-    <div class="flex-[3] {% if idx % 2 == 0 %}bg-sangria{% else %}bg-espresso-500{% endif %} p-3 flex flex-col justify-center">
-      <p class="quote-serif text-xs leading-snug text-espresso-50/70">&ldquo;{{ member.quote }}&rdquo;</p>
-      <h3 class="mt-1 text-sm font-bold text-espresso-50">{{ member.name }}</h3>
-      <p class="text-[8px] uppercase tracking-[0.12em] text-espresso-100/50 font-medium">{{ r }}</p>
-    </div>
-  </a>
-
-  {# Type D — image 75% + panel 25% side by side #}
-  {% elif type_idx == 3 %}
-  <a href="/squad/{{ member.id }}" class="squad-card overflow-hidden rounded-2xl min-h-[260px] md:h-[300px] shadow-sm hover:shadow-xl flex">
-    <div class="relative flex-[3] bg-espresso-200 squad-img">
-      {% if member.image1 %}
-      <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-full object-cover squad-img" loading="lazy" onerror="this.parentElement.classList.add('fallback');this.remove()">
-      {% endif %}
-      <div class="w-full h-full flex items-center justify-center" style="display:none">
-        <span class="font-serif text-5xl font-bold text-espresso-400">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
-      </div>
-      <span class="card-tag absolute top-3 left-3">{{ member.tag }}</span>
-    </div>
-    <div class="flex-[1] {% if idx % 2 == 0 %}bg-espresso-500{% else %}bg-pine{% endif %} p-4 flex flex-col justify-center min-w-[90px]">
-      <p class="quote-serif text-xs leading-snug text-espresso-50/70">&ldquo;{{ member.quote }}&rdquo;</p>
-      <h3 class="mt-1.5 text-sm font-bold text-espresso-50">{{ member.name }}</h3>
-      <p class="text-[8px] uppercase tracking-[0.12em] text-espresso-100/50 font-medium mt-0.5">{{ r }}</p>
-    </div>
-  </a>
-
-  {# Type E — full-bleed minimal overlay #}
-  {% elif type_idx == 4 %}
-  <a href="/squad/{{ member.id }}" class="squad-card relative overflow-hidden rounded-2xl min-h-[300px] md:h-[360px] shadow-sm hover:shadow-xl group">
-    <div class="absolute inset-0 bg-espresso-200 squad-img">
-      {% if member.image1 %}
-      <img src="{{ member.image1 }}" alt="{{ member.name }}" class="w-full h-full object-cover squad-img" loading="lazy" onerror="this.parentElement.classList.add('fallback');this.remove()">
-      {% endif %}
-      <div class="w-full h-full flex items-center justify-center" style="display:none">
-        <span class="font-serif text-5xl font-bold text-espresso-400">{{ member.name[:1] }}{{ member.name.split()[-1][:1] }}</span>
-      </div>
-    </div>
-    <div class="absolute inset-0 bg-gradient-to-t from-espresso-600/70 via-espresso-600/10 to-transparent"></div>
-    <span class="card-tag absolute top-3 left-3 z-10 bg-espresso-50 text-espresso-700">{{ member.tag }}</span>
-    <div class="absolute bottom-0 left-0 right-0 p-5 z-10">
-      <h3 class="text-base font-bold text-espresso-50">{{ member.name }}</h3>
-      <p class="text-[9px] uppercase tracking-[0.12em] text-espresso-100/60 font-medium mt-0.5">{{ r }}</p>
-    </div>
-  </a>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-state-icon">✦</div>
+    <p class="empty-state-title">No members yet</p>
+    <p class="empty-state-desc">Run the seed script to populate the squad.</p>
+  </div>
   {% endif %}
-  {% endfor %}
 </div>
-
-{# ── Responsive: mobile collapses to 2-col, tablets 2-col, desktop respects the grid ── #}
-<style>
-  #squad-grid { grid-template-columns: 1fr; }
-  @media (min-width: 640px) { #squad-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 768px) { #squad-grid { grid-template-columns: repeat(3, 1fr); } }
-  #squad-grid > .md\:col-span-2 { grid-column: span 2; }
-  @media (max-width: 767px) { #squad-grid > .md\:col-span-2 { grid-column: span 1; } }
-</style>
-
-<script>
-(function() {
-  document.querySelectorAll('.bg-espresso-200.fallback').forEach(function(el) {
-    var fallback = el.querySelector('div[style*="display:none"]');
-    if (fallback) { fallback.style.display = 'flex'; }
-  });
-})();
-</script>
-
-{% else %}
-<div class="text-center py-20">
-    <p class="text-espresso-400 font-display text-sm uppercase tracking-widest">No members yet</p>
-    <p class="text-espresso-300 text-sm mt-2">Run the seed script to populate the squad.</p>
-</div>
-{% endif %}
-
 {% endblock %}

@@ -1,110 +1,37 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% block title %}Updates — Elon Boys{% endblock %}
 
 {% block content %}
-<style>
-    /* ── Individual card ── */
-    .card {
-        background-color: #FAF8F4;
-        border: 1px solid #E8E0D6;
-        box-shadow: 0 1px 3px rgba(26, 22, 20, 0.04);
-        border-radius: 2px;
-        padding: 24px;
-        display: flex;
-        flex-direction: column;
-        transition: background-color 0.25s ease, transform 0.3s ease;
-        text-decoration: none;
-    }
-    .card:hover {
-        background-color: #F5F0E8;
-        transform: scale(1.02);
-    }
-
-    .card-date {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 10px;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        font-weight: 600;
-        margin-bottom: 10px;
-    }
-
-    .card-title {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-weight: 700;
-        font-size: 17px;
-        line-height: 1.3;
-        color: #1A1614;
-        margin-bottom: 10px;
-    }
-
-    .card-excerpt {
-        font-family: Georgia, 'Times New Roman', serif;
-        font-size: 13px;
-        line-height: 1.55;
-        color: #4A3F38;
-        flex: 1;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .card-rule {
-        border: 0;
-        height: 1px;
-        background: linear-gradient(90deg, var(--accent) 40%, transparent);
-        margin: 14px 0 10px;
-    }
-
-    .card-author {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 11px;
-        font-weight: 600;
-        color: #1A1614;
-        letter-spacing: 0.06em;
-        text-align: right;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .card { transition: none; }
-        .card:hover { background-color: inherit; transform: none; }
-    }
-</style>
-
-{% set palette = [
-    {'accent': '#C1633B'},
-    {'accent': '#7A9A7A'},
-    {'accent': '#C4A35A'},
-    {'accent': '#8A7F76'},
-] %}
-
-<div class="-mt-8 md:-mt-10 mb-8 md:mb-10 text-center">
-        <h1 class="gallery-headline text-[clamp(1.75rem,4.5vw,3rem)] text-[#2C2824]">
-            Updates
-        </h1>
-        <p class="text-espresso-400 text-sm mt-3 font-sans max-w-sm mx-auto">
-            Life updates, news, and stories from the group.
-        </p>
+<div class="content-container">
+  <div class="page-header">
+    <div class="page-header-content">
+      <span class="page-header-label">Updates</span>
+      <h1 class="page-headline">Life, <span class="gradient-text-cyan">documented</span></h1>
+      <p class="body-text mt-4 max-w-md">News, stories, and updates from the group.</p>
     </div>
+  </div>
 
-    {# ── ORNAMENT DIVIDER ── #}
-    <div class="ornament-star mb-12 md:mb-14" aria-hidden="true">
-        <span class="line" style="background: linear-gradient(90deg, transparent, var(--color-border));"></span>
-        <span class="star">✦</span>
-        <span class="line" style="background: linear-gradient(90deg, var(--color-border), transparent);"></span>
+  {% if updates %}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger">
+    {% for post in updates %}
+    <a href="/updates/{{ post.id }}" class="update-card block {% if loop.first and updates|length > 2 %}md:col-span-2 lg:col-span-2{% endif %}">
+      <div class="update-meta">
+        <span>{{ post.posted_at.strftime('%Y-%m-%d') }}</span>
+        <span>{{ post.author }}</span>
+      </div>
+      <h2 class="update-title">{{ post.title }}</h2>
+      <p class="update-body">{{ post.excerpt if post.excerpt else post.content[:150] ~ '...' }}</p>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-state-icon">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-subtle)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-        {% for post in updates %}
-        {% set p = palette[loop.index0 % palette | length] %}
-        {% set featured = loop.first and updates|length > 2 %}
-        <a href="/updates/{{ post.id }}" class="card {% if featured %}md:col-span-2 lg:col-span-2{% endif %}" style="--accent: {{ p.accent }};">
-            <span class="card-date" style="color: {{ p.accent }};">{{ post.posted_at.strftime('%Y-%m-%d') }}</span>
-            <h2 class="card-title">{{ post.title }}</h2>
-            <p class="card-excerpt">{{ post.excerpt if post.excerpt else post.content[:150] ~ '...' }}</p>
-            <hr class="card-rule">
-            <span class="card-author">{{ post.author }}</span>
-        </a>
-        {% endfor %}
-    </div>
+    <p class="empty-state-title">No updates yet</p>
+    <p class="empty-state-desc">Check back later for stories from the squad.</p>
+  </div>
+  {% endif %}
+</div>
 {% endblock %}

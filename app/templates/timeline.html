@@ -2,144 +2,52 @@
 {% block title %}Memory Timeline — Elon Boys{% endblock %}
 
 {% block content %}
-<style>
-    .tl-card {
-        background-color: #FAF8F4;
-        border: 1px solid #E8E0D6;
-        box-shadow: 0 1px 3px rgba(26, 22, 20, 0.04);
-        border-radius: 2px;
-        padding: 20px 24px;
-        transition: background-color 0.25s ease;
-    }
-    .tl-card:hover {
-        background-color: #F5F0E8;
-    }
+<div class="content-container">
+  <div class="page-header">
+    <div class="page-header-content">
+      <span class="page-header-label">Journey</span>
+      <h1 class="page-headline">Memory <span class="gradient-text">Timeline</span></h1>
+      <p class="body-text mt-4 max-w-md">Our four-year journey, captured year by year.</p>
+    </div>
+  </div>
 
-    .tl-card-title {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 1.3;
-        color: #1A1614;
-        margin-bottom: 6px;
-    }
-
-    .tl-card-desc {
-        font-family: Georgia, 'Times New Roman', serif;
-        font-size: 13px;
-        line-height: 1.65;
-        color: #4A3F38;
-    }
-
-    .tl-line {
-        position: absolute;
-        left: 20px;
-        top: 0;
-        bottom: 0;
-        width: 1px;
-        background: #D4C9B8;
-    }
-
-    .tl-dot {
-        position: absolute;
-        left: 14px;
-        top: 24px;
-        width: 13px;
-        height: 13px;
-        border-radius: 50%;
-        border: 1.5px solid #D4C9B8;
-        background: #F5F0E8;
-        z-index: 1;
-        transition: background 0.3s ease, border-color 0.3s ease;
-    }
-    .tl-dot-current {
-        border-color: var(--accent);
-        background: var(--accent);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .tl-card { transition: none; }
-        .tl-card:hover { background-color: inherit; }
-        .tl-dot { transition: none; }
-    }
-</style>
-
-{% set palette = [
-    {'accent': '#C1633B'},
-    {'accent': '#7A9A7A'},
-    {'accent': '#C4A35A'},
-    {'accent': '#8A7F76'},
-] %}
-
-{% set year_subtitles = {
+  {% set year_subtitles = {
     1: 'The Beginning',
     2: 'Finding Our Rhythm',
     3: 'The Golden Days',
     4: 'The Final Chapter',
-} %}
+  } %}
 
-{% set year_labels = {
+  {% set year_labels = {
     1: 'Year One',
     2: 'Year Two',
     3: 'Year Three',
     4: 'Year Four',
-} %}
+  } %}
 
-    <div class="paper-texture min-h-screen -mt-8 md:-mt-10 full-bleed px-6 sm:px-8">
-
-    <div class="max-w-4xl mx-auto">
-
-        {# ── PAGE HEADER ── #}
-        <div class="text-center mb-12 md:mb-14">
-            <div class="issue-label">Journey</div>
-            <hr class="issue-rule mx-auto">
-            <h1 class="page-headline mt-5">Memory Timeline</h1>
-            <p class="text-espresso-400 text-sm mt-3 max-w-sm mx-auto body-narrative">Our four-year journey, captured year by year.</p>
+  <div class="max-w-4xl mx-auto">
+    {% for year_num in [1, 2, 3, 4] %}
+    {% set events = years[year_num] %}
+    <div class="reveal mb-16 last:mb-0">
+      <div class="flex items-center gap-4 mb-8">
+        <span class="text-5xl font-extrabold text-[var(--color-ember)] opacity-50 leading-none">{{ '%02d' | format(year_num) }}</span>
+        <div>
+          <h2 class="text-lg font-bold text-[var(--color-text)]">{{ year_labels[year_num] }}</h2>
+          <p class="text-sm text-[var(--color-text-muted)]">{{ year_subtitles[year_num] }}</p>
         </div>
+      </div>
 
-        {# ── ORNAMENT DIVIDER ── #}
-        <div class="divider-ornament mb-14">
-            <span class="line"></span>
-            <span class="dot"></span>
-            <span class="line"></span>
-        </div>
-
-        {# ── TIMELINE ── #}
-        {% for year_num in [1, 2, 3, 4] %}
-        {% set events = years[year_num] %}
-        {% set p = palette[year_num - 1] %}
-
-        <div class="relative mb-20 last:mb-0">
-
-            {# ── YEAR HEADER: numeral · rule · label ── #}
-            <div class="flex items-center gap-4 mb-10">
-                <span class="year-num" style="color: {{ p.accent }};">{{ '%02d' | format(year_num) }}</span>
-                <span class="year-rule" style="background: {{ p.accent }}; opacity: 0.25;"></span>
-                <div>
-                    <h2 class="year-label" style="color: {{ p.accent }};">{{ year_labels[year_num] }}</h2>
-                    <p class="year-sub">{{ year_subtitles[year_num] }}</p>
-                </div>
-            </div>
-
-            {# ── ENTRIES ── #}
-            <div class="relative pl-10">
-                <div class="tl-line"></div>
-                <div class="space-y-6">
-                    {% for event in events %}
-                    {% set is_last_event = year_num == 4 and loop.last %}
-                    <div class="relative">
-                        <span class="tl-dot{% if is_last_event %} tl-dot-current{% endif %}"{% if is_last_event %} style="--accent: {{ p.accent }};"{% endif %}></span>
-                        <div class="tl-card ml-6">
-                            <h3 class="tl-card-title">{{ event.title }}</h3>
-                            <p class="tl-card-desc">{{ event.description }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+      <div class="timeline">
+        {% for event in events %}
+        <div class="timeline-item">
+          <span class="timeline-date">{{ event.date if event.date else '' }}</span>
+          <h3 class="timeline-title">{{ event.title }}</h3>
+          <p class="timeline-desc">{{ event.description }}</p>
         </div>
         {% endfor %}
-
+      </div>
     </div>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

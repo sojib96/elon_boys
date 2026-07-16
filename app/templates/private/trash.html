@@ -23,35 +23,31 @@
 
     {% if not deleted_gallery and not deleted_updates %}
     <div class="text-center reveal py-12">
-      <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-sm bg-[#F5F1EA] text-xl">&#128200;</div>
-      <p class="font-sans text-[13px] font-medium text-dossier-body">Your trash is empty.</p>
-      <p class="mt-1 font-sans text-[11px] text-dossier-muted">Deleted items will appear here.</p>
+      <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-sm bg-[var(--color-surface)] text-xl">&#128200;</div>
+      <p class="text-sm font-medium text-dossier-body">Your trash is empty.</p>
+      <p class="mt-1 text-[11px] text-dossier-muted">Deleted items will appear here.</p>
     </div>
     {% endif %}
 
     {% if deleted_gallery %}
     <div class="reveal mb-8">
       <div class="mb-4 flex items-center gap-2">
-        <span class="font-sans text-[10px] font-semibold uppercase tracking-widest text-dossier-strong">Deleted Gallery Photos</span>
-        <span class="font-sans text-[10px] text-dossier-muted">({{ deleted_gallery | length }})</span>
+        <span class="text-[10px] font-semibold uppercase tracking-widest text-dossier-strong">Deleted Gallery Photos</span>
+        <span class="text-[10px] text-dossier-muted">({{ deleted_gallery | length }})</span>
       </div>
       <div class="space-y-3 stagger">
         {% for item in deleted_gallery %}
         <div class="dossier-card accent-stone">
           <div class="dossier-card-body px-5 py-3.5">
             <div class="flex items-center gap-3.5">
-              <div class="flex-shrink-0 h-10 w-10 rounded-sm border border-espresso-100 bg-cover bg-center{% if item.file_url %}" style="background-image: url('{{ item.file_url }}');{% else %}"{% endif %}></div>
+              <div class="flex-shrink-0 h-10 w-10 rounded-sm border border-[var(--color-border)] bg-cover bg-center{% if item.file_url %}" style="background-image: url('{{ item.file_url }}');{% else %}"{% endif %}></div>
               <div class="min-w-0 flex-1">
-                <p class="truncate font-sans text-[13px] font-semibold text-dossier-strong">{{ item.title }}</p>
-                <p class="mt-0.5 font-sans text-[10px] text-dossier-muted">{{ item.category }} &sdot; {{ item.uploaded_at.strftime('%b %d, %Y') if item.uploaded_at else '' }}</p>
+                <p class="truncate text-sm font-semibold text-dossier-strong">{{ item.title }}</p>
+                <p class="mt-0.5 text-[10px] text-dossier-muted">{{ item.category }} &sdot; {{ item.uploaded_at.strftime('%b %d, %Y') if item.uploaded_at else '' }}</p>
               </div>
               <div class="flex flex-shrink-0 items-center gap-1.5">
-                <form method="POST" action="/gallery/{{ item.id }}/restore">
-                  <button type="submit" class="btn btn-sm btn-primary">Restore</button>
-                </form>
-                <form method="POST" action="/gallery/{{ item.id }}/permanent-delete" onsubmit="return confirm('Permanently delete this photo? This cannot be undone.');">
-                  <button type="submit" class="btn btn-sm btn-danger">Delete Forever</button>
-                </form>
+                <form method="POST" action="/gallery/{{ item.id }}/restore"><button type="submit" class="btn btn-sm btn-primary">Restore</button></form>
+                <form method="POST" action="/gallery/{{ item.id }}/permanent-delete" onsubmit="return confirm('Permanently delete this photo? This cannot be undone.');"><button type="submit" class="btn btn-sm btn-danger">Delete Forever</button></form>
               </div>
             </div>
           </div>
@@ -64,8 +60,8 @@
     {% if deleted_updates %}
     <div class="reveal">
       <div class="mb-4 flex items-center gap-2">
-        <span class="font-sans text-[10px] font-semibold uppercase tracking-widest text-dossier-strong">Deleted Updates</span>
-        <span class="font-sans text-[10px] text-dossier-muted">({{ deleted_updates | length }})</span>
+        <span class="text-[10px] font-semibold uppercase tracking-widest text-dossier-strong">Deleted Updates</span>
+        <span class="text-[10px] text-dossier-muted">({{ deleted_updates | length }})</span>
       </div>
       <div class="space-y-3 stagger">
         {% for post in deleted_updates %}
@@ -73,16 +69,12 @@
           <div class="dossier-card-body px-5 py-3.5">
             <div class="flex items-center gap-3.5">
               <div class="min-w-0 flex-1">
-                <p class="truncate font-sans text-[13px] font-semibold text-dossier-strong">{{ post.title }}</p>
-                <p class="mt-0.5 font-sans text-[10px] text-dossier-muted">{{ post.author }} &sdot; {{ post.posted_at.strftime('%b %d, %Y') if post.posted_at else '' }}</p>
+                <p class="truncate text-sm font-semibold text-dossier-strong">{{ post.title }}</p>
+                <p class="mt-0.5 text-[10px] text-dossier-muted">{{ post.author }} &sdot; {{ post.posted_at.strftime('%b %d, %Y') if post.posted_at else '' }}</p>
               </div>
               <div class="flex flex-shrink-0 items-center gap-1.5">
-                <form method="POST" action="/updates/{{ post.id }}/restore">
-                  <button type="submit" class="btn btn-sm btn-primary">Restore</button>
-                </form>
-                <form method="POST" action="/updates/{{ post.id }}/permanent-delete" onsubmit="return confirm('Permanently delete this update and all its images? This cannot be undone.');">
-                  <button type="submit" class="btn btn-sm btn-danger">Delete Forever</button>
-                </form>
+                <form method="POST" action="/updates/{{ post.id }}/restore"><button type="submit" class="btn btn-sm btn-primary">Restore</button></form>
+                <form method="POST" action="/updates/{{ post.id }}/permanent-delete" onsubmit="return confirm('Permanently delete this update and all its images? This cannot be undone.');"><button type="submit" class="btn btn-sm btn-danger">Delete Forever</button></form>
               </div>
             </div>
           </div>

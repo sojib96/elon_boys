@@ -20,10 +20,10 @@
 
     <div class="space-y-4 stagger">
       {% set sections = [
-        ('/profile/edit', 'Edit Profile', 'Update your squad profile and personal info.', '\U0001F464', 'accent-terracotta'),
+        ('/profile/edit', 'Edit Profile', 'Update your squad profile and personal info.', '\U0001F464', 'accent-personal'),
         ('/notes', 'Notes', 'Internal messages and coordination for the group.', '\U0001F4DD', 'accent-gold'),
-        ('/updates/new', 'Create Update', 'Publish a new update visible to everyone on the site.', '\u270E', 'accent-steel'),
-        ('/gallery/upload', 'Upload to Gallery', 'Add photos to the public gallery.', '\U0001F4F7', 'accent-amber'),
+        ('/updates/new', 'Create Update', 'Publish a new update visible to everyone on the site.', '\u270E', 'accent-work'),
+        ('/gallery/upload', 'Upload to Gallery', 'Add photos to the public gallery.', '\U0001F4F7', 'accent-social'),
         ('/trash', 'Trash', 'Restore or permanently delete removed items.', '\U0001F4CA', 'accent-stone'),
       ] %}
       {% for href, title, desc, icon, accent in sections %}
@@ -31,10 +31,10 @@
         <div class="dossier-card-header">
           <span class="icon-box w-8 h-8 text-base">{{ icon }}</span>
           <div class="min-w-0 flex-1">
-            <h2 class="text-[11px]">{{ title }}</h2>
-            <p class="mt-0.5 font-sans text-[12px] text-dossier-body">{{ desc }}</p>
+            <h2>{{ title }}</h2>
+            <p class="mt-0.5 text-xs text-dossier-body">{{ desc }}</p>
           </div>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8AFA2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0">
             <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
           </svg>
         </div>

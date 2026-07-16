@@ -2,101 +2,76 @@
 {% block title %}Guestbook — Elon Boys{% endblock %}
 
 {% block content %}
-<style>
-  .gb-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-  .gb-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,22,20,0.06); }
-  .gb-form-card { transition: box-shadow 0.3s ease; }
-  .gb-form-card:focus-within { box-shadow: 0 4px 24px rgba(193,99,59,0.08); }
-  @media (prefers-reduced-motion: reduce) {
-    .gb-card, .gb-card:hover, .gb-form-card { transition: none; transform: none; }
-    .gb-form-card:focus-within { box-shadow: none; }
-  }
-</style>
-
-{% set count = entries|length %}
-<div class="max-w-4xl mx-auto">
-
-  {# ── Header ── #}
-  <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-3">
-    <div>
-      <p class="font-sans text-[10px] tracking-[0.22em] uppercase text-[#8B3A3A] font-medium">The Guestbook</p>
-      <h1 class="font-serif font-bold text-[#1A1614] leading-tight text-[clamp(1.3rem,2.5vw,1.75rem)] mt-1">Leave Your Mark</h1>
-      <p class="text-[12px] text-[#8A7F76] mt-1 font-sans max-w-md">Warning: contains high levels of nostalgia and inside jokes that will not be explained to you.</p>
-    </div>
-    <div class="flex items-center gap-3 text-[11px] font-sans font-semibold shrink-0">
-      <span class="px-3 py-1.5 bg-[#FAF8F4] border border-[#E8E0D6] rounded-full text-[#8B3A3A]">{{ count }} entries</span>
-      <span class="px-3 py-1.5 bg-[#FAF8F4] border border-[#E8E0D6] rounded-full text-[#8A7F76]">chaos: {{ count * 11 }}%</span>
+<div class="content-container">
+  <div class="page-header">
+    <div class="page-header-content">
+      <span class="page-header-label">The Guestbook</span>
+      <h1 class="page-headline">Leave <span class="gradient-text">your mark</span></h1>
+      <p class="body-text mt-4 max-w-lg">
+        Warning: contains high levels of nostalgia and inside jokes that will not be explained to you.
+      </p>
     </div>
   </div>
 
-  {# ── Form card ── #}
-  <div class="gb-form-card mb-12 bg-[#FAF8F4] border border-[#E8E0D6] border-l-[3px] border-l-[#8B3A3A] rounded-sm">
-    {% if submitted %}
-    <div class="px-5 py-3 border-b border-[#E8E0D6] bg-[#EDE8DE]" data-auto-dismiss>
-      <p class="text-[13px] text-[#1A1614] font-sans font-medium">Thanks &mdash; your message has been posted!</p>
-      <p class="text-[10px] text-[#8A7F76] font-sans mt-0.5">(We read it. We may or may not respond. Probably not.)</p>
-    </div>
-    {% endif %}
-    <div class="px-6 py-7">
-      <form method="post" action="/guestbook" class="flex flex-col md:flex-row gap-3 items-stretch">
-        <div class="md:w-1/4">
-          <input type="text" id="name" name="name" required
-                 class="w-full h-full px-4 py-4 text-[14px] font-sans text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8]"
-                 placeholder="Your name (or alias)">
-        </div>
-        <div class="md:flex-1">
-          <textarea id="message" name="message" rows="1" required
-                    class="w-full h-full px-4 py-4 text-[14px] font-serif text-[#1A1614] bg-white border border-[#D4C9B8] rounded-sm focus:outline-none focus:border-[#C1633B] focus:ring-1 focus:ring-[#C1633B]/20 placeholder:text-[#C4B8A8] resize-none"
-                    placeholder="Write something... or do not. We are not your therapist."></textarea>
-        </div>
-        <button type="submit"
-                class="px-6 py-4 text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-white bg-[#8B3A3A] rounded-sm hover:bg-[#A8472F] transition-colors cursor-pointer border-0 whitespace-nowrap">
-          Post &rarr;
-        </button>
-      </form>
-    </div>
-  </div>
+  {% set count = entries|length %}
 
-  {# ── Entries ── #}
-  {% if entries %}
-  <div id="guestbook-list" class="space-y-4">
-    {% for entry in entries %}
-    <div class="gb-card bg-[#FAF8F4] border border-[#E8E0D6] border-l-[3px] border-l-[#C4A35A] rounded-sm px-5 py-4 flex gap-3 items-start">
-      <div class="w-8 h-8 rounded-full bg-[#EDE8DE] flex items-center justify-center flex-shrink-0 mt-0.5">
-        <span class="font-sans text-[12px] font-bold text-[#8A7F76]">{{ entry.name[:1] }}</span>
+  {% if submitted %}
+  <div class="glass-card p-4 mb-8 border-l-[3px]" style="border-left-color:var(--color-success);">
+    <p class="text-sm font-medium text-[var(--color-success)]">Thanks &mdash; your message has been posted!</p>
+  </div>
+  {% endif %}
+
+  <div class="glass-card p-6 mb-12 reveal">
+    <form method="post" action="/guestbook" class="flex flex-col md:flex-row gap-3 items-stretch">
+      <div class="md:w-1/4">
+        <input type="text" id="name" name="name" required
+               class="search-input h-full"
+               placeholder="Your name (or alias)">
       </div>
-      <div class="min-w-0 flex-1">
-        <div class="flex items-baseline gap-2.5 mb-1.5">
-          <span class="text-[13px] font-sans font-semibold text-[#1A1614]">{{ entry.name }}</span>
-          <span class="text-[9px] font-sans text-[#B8AFA2]">{{ entry.posted_at.strftime('%b %d, %Y') if entry.posted_at else '' }}</span>
+      <div class="md:flex-1">
+        <textarea id="message" name="message" rows="1" required
+                  class="search-input h-full resize-none"
+                  placeholder="Write something... or don't."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        Post &rarr;
+      </button>
+    </form>
+  </div>
+
+  {% if entries %}
+  <div id="guestbook-list" class="space-y-3 stagger">
+    {% for entry in entries %}
+    <div class="guestbook-entry">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-[var(--color-surface-elevated)] border border-[var(--color-border)] flex items-center justify-center flex-shrink-0">
+          <span class="text-xs font-bold text-[var(--color-text-muted)]">{{ entry.name[:1] }}</span>
         </div>
-        <p class="text-[13px] font-serif italic text-[#5A5148] leading-relaxed">&ldquo;{{ entry.message }}&rdquo;</p>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-baseline gap-2.5">
+            <span class="guestbook-author">{{ entry.name }}</span>
+            <span class="guestbook-date">{{ entry.posted_at.strftime('%b %d, %Y') if entry.posted_at else '' }}</span>
+          </div>
+          <p class="guestbook-message">&ldquo;{{ entry.message }}&rdquo;</p>
+        </div>
       </div>
     </div>
     {% endfor %}
   </div>
   {% else %}
-  <div class="text-center py-20">
-    <div class="w-14 h-14 rounded-full bg-[#FAF8F4] border border-[#E8E0D6] flex items-center justify-center mx-auto mb-5">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A7F76" stroke-width="1.8" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg>
+  <div class="empty-state">
+    <div class="empty-state-icon">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-subtle)" stroke-width="1.5"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg>
     </div>
-    <p class="text-[14px] font-serif italic text-[#8A7F76]">Nothing here yet. The void stares back.</p>
-    <p class="text-[11px] text-[#C4B8A8] font-sans mt-2">(Be the first to break the silence. No pressure.)</p>
+    <p class="empty-state-title">Nothing here yet</p>
+    <p class="empty-state-desc">The void stares back. Be the first to break the silence.</p>
   </div>
   {% endif %}
-
 </div>
 
 <script>
 if (window.location.search.includes('submitted=1')) {
   window.history.replaceState({}, document.title, '/guestbook');
 }
-document.querySelectorAll('[data-auto-dismiss]').forEach(function(el) {
-  setTimeout(function() {
-    el.style.transition = 'opacity 0.4s ease';
-    el.style.opacity = '0';
-    setTimeout(function() { el.remove(); }, 400);
-  }, 3000);
-});
 </script>
 {% endblock %}

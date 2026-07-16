@@ -2,52 +2,50 @@
 {% block title %}Events — Elon Boys{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto">
-    <div class="text-center mb-14 reveal">
-        <span class="issue-label inline-block mb-4">Calendar</span>
-        <h1 class="page-headline">Events</h1>
-        <p class="text-espresso-400 text-sm mt-2">Past and upcoming reunions and meetups.</p>
+<div class="content-container">
+  <div class="page-header">
+    <div class="page-header-content">
+      <span class="page-header-label">Calendar</span>
+      <h1 class="page-headline">Events &amp; <span class="gradient-text">Reunions</span></h1>
+      <p class="body-text mt-4">Past and upcoming meetups and gatherings.</p>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto space-y-12">
+    <div class="reveal">
+      <h2 class="section-label mb-5">Upcoming</h2>
+      <div class="space-y-4">
+        {% for event in events_list if event.is_upcoming %}
+        <div class="glass-card p-6" style="border-left: 3px solid var(--color-ember);">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <h3 class="feature-title mb-1">{{ event.title }}</h3>
+              <p class="text-xs font-medium text-[var(--color-ember)] mb-2">{{ event.date }}</p>
+              <p class="text-sm text-[var(--color-text-muted)] leading-relaxed">{{ event.description }}</p>
+            </div>
+            <span class="tag flex-shrink-0">Upcoming</span>
+          </div>
+        </div>
+        {% else %}
+        <p class="text-sm text-[var(--color-text-subtle)] italic">No upcoming events planned — yet.</p>
+        {% endfor %}
+      </div>
     </div>
 
-    <div class="space-y-10">
-        <div class="reveal">
-            <h2 class="font-semibold text-espresso-600 text-sm mb-4 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full inline-block" style="background: var(--color-primary);"></span> Upcoming
-            </h2>
-            <div class="grid gap-5">
-                {% for event in events_list if event.is_upcoming %}
-                <div class="card-editorial overflow-hidden" style="border-top: 3px solid var(--color-primary);">
-                    <div class="p-5">
-                        <div class="flex items-start justify-between gap-4">
-                            <div class="flex-1">
-                                <h3 class="font-semibold text-ink mb-1">{{ event.title }}</h3>
-                                <p style="color: var(--color-primary);" class="text-[13px] font-medium mb-2">{{ event.date }}</p>
-                                <p class="text-espresso-400 text-sm leading-relaxed">{{ event.description }}</p>
-                            </div>
-                            <span class="bg-[var(--color-primary-bg)] text-[var(--color-primary-dark)] text-[11px] font-medium px-2.5 py-1 rounded-sm border whitespace-nowrap" style="border-color: var(--color-primary);">Upcoming</span>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+    <div class="reveal">
+      <h2 class="section-label mb-5">Past</h2>
+      <div class="space-y-3">
+        {% for event in events_list if not event.is_upcoming %}
+        <div class="glass-card p-5 opacity-60 hover:opacity-100 transition-opacity">
+          <h3 class="text-sm font-semibold text-[var(--color-text)] mb-0.5">{{ event.title }}</h3>
+          <p class="text-xs text-[var(--color-text-subtle)] mb-1.5">{{ event.date }}</p>
+          <p class="text-xs text-[var(--color-text-muted)] leading-relaxed">{{ event.description }}</p>
         </div>
-
-        <div class="reveal">
-            <h2 class="font-medium text-espresso-300 text-sm mb-4 flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-espresso-200 inline-block"></span> Past
-            </h2>
-            <div class="grid gap-4">
-                {% for event in events_list if not event.is_upcoming %}
-                <div class="card-editorial overflow-hidden opacity-70 hover:opacity-100" style="border-top: 1px solid var(--color-border);">
-                    <div class="p-5">
-                        <h3 class="font-medium text-espresso-500 text-[15px] mb-0.5">{{ event.title }}</h3>
-                        <p class="text-espresso-300 text-[13px] mb-1.5">{{ event.date }}</p>
-                        <p class="text-espresso-400 text-sm leading-relaxed">{{ event.description }}</p>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
+        {% else %}
+        <p class="text-sm text-[var(--color-text-subtle)] italic">No past events recorded.</p>
+        {% endfor %}
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

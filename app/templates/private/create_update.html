@@ -24,8 +24,7 @@
     </div>
 
     <form method="POST" action="{% if post %}/updates/{{ post.id }}/edit{% else %}/updates/new{% endif %}" enctype="multipart/form-data" class="space-y-5 stagger">
-
-      <div class="dossier-card accent-terracotta reveal">
+      <div class="dossier-card accent-personal reveal">
         <div class="dossier-card-header">
           <span class="icon-box">&#9998;</span>
           <h2>Post Details</h2>
@@ -46,15 +45,15 @@
             {% if errors.content %}<p class="field-meta field-error">{{ errors.content }}</p>{% endif %}
           </div>
           <div class="flex items-center gap-2.5 pt-1">
-            <span class="text-[10px] font-sans text-dossier-muted">Posted as</span>
-            <span class="px-2.5 py-1 bg-[#F5F1EA] rounded text-[11px] font-sans font-semibold text-dossier-strong">{{ member.name }}</span>
+            <span class="text-[10px] text-dossier-muted">Posted as</span>
+            <span class="px-2.5 py-1 bg-[var(--color-surface-elevated)] rounded text-[11px] font-semibold text-dossier-strong">{{ member.name }}</span>
             <input type="hidden" name="author" value="{{ member.name }}">
           </div>
         </div>
       </div>
 
       {% if existing_images is defined and existing_images %}
-      <div class="dossier-card accent-plum reveal">
+      <div class="dossier-card accent-personal reveal">
         <div class="dossier-card-header">
           <span class="icon-box">&#128247;</span>
           <h2>Current Images</h2>
@@ -62,11 +61,11 @@
         <div class="dossier-card-body">
           <div class="flex flex-col gap-2">
             {% for img in existing_images %}
-            <div class="flex items-center gap-2.5 rounded-sm border border-[#F0EBE2] px-2.5 py-2">
-              <img src="{{ img.file_url }}" alt="" class="h-12 w-12 flex-shrink-0 rounded-sm border border-espresso-100 object-cover">
+            <div class="flex items-center gap-2.5 rounded-sm border border-[var(--color-border)] px-2.5 py-2">
+              <img src="{{ img.file_url }}" alt="" class="h-12 w-12 flex-shrink-0 rounded-sm object-cover">
               <div class="flex items-center gap-1.5">
                 <input type="checkbox" name="delete_image_ids" value="{{ img.id }}" id="del_img_{{ img.id }}" class="checkbox-dossier">
-                <label for="del_img_{{ img.id }}" class="cursor-pointer font-sans text-[10px] text-[#DC2626]">Delete this image</label>
+                <label for="del_img_{{ img.id }}" class="cursor-pointer text-[10px] text-[var(--color-error)]">Delete this image</label>
               </div>
             </div>
             {% endfor %}
@@ -75,7 +74,7 @@
       </div>
       {% endif %}
 
-      <div class="dossier-card accent-amber reveal">
+      <div class="dossier-card accent-personal reveal">
         <div class="dossier-card-header">
           <span class="icon-box">&#128247;</span>
           <h2>Images <span class="field-optional">(optional, up to 10)</span></h2>
@@ -97,6 +96,7 @@
     </form>
   </div>
 </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   var fileInput = document.getElementById('files');
@@ -105,17 +105,10 @@ document.addEventListener('DOMContentLoaded', function() {
     fileInput.addEventListener('change', function() {
       var files = fileInput.files;
       var count = files.length;
-      if (count === 0) {
-        preview.innerHTML = '<span class="photo-dropzone-empty">No files selected</span>';
-        return;
-      }
+      if (count === 0) { preview.innerHTML = '<span class="photo-dropzone-empty">No files selected</span>'; return; }
       var html = '<span class="photo-dropzone-count">' + count + ' file' + (count > 1 ? 's' : '') + ' selected</span>';
-      for (var i = 0; i < Math.min(count, 5); i++) {
-        html += '<span class="photo-dropzone-file">' + files[i].name + '</span>';
-      }
-      if (count > 5) {
-        html += '<span class="photo-dropzone-file" style="color:#8A7F76;font-style:italic">+' + (count - 5) + ' more</span>';
-      }
+      for (var i = 0; i < Math.min(count, 5); i++) { html += '<span class="photo-dropzone-file">' + files[i].name + '</span>'; }
+      if (count > 5) { html += '<span class="photo-dropzone-file" style="color:#64748B;font-style:italic">+' + (count - 5) + ' more</span>'; }
       preview.innerHTML = html;
     });
   }

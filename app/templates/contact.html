@@ -3,85 +3,40 @@
 {% block main_class %} main--compact{% endblock %}
 
 {% block content %}
-<style>
-    .contact-card {
-        background-color: #FAF8F4;
-        border: 1px solid #E8E0D6;
-        box-shadow: 0 1px 3px rgba(26, 22, 20, 0.04);
-        border-radius: 2px;
-        padding: 24px 20px;
-        transition: background-color 0.25s ease;
-    }
-    .contact-card:hover {
-        background-color: #F5F0E8;
-    }
-
-    .contact-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .contact-card { transition: none; }
-        .contact-card:hover { background-color: inherit; }
-    }
-</style>
-
-<div class="contact-container relative w-full flex flex-col items-center justify-center px-4 py-6">
-    <div class="w-full max-w-2xl">
-        <div class="text-center mb-6">
-            <div class="issue-label">If You Must</div>
-            <hr class="issue-rule mx-auto">
-            <h1 class="page-headline mt-4 mb-2" style="font-size: clamp(1.6rem, 4vw, 2.5rem);">Fine, Talk To Us</h1>
-            <p class="text-espresso-400 text-sm leading-relaxed max-w-xs mx-auto body-narrative">We probably won&rsquo;t reply immediately, but go ahead.</p>
-        </div>
-
-        <hr class="divider-double mb-6">
-
-        <div class="grid gap-4 md:grid-cols-3">
-
-            {# ── EMAIL ── #}
-            <div class="contact-card">
-                <div class="flex items-center gap-3 mb-3">
-                    <span class="contact-icon" style="background: rgba(193,99,59,0.12);">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C1633B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
-                    </span>
-                    <span class="text-[10px] uppercase tracking-[0.18em] font-semibold" style="color: #C1633B;">Email</span>
-                </div>
-                <p class="text-[14px] text-[#1A1614] font-medium mb-2" style="font-family: 'Inter', system-ui, sans-serif;">reply@korbo.na</p>
-                <p class="text-[12px] italic leading-relaxed text-[#8A7F76]" style="font-family: Georgia, 'Times New Roman', serif;">We reply slower than a govt office during hartal.</p>
-            </div>
-
-            {# ── PHONE ── #}
-            <div class="contact-card">
-                <div class="flex items-center gap-3 mb-3">
-                    <span class="contact-icon" style="background: rgba(122,154,122,0.15);">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7A9A7A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                    </span>
-                    <span class="text-[10px] uppercase tracking-[0.18em] font-semibold" style="color: #7A9A7A;">Phone</span>
-                </div>
-                <p class="text-[14px] text-[#1A1614] font-medium mb-2" style="font-family: 'Inter', system-ui, sans-serif;">+880 1700-000000</p>
-                <p class="text-[12px] italic leading-relaxed text-[#8A7F76]" style="font-family: Georgia, 'Times New Roman', serif;">Missed call is our love language. We&rsquo;ll miss yours too.</p>
-            </div>
-
-            {# ── SOCIAL ── #}
-            <div class="contact-card">
-                <div class="flex items-center gap-3 mb-3">
-                    <span class="contact-icon" style="background: rgba(196,163,90,0.18);">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C4A35A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    </span>
-                    <span class="text-[10px] uppercase tracking-[0.18em] font-semibold" style="color: #C4A35A;">Social</span>
-                </div>
-                <p class="text-[14px] text-[#1A1614] font-medium mb-2" style="font-family: 'Inter', system-ui, sans-serif;">Facebook &middot; YouTube &middot; Telegram</p>
-                <p class="text-[12px] italic leading-relaxed text-[#8A7F76]" style="font-family: Georgia, 'Times New Roman', serif;">10k followers, zero replies. We keep the ratio balanced.</p>
-            </div>
-
-        </div>
+<div class="content-container">
+  <div class="page-header">
+    <div class="page-header-content">
+      <span class="page-header-label">If You Must</span>
+      <h1 class="page-headline">Fine, <span class="gradient-text">talk to us</span></h1>
+      <p class="body-text mt-4">We probably won&rsquo;t reply immediately, but go ahead.</p>
     </div>
+  </div>
+
+  <div class="feature-grid reveal">
+    <div class="feature-card">
+      <div class="feature-icon ember">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+      </div>
+      <h3 class="feature-title">Email</h3>
+      <p class="feature-desc mb-2">reply@korbo.na</p>
+      <p class="text-xs italic text-[var(--color-text-subtle)]">We reply slower than a govt office during hartal.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon violet">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <h3 class="feature-title">Phone</h3>
+      <p class="feature-desc mb-2">+880 1700-000000</p>
+      <p class="text-xs italic text-[var(--color-text-subtle)]">Missed call is our love language.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon cyan">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3 class="feature-title">Social</h3>
+      <p class="feature-desc mb-2">Facebook · YouTube · Telegram</p>
+      <p class="text-xs italic text-[var(--color-text-subtle)]">10k followers, zero replies. Balanced.</p>
+    </div>
+  </div>
 </div>
 {% endblock %}

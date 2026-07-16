@@ -24,45 +24,40 @@
     </div>
 
     <form method="POST" action="/gallery/upload" enctype="multipart/form-data" class="space-y-6 stagger">
-
       <div class="reveal flex flex-col sm:flex-row gap-4">
         <div class="flex-1">
-          <label class="field-label mb-1.5 block" for="title">Title</label>
-          <input type="text" id="title" name="title" value="{{ form.title | default('') }}" class="field-input {% if errors.title %}input-error{% endif %}" placeholder="Give your photo a name">
+          <label class="section-label mb-2 block text-left" for="title">Title</label>
+          <input type="text" id="title" name="title" value="{{ form.title | default('') }}" class="field-input bg-[var(--color-surface-elevated)] border border-[var(--color-border)] rounded-[var(--radius-md)] text-[var(--color-text)] p-3 w-full {% if errors.title %}input-error{% endif %}" placeholder="Give your photo a name">
           {% if errors.title %}<p class="field-meta field-error">{{ errors.title }}</p>{% endif %}
         </div>
         <div class="sm:w-48">
-          <label class="field-label mb-1.5 block" for="category">Category</label>
+          <label class="section-label mb-2 block text-left" for="category">Category</label>
           <div class="flex items-center gap-2">
-            <select id="category" name="category" class="field-select flex-1">
+            <select id="category" name="category" class="field-select bg-[var(--color-surface-elevated)] border border-[var(--color-border)] text-[var(--color-text)] p-2.5 rounded-[var(--radius-md)] flex-1">
               <option value="" disabled {% if not form.category %}selected{% endif %}>Select a category</option>
               {% for cat in categories %}
               <option value="{{ cat }}" {% if form.category == cat %}selected{% endif %}>{{ cat }}</option>
               {% endfor %}
             </select>
-            <button type="button" id="add-category-btn" class="flex h-[30px] w-[30px] flex-shrink-0 cursor-pointer items-center justify-center rounded-sm border border-[#D4C9B8] bg-transparent transition-colors hover:border-[#8B3A3A]" title="Add a new category">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A7F76" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            <button type="button" id="add-category-btn" class="flex h-[30px] w-[30px] flex-shrink-0 cursor-pointer items-center justify-center rounded-sm border border-[var(--color-border)] bg-transparent transition-colors hover:border-[var(--color-ember)]" title="Add a new category">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
             </button>
           </div>
           <div id="new-category-wrapper" class="mt-2" style="display:none;">
             <div class="flex items-center gap-2">
-              <input type="text" id="new-category-input" class="flex-1 rounded-sm border border-[#D4C9B8] bg-[#F5F1EA] px-2.5 py-1.5 font-sans text-[13px] text-[#1A1614] outline-none" placeholder="New category name" maxlength="50">
+              <input type="text" id="new-category-input" class="flex-1 rounded-sm border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-2.5 py-1.5 text-xs text-[var(--color-text)] outline-none" placeholder="New category name" maxlength="50">
               <button type="button" id="confirm-category-btn" class="btn btn-sm btn-primary">Add</button>
               <button type="button" id="cancel-category-btn" class="btn btn-secondary btn-sm">Cancel</button>
             </div>
           </div>
-          {% if errors.category %}
-          <p class="field-meta field-error mt-1">{{ errors.category }}</p>
-          {% endif %}
+          {% if errors.category %}<p class="field-meta field-error mt-1">{{ errors.category }}</p>{% endif %}
         </div>
       </div>
 
       <div class="reveal">
         {{ file_dropzone('files', 'files', multiple=true) }}
         <p class="field-meta mt-2">Accepted formats: JPG, PNG, GIF, WebP. Multiple files allowed.</p>
-        {% if errors.files %}
-        <p class="field-meta field-error mt-1">{{ errors.files }}</p>
-        {% endif %}
+        {% if errors.files %}<p class="field-meta field-error mt-1">{{ errors.files }}</p>{% endif %}
       </div>
 
       <div class="flex justify-end gap-3 pt-2 reveal">
@@ -82,23 +77,14 @@ document.addEventListener('DOMContentLoaded', function() {
   var cancelBtn = document.getElementById('cancel-category-btn');
   var select = document.getElementById('category');
 
-  addBtn.addEventListener('click', function() {
-    wrapper.style.display = '';
-    input.value = '';
-    input.focus();
-  });
-
-  cancelBtn.addEventListener('click', function() {
-    wrapper.style.display = 'none';
-    input.value = '';
-  });
+  addBtn.addEventListener('click', function() { wrapper.style.display = ''; input.value = ''; input.focus(); });
+  cancelBtn.addEventListener('click', function() { wrapper.style.display = 'none'; input.value = ''; });
 
   function addCategory() {
     var name = input.value.trim();
     if (!name) return;
     var opt = document.createElement('option');
-    opt.value = name;
-    opt.textContent = name;
+    opt.value = name; opt.textContent = name;
     select.appendChild(opt);
     select.value = name;
     wrapper.style.display = 'none';
@@ -117,17 +103,10 @@ document.addEventListener('DOMContentLoaded', function() {
     fileInput.addEventListener('change', function() {
       var files = fileInput.files;
       var count = files.length;
-      if (count === 0) {
-        preview.innerHTML = '<span class="photo-dropzone-empty">No files selected</span>';
-        return;
-      }
+      if (count === 0) { preview.innerHTML = '<span class="photo-dropzone-empty">No files selected</span>'; return; }
       var html = '<span class="photo-dropzone-count">' + count + ' file' + (count > 1 ? 's' : '') + ' selected</span>';
-      for (var i = 0; i < Math.min(count, 5); i++) {
-        html += '<span class="photo-dropzone-file">' + files[i].name + '</span>';
-      }
-      if (count > 5) {
-        html += '<span class="photo-dropzone-file" style="color:#8A7F76;font-style:italic">+' + (count - 5) + ' more</span>';
-      }
+      for (var i = 0; i < Math.min(count, 5); i++) { html += '<span class="photo-dropzone-file">' + files[i].name + '</span>'; }
+      if (count > 5) { html += '<span class="photo-dropzone-file" style="color:#64748B;font-style:italic">+' + (count - 5) + ' more</span>'; }
       preview.innerHTML = html;
     });
   }

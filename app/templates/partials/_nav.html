@@ -1,9 +1,11 @@
-<nav class="sticky top-0 z-50 border-b border-[#E8E0D6] bg-espresso-50" role="navigation" aria-label="Main navigation">
+<nav id="site-nav" class="fixed top-0 left-0 right-0 z-sticky transition-all duration-300" role="navigation" aria-label="Main navigation">
     <div class="max-w-7xl mx-auto px-6 sm:px-8">
-        <div class="flex items-center justify-between h-12">
-            <a href="/" class="font-sans text-[13px] font-semibold tracking-tight text-[#1A1614] no-underline">Elon Boys</a>
+        <div class="flex items-center justify-between h-14 md:h-16">
+            <a href="/" class="relative z-1 font-sans text-sm font-extrabold tracking-tight text-[#F8FAFC] no-underline hover:text-[#FF6B35] transition-colors duration-200">
+                Elon Boys
+            </a>
 
-            <div id="desktop-nav" class="hidden md:flex items-center gap-0">
+            <div id="desktop-nav" class="hidden md:flex items-center gap-1">
                 {% set nav_links = [
                     ('/', 'Home'),
                     ('/squad', 'Squad'),
@@ -13,32 +15,37 @@
                     ('/contact', 'Contact'),
                 ] %}
                 {% for href, label in nav_links %}
-                <a href="{{ href }}" class="masthead-link {% if request.url.path == href %}active{% endif %}">{{ label }}</a>
+                <a href="{{ href }}"
+                   class="nav-link {% if request.url.path == href %}active{% endif %}">
+                    {{ label }}
+                </a>
                 {% endfor %}
                 {% if request.state.current_member %}
-                <a href="/behind-the-curtain" class="masthead-link {% if request.url.path == '/behind-the-curtain' %}active{% endif %}">Behind the Curtain</a>
-                <a href="/logout" class="masthead-link masthead-login">Logout</a>
+                <a href="/behind-the-curtain" class="nav-link {% if request.url.path == '/behind-the-curtain' %}active{% endif %}">Curtain</a>
+                <a href="/logout" class="nav-link nav-link-accent">Logout</a>
                 {% else %}
-                <a href="/login" class="masthead-link masthead-login">Login</a>
+                <a href="/login" class="nav-link nav-link-accent">Login</a>
                 {% endif %}
             </div>
 
-            <button id="menu-btn" class="md:hidden p-1 -mr-1 rounded hover:bg-[rgba(193,99,59,0.08)] transition-colors" aria-label="Toggle navigation menu" aria-expanded="false">
-                <div class="hamburger" id="hamburger-icon">
-                    <span></span><span></span><span></span>
-                </div>
-            </button>
+            <div class="flex items-center gap-2 md:hidden">
+                <button id="menu-btn" class="p-1.5 -mr-1 rounded-md hover:bg-[#1C1C28] transition-colors" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <div class="hamburger" id="hamburger-icon">
+                        <span></span><span></span><span></span>
+                    </div>
+                </button>
+            </div>
         </div>
 
-        <div id="mobile-menu" class="md:hidden hidden pb-4 pt-2 border-t border-[#E8E0D6]" role="menu">
+        <div id="mobile-menu" class="md:hidden hidden pb-5 pt-2 border-t border-[#2A2A3E]" role="menu">
             {% for href, label in nav_links %}
-            <a href="{{ href }}" class="block px-2 py-2 text-sm text-[#4A3F38] hover:text-[#C1633B] font-medium transition-colors duration-200" role="menuitem">{{ label }}</a>
+            <a href="{{ href }}" class="block px-3 py-2.5 text-sm font-medium text-[#CBD5E1] hover:text-[#FF6B35] transition-colors duration-200" role="menuitem">{{ label }}</a>
             {% endfor %}
             {% if request.state.current_member %}
-            <a href="/behind-the-curtain" class="block px-2 py-2 text-sm text-[#4A3F38] hover:text-[#C1633B] font-medium transition-colors duration-200" role="menuitem">Behind the Curtain</a>
-            <a href="/logout" class="block mt-2 px-2 py-2 text-sm text-[#C1633B] font-semibold">Logout</a>
+            <a href="/behind-the-curtain" class="block px-3 py-2.5 text-sm font-medium text-[#CBD5E1] hover:text-[#FF6B35] transition-colors duration-200" role="menuitem">Behind the Curtain</a>
+            <a href="/logout" class="block mt-1 px-3 py-2.5 text-sm font-semibold text-[#FF6B35]" role="menuitem">Logout</a>
             {% else %}
-            <a href="/login" class="block mt-2 px-2 py-2 text-sm text-[#C1633B] font-semibold">Login</a>
+            <a href="/login" class="block mt-1 px-3 py-2.5 text-sm font-semibold text-[#FF6B35]" role="menuitem">Login</a>
             {% endif %}
         </div>
     </div>

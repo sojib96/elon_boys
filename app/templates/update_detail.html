@@ -2,310 +2,119 @@
 {% block title %}{{ post.title }} — Elon Boys{% endblock %}
 
 {% block content %}
-<style>
-    /* ── Headline ── */
-    .mag-headline {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-weight: 700;
-        font-size: clamp(2rem, 5vw, 3.25rem);
-        line-height: 1.08;
-        letter-spacing: -0.025em;
-        color: #1A1614;
-    }
+<div class="content-container">
+  <div class="max-w-4xl mx-auto">
+    <div class="pt-24 pb-6">
+      <a href="/updates" class="btn btn-secondary btn-sm mb-8">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Back to updates
+      </a>
 
-    .mag-headline-sub {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-weight: 500;
-        font-style: italic;
-        font-size: clamp(1rem, 2vw, 1.25rem);
-        color: #8B3A3A;
-        line-height: 1.3;
-    }
+      {% if member and member.name == post.author %}
+      <div class="flex gap-2 mb-6">
+        <a href="/updates/{{ post.id }}/edit" class="btn btn-secondary btn-sm">Edit</a>
+        <button type="button" onclick="showDeleteModal()" class="btn btn-danger btn-sm">Delete</button>
+      </div>
+      {% endif %}
 
-    /* ── Drop cap ── */
-    .drop-cap::first-letter {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 4.2em;
-        font-weight: 700;
-        float: left;
-        line-height: 0.75;
-        margin-right: 0.12em;
-        margin-top: 0.08em;
-        color: #1A1614;
-    }
+      <div class="lg:grid lg:grid-cols-2 lg:gap-10 mb-12">
+        <figure class="glass-card overflow-hidden lg:sticky lg:top-24 mb-6 lg:mb-0">
+          {% set active_images = post.images | selectattr('is_deleted', 'equalto', false) | list %}
+          {% if active_images | length > 0 %}
+          <img src="{{ active_images[0].file_url }}" alt="{{ active_images[0].alt_text or post.title }}" loading="lazy" class="w-full h-auto max-h-[50vh] object-cover"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          {% else %}
+          <div class="w-full aspect-[4/3] flex items-center justify-center text-[var(--color-text-subtle)] bg-[var(--color-surface)] text-xs uppercase tracking-widest">Photo</div>
+          {% endif %}
+          <div class="hidden w-full aspect-[4/3] items-center justify-center text-[var(--color-text-subtle)] bg-[var(--color-surface)] text-xs uppercase tracking-widest">Photo</div>
+          <figcaption class="text-[10px] text-[var(--color-text-subtle)] italic text-center p-2 border-t border-[var(--color-border)]">From the archives — {{ post.posted_at.strftime('%Y-%m-%d') }}</figcaption>
+        </figure>
 
-    /* ── Body text ── */
-    .body-text {
-        font-size: 16px;
-        color: var(--color-text-secondary);
-        word-spacing: 0.5px;
-    }
-    .body-text p {
-        margin-bottom: 1.2em;
-    }
-    /* ── Vintage image frame ── */
-    .vintage-frame {
-        border: 1px solid #D4C9B8;
-        box-shadow:
-            0 2px 12px rgba(26,22,20,0.06),
-            inset 0 0 0 1px rgba(255,255,255,0.5);
-        border-radius: 2px;
-        overflow: hidden;
-    }
-    .vintage-frame img {
-        filter: sepia(0.12) contrast(0.92) brightness(1.02);
-        transition: filter 0.6s ease;
-        display: block;
-        width: 100%;
-        height: auto;
-        max-height: 65vh;
-        object-fit: cover;
-        object-position: center top;
-    }
-    .vintage-frame:hover img {
-        filter: sepia(0) contrast(1) brightness(1);
-    }
+        <div>
+          <span class="section-label mb-4">Issue — {{ '%02d' | format(post.id) }}</span>
+          <h1 class="text-[clamp(1.8rem,4vw,2.75rem)] font-extrabold text-[var(--color-text)] leading-[1.08] tracking-[-0.02em] mb-3">{{ post.title }}</h1>
+          <p class="text-sm italic text-[var(--color-ember)] mb-6">By {{ post.author }}</p>
+          {% if hero_intro %}
+          <p class="text-sm italic text-[var(--color-text-muted)] leading-relaxed">{{ hero_intro }}</p>
+          {% endif %}
+          <hr class="divider my-8">
+        </div>
+      </div>
 
-    .vintage-frame figcaption {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 11px;
-        font-style: italic;
-        color: #8A7F76;
-        text-align: center;
-        padding: 10px 16px 8px;
-        background: #FAF7F2;
-        border-top: 1px solid #E8E0D6;
-    }
+      <div class="max-w-3xl mx-auto text-sm leading-relaxed text-[var(--color-text-muted)] space-y-4">
+        {% for block in content_blocks %}
+          {% if block.type == "text" %}
+          <p>{{ block.content }}</p>
+          {% elif block.type == "image" %}
+          <figure class="glass-card overflow-hidden my-10">
+            <img src="{{ block.image.file_url }}" alt="{{ block.image.alt_text or '' }}" loading="lazy" class="w-full h-auto"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="hidden w-full aspect-[8/5] items-center justify-center text-[var(--color-text-subtle)] bg-[var(--color-surface)] text-xs uppercase tracking-widest">Photo</div>
+          </figure>
+          {% endif %}
+        {% endfor %}
+      </div>
 
-    /* ── Related posts (TOC index) ── */
-    .toc-row {
-        display: flex;
-        align-items: baseline;
-        gap: 0;
-        text-decoration: none;
-        padding: 14px 0;
-        border-bottom: 1px solid #E8E0D6;
-    }
-    .toc-row:last-child {
-        border-bottom: 0;
-    }
-    .toc-num {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 15px;
-        font-weight: 500;
-        color: #C4B8A8;
-        flex-shrink: 0;
-        width: 28px;
-        text-align: right;
-        margin-right: 10px;
-        font-feature-settings: 'tnum';
-    }
-    .toc-title {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 14px;
-        font-weight: 600;
-        color: #1A1614;
-        flex-shrink: 0;
-        transition: color 0.2s ease;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 55%;
-    }
-    .toc-row:hover .toc-title {
-        color: var(--toc-accent, #8B3A3A);
-    }
-    .toc-dots {
-        flex: 1;
-        min-width: 12px;
-        height: 0;
-        align-self: center;
-        border-bottom: 1px dotted #D4C9B8;
-        margin: 0 6px;
-    }
-    .toc-date {
-        font-family: 'Inter', system-ui, sans-serif;
-        font-size: 10px;
-        color: #8A7F76;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        flex-shrink: 0;
-        white-space: nowrap;
-    }
+      <hr class="divider my-14">
 
-    @media (prefers-reduced-motion: reduce) {
-        .vintage-frame img { filter: sepia(0.12) contrast(0.92) brightness(1.02); }
-        .toc-title { transition: none; }
-        .toc-row:hover .toc-title { color: inherit; }
-    }
-</style>
-
-{% set palette = [
-    {'accent': '#C1633B', 'bg': '#F9EDE8'},
-    {'accent': '#7A9A7A', 'bg': '#EDF3ED'},
-    {'accent': '#C4A35A', 'bg': '#F8F3E8'},
-    {'accent': '#8A7F76', 'bg': '#F0EDE8'},
-] %}
-
-    <div class="paper-texture min-h-screen -mt-8 md:-mt-10 full-bleed px-6 sm:px-8">
-
-    <div class="max-w-4xl mx-auto">
-
-        {# ── BACK LINK ── #}
-        <a href="/updates" class="inline-flex items-center gap-1.5 text-[#8A7F76] hover:text-[#8B3A3A] text-xs font-sans font-medium uppercase tracking-wider transition-colors duration-200 no-underline mb-8 group">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:-translate-x-0.5"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-            Back to updates
-        </a>
-
-        {% if member and member.name == post.author %}
-        <div class="flex gap-2 mb-6">
-            <a href="/updates/{{ post.id }}/edit" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-espresso-400 hover:text-white hover:bg-espresso-500 border border-espresso-200 rounded-md transition-colors">Edit</a>
-            <form method="POST" action="/updates/{{ post.id }}/delete" id="delete-form">
-                <button type="button" onclick="showDeleteModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-red-400 hover:text-white hover:bg-red-600 border border-red-200 rounded-md transition-colors">Delete</button>
-            </form>
+      <div class="grid md:grid-cols-2 gap-10 max-w-3xl mx-auto">
+        <div class="pt-5 border-t border-[var(--color-border)]">
+          <div class="flex items-start gap-4">
+            <span class="w-10 h-10 flex-shrink-0 border border-[var(--color-border)] flex items-center justify-center text-sm font-semibold text-[var(--color-ember)]">{{ post.author[0] }}{{ post.author.split()[-1][0] if ' ' in post.author else '' }}</span>
+            <div class="min-w-0">
+              <p class="text-[10px] text-[var(--color-ember)] italic mb-0.5">Written by</p>
+              <h3 class="text-base font-semibold text-[var(--color-text)]">{{ post.author }}</h3>
+              <p class="text-[10px] text-[var(--color-text-subtle)] italic uppercase tracking-wider mt-1">Member since 2019</p>
+              <p class="text-sm text-[var(--color-text-muted)] leading-relaxed mt-3">One of the eleven. Always there for a bad joke, a late-night snack run, or a heartfelt talk.</p>
+            </div>
+          </div>
+        </div>
+        {% if related %}
+        <div>
+          <h3 class="section-label mb-5">More From This Issue</h3>
+          <div class="space-y-1">
+            {% for r in related %}
+            <a href="/updates/{{ r.id }}" class="flex items-baseline gap-2 py-2 border-b border-[var(--color-border)] last:border-0 text-sm hover:text-[var(--color-ember)] transition-colors">
+              <span class="text-[var(--color-text-subtle)] font-mono text-[10px]">{{ '%02d' | format(loop.index) }}</span>
+              <span class="flex-1 font-medium truncate">{{ r.title }}</span>
+              <span class="text-[10px] text-[var(--color-text-subtle)] uppercase tracking-[0.06em] flex-shrink-0">{{ r.posted_at.strftime('%Y-%m-%d') }}</span>
+            </a>
+            {% endfor %}
+          </div>
         </div>
         {% endif %}
-
-
-        {# ── SPREAD: HERO IMAGE + HEADLINE ── #}
-        <div class="lg:grid lg:grid-cols-2 lg:gap-10 mb-12">
-
-            {# ── LEFT: Hero image ── #}
-            <figure class="vintage-frame lg:sticky lg:top-24 mb-6 lg:mb-0">
-                {% set active_images = post.images | selectattr('is_deleted', 'equalto', false) | list %}
-                {% if active_images | length > 0 %}
-                <img src="{{ active_images[0].file_url }}" alt="{{ active_images[0].alt_text or post.title }}"
-                     loading="lazy"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                {% else %}
-                <img src="/static/img/fallback-cover.jpg" alt="{{ post.title }}"
-                     loading="lazy"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                {% endif %}
-                <div class="hidden w-full aspect-[3/4] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
-                <figcaption>From the archives &mdash; {{ post.posted_at.strftime('%Y-%m-%d') }}</figcaption>
-            </figure>
-
-            {# ── RIGHT: Headline + intro ── #}
-            <div>
-                {# ── Issue label with short rule ── #}
-                <div class="issue-label">Issue &mdash; {{ '%02d' | format(post.id) }}</div>
-                <hr class="issue-rule">
-
-                <h1 class="mag-headline mt-6 mb-3">{{ post.title }}</h1>
-
-                <p class="mag-headline-sub mb-6">By {{ post.author }}</p>
-
-                {% if hero_intro %}
-                <p class="font-serif text-[#5A5148] text-base leading-relaxed italic">{{ hero_intro }}</p>
-                {% endif %}
-                                {# ── Transition to body ── #}
-                <div class="divider-ornament my-8">
-                    <span class="line"></span>
-                    <span class="dot"></span>
-                    <span class="line"></span>
-                </div>
-            </div>
-        </div>
-
-        {# ── FULL-WIDTH BODY: interleaved paragraphs + images ── #}
-        <div class="body-text max-w-3xl mx-auto md:text-justify">
-            {% for block in content_blocks %}
-                {% if block.type == "text" %}
-                    <p>{{ block.content }}</p>
-                {% elif block.type == "image" %}
-                <figure class="vintage-frame my-10 max-w-2xl mx-auto">
-                    <img src="{{ block.image.file_url }}" alt="{{ block.image.alt_text or '' }}"
-                         loading="lazy"
-                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                    <div class="hidden w-full aspect-[8/5] items-center justify-center text-[#9E8C78] font-display text-xs uppercase tracking-widest bg-[#F0EBE2]">Photo</div>
-                </figure>
-                {% endif %}
-            {% endfor %}
-        </div>
-
-        {# ── Ornament divider before footer section ── #}
-        <div class="divider-ornament my-14">
-            <span class="line"></span>
-            <span class="dot"></span>
-            <span class="line"></span>
-        </div>
-
-
-        {# ── BOTTOM: AUTHOR + RELATED ── #}
-        <div class="grid md:grid-cols-2 gap-10 max-w-3xl mx-auto">
-
-            {# ── AUTHOR: contributor byline ── #}
-            <div class="pt-5 border-t border-[#D4C9B8]">
-                <div class="flex items-start gap-4">
-                    <span class="w-10 h-10 flex-shrink-0 border border-[#D4C9B8] flex items-center justify-center text-sm text-[#8B3A3A] font-['Playfair_Display'] font-semibold">{{ post.author[0] }}{{ post.author.split()[-1][0] if ' ' in post.author else '' }}</span>
-                    <div class="min-w-0">
-                        <p class="text-[11px] text-[#8B3A3A] font-serif italic mb-0.5">Written by</p>
-                        <h3 class="text-base font-semibold text-[#1A1614] font-['Playfair_Display']">{{ post.author }}</h3>
-                        <p class="text-[10px] text-[#8A7F76] font-serif italic uppercase tracking-wider mt-1">Member since 2019</p>
-                        <p class="text-[14px] text-[#2C2824] leading-relaxed mt-3 font-['Georgia']">One of the ten. Always there for a bad joke, a late-night snack run, or a heartfelt talk.</p>
-                    </div>
-                </div>
-            </div>
-
-            {# ── RELATED: TOC index ── #}
-            {% if related %}
-            <div>
-                <h3 class="issue-label mb-5">More From This Issue</h3>
-                <div>
-                    {% for r in related %}
-                    {% set pr = palette[(r.id - 1) % 4] %}
-                    <a href="/updates/{{ r.id }}" class="toc-row" style="--toc-accent: {{ pr['accent'] }};">
-                        <span class="toc-num">{{ '%02d' | format(loop.index) }}</span>
-                        <span class="toc-title">{{ r.title }}</span>
-                        <span class="toc-dots" aria-hidden="true"></span>
-                        <span class="toc-date">{{ r.posted_at.strftime('%Y-%m-%d') }}</span>
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-
-        </div>
-
+      </div>
     </div>
+  </div>
 </div>
 
 {% if member %}
-<div class="modal-overlay" id="deleteModal">
-    <div class="modal-card accent-terracotta">
-        <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#FEF2F2]">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#991B1B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"/>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                <line x1="10" y1="11" x2="10" y2="17"/>
-                <line x1="14" y1="11" x2="14" y2="17"/>
-            </svg>
-        </div>
-        <div class="modal-title">Delete this post?</div>
-        <p class="modal-body">
-            This will hide the post and all its images from the public site.
-            You can restore it later from the trash.
-        </p>
-        <div class="modal-actions">
-            <button type="button" class="btn btn-secondary flex-1 justify-center" onclick="closeDeleteModal()">Cancel</button>
-            <button type="button" class="btn btn-primary flex-1 justify-center" onclick="confirmDelete()">Delete</button>
-        </div>
+<div id="deleteModal" class="fixed inset-0 z-modal flex items-center justify-center p-4" style="display:none;background:rgba(7,7,10,0.6);backdrop-filter:blur(8px);">
+  <div class="glass-card p-6 max-w-sm w-full text-center">
+    <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-error)]/10">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-error)" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
     </div>
+    <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Delete this post?</h3>
+    <p class="text-sm text-[var(--color-text-muted)] mb-6">This will hide the post and all its images. You can restore it later from the trash.</p>
+    <div class="flex gap-3 justify-center">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="closeDeleteModal()">Cancel</button>
+      <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
 </div>
+
+<form method="POST" action="/updates/{{ post.id }}/delete" id="delete-form" style="display:none;"></form>
 
 <script>
 function showDeleteModal() {
-    document.getElementById('deleteModal').classList.add('active');
+  document.getElementById('deleteModal').style.display = 'flex';
 }
-
 function closeDeleteModal() {
-    document.getElementById('deleteModal').classList.remove('active');
+  document.getElementById('deleteModal').style.display = 'none';
 }
-
 function confirmDelete() {
-    closeDeleteModal();
-    document.getElementById('delete-form').submit();
+  closeDeleteModal();
+  document.getElementById('delete-form').submit();
 }
 </script>
 {% endif %}

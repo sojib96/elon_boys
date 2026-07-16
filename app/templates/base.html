@@ -3,209 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#C1633B">
+    <meta name="theme-color" content="#07070A">
+    <meta name="color-scheme" content="dark">
     <meta name="description" content="Eleven friends. Four years. A lifetime of memories.">
     <title>{% block title %}Elon Boys{% endblock %}</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23FF6B4A'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='16' font-weight='700' font-family='system-ui'>EG</text></svg>">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600;1,9..144,700&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/tokens.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23FF6B35'/><text x='16' y='22' text-anchor='middle' fill='%23F8FAFC' font-size='16' font-weight='800' font-family='system-ui'>EB</text></svg>">
+    <link rel="stylesheet" href="/static/css/public.css?v=3">
     <script>
     tailwind.config = {
-        theme: {
-            extend: {
-                fontFamily: {
-                    sans: ['Inter', 'system-ui', 'sans-serif'],
-                    serif: ['Fraunces', 'Georgia', 'serif'],
-                },
-                colors: {
-                    coral: { 50: '#FFF7ED', 100: '#FFEDD5', 200: '#FED7AA', 300: '#FDBA74', 400: '#FB923C', 500: '#D56B4D', 600: '#C25A3E', 700: '#A8472F' },
-                    forest: { 50: '#EDF5F0', 100: '#D1E4D7', 200: '#A3C9AF', 300: '#6EAD83', 400: '#4B8E63', 500: '#3A7D5C', 600: '#2D6247', 700: '#1F4834' },
-                    ink: '#1A1A2E',
-                    espresso: { 50: '#f5f1ea', 100: '#e8e4dc', 200: '#c4b8a8', 300: '#9e8c78', 400: '#7a6854', 500: '#4a3427', 600: '#3d2c1e', 700: '#2d2418' },
-                    pine: '#2d4a3e',
-                    sangria: '#4a2a3a',
-                },
-                boxShadow: {
-                    'card': '0 4px 12px rgba(0,0,0,0.08)',
-                    'card-hover': '0 12px 32px rgba(0,0,0,0.12)',
-                    'glow': '0 8px 20px rgba(213,107,77,0.35)',
-                    'glow-forest': '0 8px 20px rgba(58,125,92,0.35)',
-                },
-            }
-        }
-    }
+      theme: {
+        extend: {
+          colors: {
+            void: '#07070A',
+            surface: '#13131A',
+            'surface-elevated': '#1C1C28',
+            ember: '#FF6B35',
+            'ember-hover': '#FF8555',
+            violet: '#7C3AED',
+            cyan: '#06B6D4',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+        },
+      },
+    };
     </script>
-    <style>
-        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        ::selection { background: #C1633B33; color: #8B3A3A; }
-        :focus-visible { outline: 2px solid #C1633B; outline-offset: 2px; border-radius: 4px; }
-        * { transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease; }
-
-        .masthead-link { padding: 0 10px; font-size: 11px; font-weight: 500; color: #8A7F76; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; transition: color 0.2s ease; position: relative; line-height: 48px; }
-        .masthead-link:hover { color: #C1633B; }
-        .masthead-link.active { color: #C1633B; font-weight: 600; }
-        .masthead-link.active::after { content: ''; position: absolute; bottom: 0; left: 10px; right: 10px; height: 2px; background: #C1633B; }
-        .masthead-login { font-weight: 600; }
-
-        .card-tag { position: absolute; top: 10px; left: 10px; background: #3d2c1e; color: #f5f1ea; font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; }
-        .quote-serif { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 600; }
-
-        .hamburger { width: 20px; height: 14px; position: relative; cursor: pointer; }
-        .hamburger span { display: block; width: 100%; height: 2px; background: #B8AFA2; border-radius: 2px; position: absolute; left: 0; }
-        .hamburger span:nth-child(1) { top: 0; }
-        .hamburger span:nth-child(2) { top: 6px; }
-        .hamburger span:nth-child(3) { top: 12px; }
-        .hamburger.open span:nth-child(1) { transform: rotate(45deg); top: 6px; background: #C1633B; }
-        .hamburger.open span:nth-child(2) { opacity: 0; }
-        .hamburger.open span:nth-child(3) { transform: rotate(-45deg); top: 6px; background: #C1633B; }
-
-        #scroll-top { opacity: 0; pointer-events: none; transform: translateY(12px); }
-        #scroll-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
-
-        @keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-
-        .reveal { opacity: 0; transform: translateY(16px); transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-        .reveal-left { opacity: 0; transform: translateX(-20px); transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
-        .reveal-left.visible { opacity: 1; transform: translateX(0); }
-        .reveal-right { opacity: 0; transform: translateX(20px); transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
-        .reveal-right.visible { opacity: 1; transform: translateX(0); }
-        .stagger > * { opacity: 0; transform: translateY(12px); animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-        .stagger > *:nth-child(1) { animation-delay: 0.05s; }
-        .stagger > *:nth-child(2) { animation-delay: 0.1s; }
-        .stagger > *:nth-child(3) { animation-delay: 0.15s; }
-        .stagger > *:nth-child(4) { animation-delay: 0.2s; }
-        .stagger > *:nth-child(5) { animation-delay: 0.25s; }
-        .stagger > *:nth-child(6) { animation-delay: 0.3s; }
-        .stagger > *:nth-child(7) { animation-delay: 0.35s; }
-        .stagger > *:nth-child(8) { animation-delay: 0.4s; }
-        .stagger > *:nth-child(9) { animation-delay: 0.45s; }
-        .stagger > *:nth-child(10) { animation-delay: 0.5s; }
-        .stagger > *:nth-child(11) { animation-delay: 0.55s; }
-        .stagger > *:nth-child(12) { animation-delay: 0.6s; }
-
-        /* ── Container system ── */
-        .content-container { max-width: 1280px; margin-left: auto; margin-right: auto; padding-left: 1.5rem; padding-right: 1.5rem; }
-        @media (min-width: 640px) { .content-container { padding-left: 2rem; padding-right: 2rem; } }
-
-
-        /* Clean full-bleed (replaces calc((100vw - 100%) / 2) hack) */
-        .full-bleed { width: 100vw; margin-left: calc(-50vw + 50%); }
-
-        /* ── Z-index scale ── */
-        .z-overlay { z-index: 40; }
-        .z-modal { z-index: 50; }
-        .z-toast { z-index: 60; }
-
-        /* ── Shared button system ── */
-        .btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'Inter', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 2px; cursor: pointer; text-decoration: none; border: 1.5px solid; transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.15s ease; }
-        .btn:active { transform: scale(0.97); }
-        .btn-primary { background: #8B3A3A; border-color: #8B3A3A; color: #fff; }
-        .btn-primary:hover { background: #6F2A2A; }
-        .btn-secondary { background: transparent; border-color: #D4C9B8; color: #8A7F76; }
-        .btn-secondary:hover { border-color: #8B3A3A; color: #8B3A3A; }
-        .btn-danger { background: #FEF2F2; border-color: #FECACA; color: #DC2626; }
-        .btn-danger:hover { background: #FEE2E2; }
-        .btn-sm { padding: 7px 18px; font-size: 10px; gap: 6px; }
-        .btn-md { padding: 10px 28px; }
-        .btn-lg { padding: 12px 36px; }
-        .btn .justify-center { justify-content: center; }
-        .btn.w-full { width: 100%; }
-
-        /* ── Shared card / modal (public) ── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(26, 22, 20, 0.45);
-            backdrop-filter: blur(4px);
-            z-index: 50;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-card {
-            background: #FAF8F4;
-            border: 1px solid #E8E0D6;
-            border-radius: 2px;
-            padding: 28px 24px;
-            max-width: 360px;
-            width: 100%;
-            box-shadow: 0 8px 30px rgba(26, 22, 20, 0.18);
-            text-align: center;
-        }
-        .modal-card.accent-gold {
-            border-left: 3px solid #C4A35A;
-        }
-        .modal-card.accent-terracotta {
-            border-left: 3px solid #8B3A3A;
-        }
-        .modal-icon { font-size: 28px; margin-bottom: 12px; }
-        .modal-title {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-weight: 700;
-            font-size: 18px;
-            color: #1A1614;
-            margin-bottom: 8px;
-        }
-        .modal-body {
-            font-family: 'Fraunces', Georgia, serif;
-            font-size: 13px;
-            font-style: italic;
-            color: #8A7F76;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .reveal, .reveal-left, .reveal-right { opacity: 1; transform: none; }
-            .stagger > * { opacity: 1; transform: none; animation: none; }
-            .btn { transition: none; }
-            .btn:active { transform: none; }
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% block extra_head %}{% endblock %}
 </head>
-<body class="font-sans text-ink bg-espresso-50 flex flex-col min-h-screen{% block body_class %}{% endblock %}">
+<body class="font-sans bg-[#07070A] text-[#F8FAFC] flex flex-col min-h-screen{% block body_class %}{% endblock %}">
+    <div class="ambient-mesh" aria-hidden="true">
+        <blob></blob>
+        <blob></blob>
+        <blob></blob>
+        <blob></blob>
+    </div>
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     {% include "partials/_nav.html" %}
+    {% include "partials/_toast.html" %}
 
     {% block hero %}{% endblock %}
 
-    <main class="flex-grow w-full mx-auto px-6 sm:px-8 pt-8 md:pt-10 pb-16 md:pb-24 max-w-7xl{% block main_class %}{% endblock %}" role="main">
+    <main id="main-content" class="relative z-base flex-grow w-full{% block main_class %}{% endblock %}" role="main">
         {% block content %}{% endblock %}
     </main>
 
-    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-9 h-9 rounded-lg bg-[#C1633B] border-0 shadow-md flex items-center justify-center text-white hover:bg-[#A8472F] hover:-translate-y-0.5 transition-all duration-200 shadow-[0_4px_12px_rgba(26,22,20,0.2)]" aria-label="Scroll to top">
+    <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-sticky w-9 h-9 rounded-lg glass flex items-center justify-center text-[#94A3B8] hover:text-[#FF6B35] hover:border-[#FF6B35] transition-all duration-200" aria-label="Scroll to top">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
     </button>
 
     {% include "partials/_footer.html" %}
 
-    <script>
-    (function(){
-        if(window.IntersectionObserver){
-            document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(function(el){
-                new IntersectionObserver(function(e){ if(e[0].isIntersecting){ e[0].target.classList.add('visible') } },{threshold:0.1}).observe(el);
-            });
-        }
-        var btn=document.getElementById('menu-btn'), menu=document.getElementById('mobile-menu'), icon=document.getElementById('hamburger-icon');
-        if(btn&&menu&&icon) btn.addEventListener('click',function(){ menu.classList.toggle('hidden'); icon.classList.toggle('open'); var expanded=btn.getAttribute('aria-expanded')==='true'?'false':'true'; btn.setAttribute('aria-expanded',expanded); });
-
-        var st=document.getElementById('scroll-top');
-        if(st) window.addEventListener('scroll',function(){ st.classList.toggle('visible',window.scrollY>400); });
-
-
-    })();
-    </script>
+    <script src="/static/js/ui.js"></script>
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>
