@@ -1,77 +1,111 @@
-{% extends "base.html" %}
-{% block title %}Guestbook — Elon Boys{% endblock %}
-
+{% extends "base.html" %} {% block title %}Guestbook — Elon Boys{% endblock %}
 {% block content %}
 <div class="content-container">
   <div class="page-header">
     <div class="page-header-content">
       <span class="page-header-label">The Guestbook</span>
-      <h1 class="page-headline">Leave <span class="gradient-text">your mark</span></h1>
-      <p class="body-text mt-4 max-w-lg">
-        Warning: contains high levels of nostalgia and inside jokes that will not be explained to you.
-      </p>
+      <h1 class="page-headline">
+        Leave <span class="gradient-text-cyan">your mark</span>
+      </h1>
     </div>
   </div>
 
   {% set count = entries|length %}
 
-  {% if submitted %}
-  <div class="glass-card p-4 mb-8 border-l-[3px]" style="border-left-color:var(--color-success);">
-    <p class="text-sm font-medium text-[var(--color-success)]">Thanks &mdash; your message has been posted!</p>
-  </div>
-  {% endif %}
+  <div class="ledger-wrap reveal">
+    <div class="ledger-book">
+      <div class="ledger-spine"></div>
 
-  <div class="glass-card p-6 mb-12 reveal">
-    <form method="post" action="/guestbook" class="flex flex-col md:flex-row gap-3 items-stretch">
-      <div class="md:w-1/4">
-        <input type="text" id="name" name="name" required
-               class="search-input h-full"
-               placeholder="Your name (or alias)">
-      </div>
-      <div class="md:flex-1">
-        <textarea id="message" name="message" rows="1" required
-                  class="search-input h-full resize-none"
-                  placeholder="Write something... or don't."></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary">
-        Post &rarr;
-      </button>
-    </form>
-  </div>
-
-  {% if entries %}
-  <div id="guestbook-list" class="space-y-3 stagger">
-    {% for entry in entries %}
-    <div class="guestbook-entry">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-full bg-[var(--color-surface-elevated)] border border-[var(--color-border)] flex items-center justify-center flex-shrink-0">
-          <span class="text-xs font-bold text-[var(--color-text-muted)]">{{ entry.name[:1] }}</span>
+      <div class="ledger-page">
+        <div class="ledger-page-header">
+          <span class="ledger-page-header-label"
+            >Elon Boys — Visitors' Log</span
+          >
+          <span class="ledger-page-header-count"
+            >{{ count }} entr{{ 'y' if count == 1 else 'ies' }} recorded</span
+          >
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-baseline gap-2.5">
-            <span class="guestbook-author">{{ entry.name }}</span>
-            <span class="guestbook-date">{{ entry.posted_at.strftime('%b %d, %Y') if entry.posted_at else '' }}</span>
+
+        <!-- Write row: styled as the next blank line in the ledger -->
+        <form
+          method="post"
+          action="/guestbook"
+          class="ledger-row ledger-row--form"
+        >
+          <div class="ledger-row-stamp">
+            <span class="ledger-entry-no"
+              >No. {{ '%03d'|format(count + 1) }}</span
+            >
           </div>
-          <p class="guestbook-message">&ldquo;{{ entry.message }}&rdquo;</p>
+          <div class="ledger-row-body">
+            <textarea
+              id="message"
+              name="message"
+              rows="2"
+              required
+              class="ledger-input ledger-input--message"
+              placeholder="Write something... or don't."
+            ></textarea>
+            <div class="ledger-row-bottom">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                class="ledger-input ledger-input--name"
+                placeholder="Sign your name"
+              />
+              <button type="submit" class="ledger-submit">
+                Sign the book &rarr;
+              </button>
+            </div>
+          </div>
+        </form>
+
+        {% if submitted %}
+        <p class="ledger-confirm">
+          Entry recorded — thanks for signing the book.
+        </p>
+        {% endif %}
+
+        <div class="ledger-divider"></div>
+
+        {% if entries %}
+        <div id="guestbook-list" class="ledger-entries stagger">
+          {% for entry in entries %}
+          <div class="ledger-row">
+            <div class="ledger-row-stamp">
+              <span class="ledger-entry-no"
+                >No. {{ '%03d'|format(count - loop.index0) }}</span
+              >
+              <span class="ledger-entry-date"
+                >{{ entry.posted_at.strftime('%b %d, %Y') if entry.posted_at
+                else '' }}</span
+              >
+            </div>
+            <div class="ledger-row-body">
+              <p class="ledger-message">{{ entry.message }}</p>
+              <p class="ledger-signature">{{ entry.name }}</p>
+            </div>
+          </div>
+          {% endfor %}
         </div>
+        {% else %}
+        <div class="ledger-empty">
+          <p class="ledger-empty-title">The first page is blank.</p>
+          <p class="ledger-empty-desc">
+            Whoever writes here first gets Entry No. 001.
+          </p>
+        </div>
+        {% endif %}
       </div>
     </div>
-    {% endfor %}
   </div>
-  {% else %}
-  <div class="empty-state">
-    <div class="empty-state-icon">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-subtle)" stroke-width="1.5"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg>
-    </div>
-    <p class="empty-state-title">Nothing here yet</p>
-    <p class="empty-state-desc">The void stares back. Be the first to break the silence.</p>
-  </div>
-  {% endif %}
 </div>
 
 <script>
-if (window.location.search.includes('submitted=1')) {
-  window.history.replaceState({}, document.title, '/guestbook');
-}
+  if (window.location.search.includes('submitted=1')) {
+    window.history.replaceState({}, document.title, '/guestbook')
+  }
 </script>
 {% endblock %}
